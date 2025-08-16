@@ -27,40 +27,48 @@ const FormSection: FC<formSectionProps> = () => {
   const filRef = useRef<HTMLInputElement | null>(null);
 
 
-  const submitHandler = (event: React.FormEvent) => {
-    event.preventDefault();
+const submitHandler = (event: React.FormEvent) => {
+  event.preventDefault();
 
-    if (
-      firstNameRef.current &&
-      lastNameRef.current &&
-      emailRef.current &&
-      phoneRef.current &&
-      messageRef.current &&
-      filRef.current
-    ) {
-      const firstName = firstNameRef.current.value;
-      const lastName = lastNameRef.current.value;
-      const name = firstName + lastName;
-      const email = emailRef.current.value;
-      const phoneNo = phoneRef.current.value;
-      const message = messageRef.current.value;
-      const fileInput = filRef.current;
-      const file = fileInput.files && fileInput.files[0];
-      axiosLib
-        .post("/api/user", {
-          name,
-          email,
-          phoneNo,
-          message,
-          file,
-        })
-        .then((res) => setResponseData(res.data.message))
-        .catch((err) => setbadResponse(err));
-    } else {
-      // Handle the case where one or more refs are undefined
-      console.error("One or more refs are undefined");
-    }
-  };
+  if (
+    firstNameRef.current &&
+    lastNameRef.current &&
+    emailRef.current &&
+    phoneRef.current &&
+    messageRef.current &&
+    filRef.current
+  ) {
+    const firstName = firstNameRef.current.value;
+    const lastName = lastNameRef.current.value;
+    const name = firstName + lastName;
+    const email = emailRef.current.value;
+    const phoneNo = phoneRef.current.value;
+    const message = messageRef.current.value;
+    const fileInput = filRef.current;
+    const file = fileInput.files && fileInput.files[0];
+
+    axiosLib
+      .post("/api/user", {
+        name,
+        email,
+        phoneNo,
+        message,
+        file,
+      })
+      .then((res) => {
+        console.log("✅ Success Response:", res);
+        setResponseData(res.data.message);
+      })
+      .catch((err) => {
+        console.error("❌ Error Response:", err);
+        setbadResponse(err);
+      });
+  } else {
+    // Handle the case where one or more refs are undefined
+    console.error("⚠️ One or more refs are undefined");
+  }
+};
+
 
   return (<div>
     {/* <div className="flex justify-center items-center">
@@ -307,7 +315,7 @@ const FormSection: FC<formSectionProps> = () => {
               <span className="bg-gray-200 w-[300px] h-[2px]"></span>
             </div>
 
-            <form className="flex flex-col gap-5">
+            <form onClick={submitHandler} className="flex flex-col gap-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <div className="flex flex-col">
                   <label className="pl-4">First Name</label>

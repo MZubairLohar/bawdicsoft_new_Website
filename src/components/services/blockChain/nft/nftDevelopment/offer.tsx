@@ -127,7 +127,7 @@ const OfferSection: FC<offerSectionProps> = () => {
           <p className="text-white font-bold text-2xl  md:text-3xl lg:text-4xl">
             Talk to one of our experts and get a quote on your project.
           </p>
-          <a className="text-gray-700  font-semibold mt-4 text-md px-5 hover:bg-sky-400 hover:text-white py-3 bg-gray-100">
+          <a href="/contact-us" className="text-gray-700  font-semibold mt-4 text-md px-5 hover:bg-sky-400 hover:text-white py-3 bg-gray-100">
             Talk To Us
           </a>
         </div>

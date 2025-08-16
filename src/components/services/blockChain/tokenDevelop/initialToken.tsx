@@ -70,7 +70,7 @@ const InitialTokenOfferSection: FC<InitialTokenOfferSectionProps> = () => {
             Need tokens? Talk to one of our experts and get a quote on your
             project.
           </p>
-          <a className="text-gray-700 max-w-sm font-semibold  text-md px-5 hover:bg-sky-400 hover:text-white py-3 bg-gray-100 mt-5">
+          <a href="/contact-us" className="text-gray-700 max-w-sm font-semibold  text-md px-5 hover:bg-sky-400 hover:text-white py-3 bg-gray-100 mt-5">
             Talk To Us
           </a>
         </div>
