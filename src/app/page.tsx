@@ -1,6 +1,6 @@
 import Footer from "@/components/footer";
 import Expertise from "@/components/home/expertise";
-
+import OurTeam from "@/components/home/team";
 import HeroSection from "@/components/home/heoSection";
 import OfferSection from "@/components/home/offer";
 import SevicesOffer from "@/components/home/servicesOffer";
@@ -13,6 +13,7 @@ export default function Home() {
   <OfferSection />
   <Expertise />
   <SevicesOffer />
+  <OurTeam />
     </>
   )
 }
