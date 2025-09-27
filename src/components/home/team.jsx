@@ -41,7 +41,7 @@ const OurTeam = () => {
               className={`flex flex-col ${index % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-8`}
             >
               {/* Image Container */}
-              <div className="relative group flex-shrink-0">
+              <div className="relative group flex justify-center flex-shrink-0">
                 <div className="relative w-64 h-80 rounded-2xl overflow-hidden shadow-xl">
                   <Image
                     src={member.image}
