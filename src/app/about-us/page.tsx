@@ -1,25 +1,26 @@
 // ✅ SEO Metadata
+// ✅ SEO Metadata
 export const metadata = {
   title: "BawdicSoft: Innovative Digital Solutions for Your Business",
   description: "Explore BawdicSoft's cutting-edge technology and services. Empower your business with our innovative digital solutions today!",
   keywords: [
     "bawdicsoft",
-    "technology",
-    "your",
-    "services",
-    "about",
     "digital",
     "solutions",
-    "with"
+    "your",
+    "technology",
+    "innovative",
+    "services",
+    "about"
   ],
   openGraph: {
     title: "BawdicSoft: Innovative Digital Solutions for Your Business",
     description: "Explore BawdicSoft's cutting-edge technology and services. Empower your business with our innovative digital solutions today!",
-    url: "https://www.bawdicsoft.com/about-us",
+    url: "https://bawdicsoft-new-website.vercel.app/about-us",
     siteName: "Sigmantarian",
     images: [
       {
-        url: "https://www.bawdicsoft.com/about-us/opengraph-image.jpg",
+        url: "https://bawdicsoft-new-website.vercel.app/about-us/opengraph-image.jpg",
         width: 1200,
         height: 630,
         alt: "BawdicSoft: Innovative Digital Solutions for Your Business"
@@ -31,9 +32,10 @@ export const metadata = {
     card: "summary_large_image",
     title: "BawdicSoft: Innovative Digital Solutions for Your Business",
     description: "Explore BawdicSoft's cutting-edge technology and services. Empower your business with our innovative digital solutions today!",
-    images: ["https://www.bawdicsoft.com/about-us/twitter-image.jpg"]
+    images: ["https://bawdicsoft-new-website.vercel.app/about-us/twitter-image.jpg"]
   }
 };
+
 
 
 import DocumtentsSectins from "@/components/aboutUs/document";

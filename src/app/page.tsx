@@ -1,5 +1,6 @@
 // ✅ SEO Metadata
 // ✅ SEO Metadata
+// ✅ SEO Metadata
 export const metadata = {
   title: "BawdicSoft: Leading Blockchain & Web3 Development Solutions",
   description: "Unlock your business potential with BawdicSoft's innovative blockchain and web3 application development solutions. Elevate your online presence today!",
@@ -8,19 +9,19 @@ export const metadata = {
     "development",
     "application",
     "bawdicsoft",
+    "blockchain",
+    "solutions",
     "with",
-    "website",
-    "that",
-    "solutions"
+    "website"
   ],
   openGraph: {
     title: "BawdicSoft: Leading Blockchain & Web3 Development Solutions",
     description: "Unlock your business potential with BawdicSoft's innovative blockchain and web3 application development solutions. Elevate your online presence today!",
-    url: "https://www.bawdicsoft.com/",
+    url: "https://bawdicsoft-new-website.vercel.app/",
     siteName: "Sigmantarian",
     images: [
       {
-        url: "https://www.bawdicsoft.com/opengraph-image.jpg",
+        url: "https://bawdicsoft-new-website.vercel.app/opengraph-image.jpg",
         width: 1200,
         height: 630,
         alt: "BawdicSoft: Leading Blockchain & Web3 Development Solutions"
@@ -32,9 +33,10 @@ export const metadata = {
     card: "summary_large_image",
     title: "BawdicSoft: Leading Blockchain & Web3 Development Solutions",
     description: "Unlock your business potential with BawdicSoft's innovative blockchain and web3 application development solutions. Elevate your online presence today!",
-    images: ["https://www.bawdicsoft.com/twitter-image.jpg"]
+    images: ["https://bawdicsoft-new-website.vercel.app/twitter-image.jpg"]
   }
 };
+
 
 
 

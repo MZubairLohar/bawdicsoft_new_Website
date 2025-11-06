@@ -1,4 +1,5 @@
 // ✅ SEO Metadata
+// ✅ SEO Metadata
 export const metadata = {
   title: "BawdicSoft: Expert Blockchain & Mobile Development Services",
   description: "Contact BawdicSoft for top-notch blockchain and mobile development services. Let's discuss your project today!",
@@ -6,20 +7,20 @@ export const metadata = {
     "bawdicsoft",
     "your",
     "with",
-    "contact",
+    "blockchain",
+    "development",
     "services",
-    "about",
-    "project",
-    "blockchain"
+    "contact",
+    "mobile"
   ],
   openGraph: {
     title: "BawdicSoft: Expert Blockchain & Mobile Development Services",
     description: "Contact BawdicSoft for top-notch blockchain and mobile development services. Let's discuss your project today!",
-    url: "https://www.bawdicsoft.com/contact-us",
+    url: "https://bawdicsoft-new-website.vercel.app/contact-us",
     siteName: "Sigmantarian",
     images: [
       {
-        url: "https://www.bawdicsoft.com/contact-us/opengraph-image.jpg",
+        url: "https://bawdicsoft-new-website.vercel.app/contact-us/opengraph-image.jpg",
         width: 1200,
         height: 630,
         alt: "BawdicSoft: Expert Blockchain & Mobile Development Services"
@@ -31,9 +32,10 @@ export const metadata = {
     card: "summary_large_image",
     title: "BawdicSoft: Expert Blockchain & Mobile Development Services",
     description: "Contact BawdicSoft for top-notch blockchain and mobile development services. Let's discuss your project today!",
-    images: ["https://www.bawdicsoft.com/contact-us/twitter-image.jpg"]
+    images: ["https://bawdicsoft-new-website.vercel.app/contact-us/twitter-image.jpg"]
   }
 };
+
 
 
 import FormSection from "@/components/contactUs/formSection";
