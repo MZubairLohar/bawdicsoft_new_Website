@@ -1,3 +1,40 @@
+// ✅ SEO Metadata
+export const metadata = {
+  title: "BawdicSoft: Innovative Currency Exchange & Development Services",
+  description: "Discover BawdicSoft's portfolio showcasing cutting-edge currency exchange solutions and development services tailored to your needs. Explore now!",
+  keywords: [
+    "bawdicsoft",
+    "services",
+    "portfolio",
+    "currency",
+    "exchange",
+    "your",
+    "development"
+  ],
+  openGraph: {
+    title: "BawdicSoft: Innovative Currency Exchange & Development Services",
+    description: "Discover BawdicSoft's portfolio showcasing cutting-edge currency exchange solutions and development services tailored to your needs. Explore now!",
+    url: "https://www.bawdicsoft.com/portfolio",
+    siteName: "Sigmantarian",
+    images: [
+      {
+        url: "https://www.bawdicsoft.com/portfolio/opengraph-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "BawdicSoft: Innovative Currency Exchange & Development Services"
+      }
+    ],
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BawdicSoft: Innovative Currency Exchange & Development Services",
+    description: "Discover BawdicSoft's portfolio showcasing cutting-edge currency exchange solutions and development services tailored to your needs. Explore now!",
+    images: ["https://www.bawdicsoft.com/portfolio/twitter-image.jpg"]
+  }
+};
+
+
 import HeroSection from "@/components/portFolio/heroSection";
 // import OurWorks from "@/components/portFolio/ourWorks";
 import ProductServices from "@/components/portFolio/porductPortFolio";
