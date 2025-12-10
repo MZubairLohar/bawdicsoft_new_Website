@@ -115,15 +115,16 @@ const PortFolioSection: FC<PortFolioSectionProps> = () => {
         <div>
           <div className=" gap-8 grid grid-cols-1 md:grid-cols-3 px-5  md:px-12 py-10">
             {data.map((product) => (
-              // <Link
-              //   key={product.id}
-              //   className=" relative  group"
-              //   href={
-              //     product.category.includes("ai")
-              //       ? `/productDetailes/${product.id}`
-              //       : product.href
-              //   }
-              // >
+              <Link
+              target="_blank"
+                key={product.id}
+                className=" relative  group"
+                href={
+                  product.category.includes("ai")
+                    ? `/productDetailes/${product.id}`
+                    : product.href
+                }
+              >
               <div>
                 <Image
                   src={product.projectImage}
@@ -135,7 +136,7 @@ const PortFolioSection: FC<PortFolioSectionProps> = () => {
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <div className="flex justify-center items-center md:gap-1 ">
                     <div>
-                      <span className=" text-2xl mx-auto md:text-md break-words lg:text-3xl font-bold hidden group-hover:block text-white  ">
+                      <span className=" text-2xl mx-auto md:text-md break-words lg:text-2xl font-bold hidden group-hover:block text-white  ">
                         {product.projectName.length > 10
                           ? product.projectName.slice(0, 10)
                           : product.projectName}
