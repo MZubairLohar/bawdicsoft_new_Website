@@ -243,7 +243,7 @@ const PortFolioSection: FC<PortFolioSectionProps> = () => {
         </div>
 
         {/* Main Filter Buttons */}
-        <div className="py-20 grid grid-cols-1 gap-5 md:grid-cols-3 lg:grid-cols-4 md:px-12 px-5 ">
+        {/* <div className="py-20 grid grid-cols-1 gap-5 md:grid-cols-3 lg:grid-cols-4 md:px-12 px-5 ">
           <button
             className="text-lg border-blue-400 md:text-xl font-bold cursor-pointer rounded-[35px] border-4 hover:border-blue-600 active:bg-sky-900 focus:outline-none focus:ring focus:ring-blue-600 py-3 min-w-min text-white"
             onClick={() => filterHandler("all")}
@@ -268,10 +268,10 @@ const PortFolioSection: FC<PortFolioSectionProps> = () => {
           >
             3D Model Website
           </button>
-        </div>
+        </div> */}
 
         {/* WordPress Sub-Category Buttons */}
-        {showWordPressSub && (
+        {/* {showWordPressSub && (
           <div className="flex justify-center items-center mb-10 gap-4">
             <button
               className="text-md border-blue-400 md:text-md font-bold cursor-pointer rounded-[35px] border-4 hover:border-blue-600 py-3 px-5 min-w-min text-white active:bg-sky-900 focus:outline-none focus:ring focus:ring-blue-600"
@@ -292,10 +292,10 @@ const PortFolioSection: FC<PortFolioSectionProps> = () => {
               Others
             </button>
           </div>
-        )}
+        )} */}
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-10">
           {data.map((product) => (
             <div key={product.id} className="relative group">
               {/* CARD IMAGE */}

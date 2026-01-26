@@ -65,43 +65,93 @@
 // // return NextResponse.json({ message: "hello" });
 
 
+// import { NextResponse } from "next/server";
+// import nodemailer from "nodemailer";
+
+// const transporter = nodemailer.createTransport({
+//     service: "Gmail", 
+//     secure: true,
+//     port: 465,
+//     auth: {
+//         user: "ali4282271@gmail.com",
+//         pass: "ztwd zzbv qeqr skvn",
+//     }
+// });
+// export const POST = async (req: Request, res: Response) => {
+//     const { name, email, phoneNo, message } = await req.json();
+//     try {
+//         const mailOptions = {
+//             from: email,
+//             to: "ashrafalikakozai9876@gmail.com",
+//             subject: name,
+//             text: "this is some text",
+//             html: `<h1>Hello ashraf</h1><p>my name is ${name} from karachi so i will meet with you tomorrow</p><p>~${message}</p><p>~${phoneNo}</p>`,
+//         };
+//             transporter.sendMail(mailOptions, (err, info) => {
+//                 if (err) {
+//                     console.error(err);
+//                 } else {
+//                     // console.log(info)
+//                 }
+//             });
+//         return NextResponse.json(
+//             { message: "Message send Sucessfully" },
+//             { status: 201 }
+//         );
+//     } catch (error) {
+//         return NextResponse.json(
+//             { message: "Message send to Faild" },
+//             { status: 400 }
+//         );
+//     }
+// };
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-    service: "Gmail", 
-    secure: true,
-    port: 465,
-    auth: {
-        user: "ali4282271@gmail.com",
-        pass: "ztwd zzbv qeqr skvn",
-    }
+  service: "gmail",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "hashfor38@gmail.com",
+    pass: "taxy zjuv jasa pmru",
+  },
 });
-export const POST = async (req: Request, res: Response) => {
-    const { name, email, phoneNo, message } = await req.json();
-    try {
-        const mailOptions = {
-            from: email,
-            to: "ashrafalikakozai9876@gmail.com",
-            subject: name,
-            text: "this is some text",
-            html: `<h1>Hello ashraf</h1><p>my name is ${name} from karachi so i will meet with you tomorrow</p><p>~${message}</p><p>~${phoneNo}</p>`,
-        };
-            transporter.sendMail(mailOptions, (err, info) => {
-                if (err) {
-                    console.error(err);
-                } else {
-                    // console.log(info)
-                }
-            });
-        return NextResponse.json(
-            { message: "Message send Sucessfully" },
-            { status: 201 }
-        );
-    } catch (error) {
-        return NextResponse.json(
-            { message: "Message send to Faild" },
-            { status: 400 }
-        );
+
+export async function POST(req: Request) {
+  try {
+    const { name, email, phoneNo, subject, message } = await req.json();
+        console.log(name, email, phoneNo, subject, message);
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { message: "Missing required fields" },
+        { status: 400 }
+      );
     }
-};
+
+    await transporter.sendMail({
+      from: `"Website Contact" <${process.env.EMAIL_USER}>`,
+      to: "ashrafalikakozai9876@gmail.com",
+      subject: subject || "New Contact Form Message",
+      html: `
+        <h2>New Contact Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phoneNo}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
+    });
+
+    return NextResponse.json(
+      { message: "Message sent successfully" },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Email Error:", error);
+    return NextResponse.json(
+      { message: "Failed to send message" },
+      { status: 500 }
+    );
+  }
+}
