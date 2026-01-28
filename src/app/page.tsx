@@ -49,6 +49,8 @@ import SevicesOffer from "@/components/home/servicesOffer";
 import Navbar from "@/components/navbar";
 import TrustSignalsSection from "@/components/home/trustsignal";
 import EnterprisePainPointsSection from "@/components/home/enterprise";
+import WhyBawdicSoftSection from "@/components/home/whybawdicsoft";
+import CaseStudiesSection from "@/components/home/casestudies";
 
 export default function Home() {
   return (
@@ -56,6 +58,8 @@ export default function Home() {
   <HeroSection />
   <TrustSignalsSection />
   <EnterprisePainPointsSection />
+  <WhyBawdicSoftSection />
+  <CaseStudiesSection />
   <OfferSection />
   <Expertise />
   <SevicesOffer />
