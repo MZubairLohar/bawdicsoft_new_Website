@@ -47,11 +47,15 @@ import HeroSection from "@/components/home/heoSection";
 import OfferSection from "@/components/home/offer";
 import SevicesOffer from "@/components/home/servicesOffer";
 import Navbar from "@/components/navbar";
+import TrustSignalsSection from "@/components/home/trustsignal";
+import EnterprisePainPointsSection from "@/components/home/enterprise";
 
 export default function Home() {
   return (
     <>
   <HeroSection />
+  <TrustSignalsSection />
+  <EnterprisePainPointsSection />
   <OfferSection />
   <Expertise />
   <SevicesOffer />
