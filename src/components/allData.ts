@@ -132,7 +132,7 @@ export const allData: Product[] = [
     category: "NextJS",
     subCategory: "NextJS-Coin",
     projectName: "AGUA COIN",
-    projectImage: "/assets/aguaCoin.png",
+    projectImage: "/assets/aguacoin.png",
     alternate:
       "AGUA is a DAO token and platform offering stablecoins SAG and SAU.",
     href: "https://www.aguacoins.com/",
