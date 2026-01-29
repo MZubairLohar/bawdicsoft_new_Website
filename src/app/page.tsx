@@ -1,6 +1,4 @@
 // ✅ SEO Metadata
-// ✅ SEO Metadata
-// ✅ SEO Metadata
 export const metadata = {
   title: "BawdicSoft: Leading Blockchain & Web3 Development Solutions",
   description: "Unlock your business potential with BawdicSoft's innovative blockchain and web3 application development solutions. Elevate your online presence today!",
@@ -51,6 +49,8 @@ import TrustSignalsSection from "@/components/home/trustsignal";
 import EnterprisePainPointsSection from "@/components/home/enterprise";
 import WhyBawdicSoftSection from "@/components/home/whybawdicsoft";
 import CaseStudiesSection from "@/components/home/casestudies";
+import HowWeWorkSection from "@/components/home/howwework";
+import SecurityComplianceSection from "@/components/home/security";
 
 export default function Home() {
   return (
@@ -60,6 +60,8 @@ export default function Home() {
   <EnterprisePainPointsSection />
   <WhyBawdicSoftSection />
   <CaseStudiesSection />
+  <HowWeWorkSection />
+  <SecurityComplianceSection />
   <OfferSection />
   <Expertise />
   <SevicesOffer />
