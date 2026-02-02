@@ -1,15 +1,7 @@
 "use client";
 import React, { FC } from "react";
-import heroSecImg from "../../../public/images/final-head.webp";
-import { StaticImageData } from "next/image";
 
 interface HeroSectionProps {}
-
-type HeroImg = {
-  img: StaticImageData;
-};
-
-const data: HeroImg = { img: heroSecImg };
 
 const HeroSection: FC<HeroSectionProps> = () => {
   const handlePrimaryCTA = (
@@ -27,14 +19,24 @@ const HeroSection: FC<HeroSectionProps> = () => {
   };
 
   return (
-    <section
-      className="bg-center bg-cover bg-no-repeat bg-gray-400 bg-blend-multiply"
-      style={{
-        backgroundImage: `url(${data.img.src})`,
-        minHeight: "calc(100vh - 48px)",
-      }}
-    >
-      <div className="px-4 mx-auto max-w-5xl text-center pt-32 md:pt-44 lg:pt-20">
+    <section className="relative min-h-[calc(100vh-48px)] flex items-center justify-center overflow-hidden">
+      
+      {/* 🎥 Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full opacity-90 object-cover"
+      >
+        <source src="/assets/bawdicsoft-bg-video.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/60"></div>
+
+      {/* Content */}
+      <div className="relative z-10 px-4 mx-auto max-w-5xl text-center pt-32 md:pt-44 lg:pt-20">
         <h1 className="mb-6 text-3xl font-extrabold tracking-tight leading-tight text-white md:text-4xl lg:text-5xl xl:text-5xl px-2 md:px-4">
           Enterprise-Ready Software Delivery That Scales With Your Business
         </h1>

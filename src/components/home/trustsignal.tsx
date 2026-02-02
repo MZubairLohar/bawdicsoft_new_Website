@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import Image from "next/image";
 
 interface TrustSignalItem {
   title: string;
@@ -9,14 +8,34 @@ interface TrustSignalItem {
 
 const TrustSignalsSection: FC = () => {
   // Client logos - replace these with actual client logos
-  const clientLogos = [
-    { name: "Client 1", src: "/images/martin-new-pic.jpg" },
-    { name: "Client 2", src: "/images/clients/client2.svg" },
-    { name: "Client 3", src: "/images/clients/client3.svg" },
-    { name: "Client 4", src: "/images/clients/client4.svg" },
-    { name: "Client 5", src: "/images/clients/client5.svg" },
-    { name: "Client 6", src: "/images/clients/client6.svg" },
-  ];
+const clients = [
+  {
+    name: "Martin Bobarak - USA",
+    detail: "Built a scalable fintech web platform with secure backend architecture.",
+  },
+  {
+    name: "Sophie Williams - UK",
+    detail: "Developed high-conversion eCommerce store with custom integrations.",
+  },
+  {
+    name: "Lukas Schneider - Germany",
+    detail: "Created smart contracts, DApp, and complete Web3 ecosystem.",
+  },
+  {
+    name: "Daniel Cooper - Canada",
+    detail: "Designed SaaS dashboard, APIs, and cloud deployment workflow.",
+  },
+  {
+    name: "Ayesha Khan - UAE",
+    detail: "Built secure healthcare portal with data management system.",
+  },
+  {
+    name: "Ryan Mitchell - Australia",
+    detail: "Developed interactive EdTech platform with admin panel.",
+  },
+];
+
+
 
   // Trust indicators
   const trustIndicators: TrustSignalItem[] = [
@@ -72,30 +91,43 @@ const TrustSignalsSection: FC = () => {
         </div>
 
         {/* Client Logos Grid */}
-        <div className="mb-16 md:mb-20">
+        {/* <div className="mb-16 md:mb-20">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-12 items-center justify-items-center">
             {clientLogos.map((client, index) => (
               <div
                 key={index}
                 className="relative w-full h-16 md:h-20 flex items-center justify-center group"
               >
-                {/* Placeholder - Replace with actual logo */}
+               
                 <div className="w-32 h-16 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg flex items-center justify-center text-gray-400 font-semibold text-sm">
                   {client.name}
                 </div>
-                {/* For actual logos, use:
-                <Image
-                  src={client.src}
-                  alt={client.name}
-                  width={160}
-                  height={80}
-                  className="object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
-                />
-                */}
               </div>
             ))}
           </div>
+        </div> */}
+
+        {/* Client Proof Pills */}
+<div className="mb-16 md:mb-20">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {clients.map((client, index) => (
+      <div
+        key={index}
+        className="bg-white border border-gray-200 rounded-full px-6 py-4 shadow-sm hover:shadow-md transition-all duration-300"
+      >
+        <div className="text-center">
+          <p className="text-lg font-semibold text-gray-900">
+            {client.name}
+          </p>
+          <p className="text-sm text-gray-600 mt-1">
+            {client.detail}
+          </p>
         </div>
+      </div>
+    ))}
+  </div>
+</div>
+
 
         {/* Trust Indicators Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">

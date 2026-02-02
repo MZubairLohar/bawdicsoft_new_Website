@@ -39,10 +39,10 @@ export const metadata = {
 
 
 import Footer from "@/components/footer";
-import Expertise from "@/components/home/expertise";
-import OurTeam from "@/components/home/team";
+// import Expertise from "@/components/home/expertiseweb";
+// import OurTeam from "@/components/home/team";
 import HeroSection from "@/components/home/heoSection";
-import OfferSection from "@/components/home/offer";
+// import OfferSection from "@/components/home/offer";
 import SevicesOffer from "@/components/home/servicesOffer";
 import Navbar from "@/components/navbar";
 import TrustSignalsSection from "@/components/home/trustsignal";
@@ -62,10 +62,10 @@ export default function Home() {
   <CaseStudiesSection />
   <HowWeWorkSection />
   <SecurityComplianceSection />
-  <OfferSection />
-  <Expertise />
-  <SevicesOffer />
-  <OurTeam />
+  {/* <OfferSection />
+  <Expertise /> */}
+  {/* <SevicesOffer /> */}
+  {/* <OurTeam /> */}
     </>
   )
 }

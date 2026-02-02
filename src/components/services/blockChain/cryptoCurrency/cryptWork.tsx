@@ -4,7 +4,7 @@ import cryptoimg from "../../../../../public/images/blockChain/cryptoCurrency/cr
 interface cryptoWork {}
 const CryptoWorkSection: FC<cryptoWork> = () => {
   return (
-    <div className="pb-16">
+    <div className="pb-16 mt-10">
       <div className="flex flex-col justify-center items-center gap-8">
         <p className="text-2xl md:text-3xl  lg:text-4xl font-bold text-center ">
           {" "}

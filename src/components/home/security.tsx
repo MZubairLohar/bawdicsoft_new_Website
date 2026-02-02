@@ -268,7 +268,7 @@ const SecurityComplianceSection: FC = () => {
         </div>
 
         {/* Security Certificates & Badges */}
-        <div className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl p-8 md:p-12 border border-gray-700 mb-16">
+        {/* <div className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl p-8 md:p-12 border border-gray-700 mb-16">
           <div className="text-center mb-10">
             <h3 className="text-2xl font-bold text-white mb-4">Our Security Credentials</h3>
             <p className="text-gray-300 max-w-2xl mx-auto">
@@ -291,10 +291,10 @@ const SecurityComplianceSection: FC = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Bottom CTA */}
-        <div className="text-center">
+        {/* <div className="text-center">
           <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">
             Need Detailed Security Documentation?
           </h3>
@@ -315,7 +315,7 @@ const SecurityComplianceSection: FC = () => {
               Request Security Briefing
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

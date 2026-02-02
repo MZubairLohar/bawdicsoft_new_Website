@@ -8,6 +8,7 @@ import TokenOfferSection from "@/components/services/blockChain/tokenDevelop/tok
 import TrustSection from "@/components/services/blockChain/tokenDevelop/trust";
 import WeOfferSection from "@/components/services/blockChain/tokenDevelop/weOffer";
 import ChooseSection from "@/components/services/blockChain/tokenDevelop/whyChooseUs";
+import Expertise from "@/components/home/expertiseblockchain";
 import { FC } from "react"
 interface TokenDevelopmentProps {}
 
@@ -21,6 +22,7 @@ return (<div>
 <OurFrameWorkSection />
 <TokenOfferSection />
 <FamousBlockChainSection />
+<Expertise />
 <ChooseSection />
 </div>)
 }

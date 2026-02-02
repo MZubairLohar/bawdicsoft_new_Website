@@ -6,6 +6,7 @@ import CryptoWorkSection from "@/components/services/blockChain/cryptoCurrency/c
 import HeroSection from "@/components/services/blockChain/cryptoCurrency/heroSections";
 import OurFrameWork from "@/components/services/blockChain/cryptoCurrency/ourFrameWorks";
 import TalkUsSection from "@/components/services/blockChain/cryptoCurrency/talkUs";
+import Expertise from "@/components/home/expertiseblockchain";
 import { FC } from "react"
 interface DeFiProps {}
 
@@ -13,6 +14,7 @@ const CryptoCurrency :FC<DeFiProps> = () => {
 return (<div>
 <HeroSection />
 <CentralizedSection />
+<Expertise />
 <CryptoWorkSection />
 <TalkUsSection />
 <CharacteristicSection />

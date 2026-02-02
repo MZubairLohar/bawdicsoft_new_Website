@@ -152,14 +152,14 @@ const HowWeWorkSection: FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16 md:mb-20">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-purple-50 to-indigo-50 mb-6">
-            <span className="text-sm font-semibold text-purple-600 uppercase tracking-wider">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-cyan-50 mb-6">
+            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
               Our Process
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
             How We Deliver{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">
               Enterprise Excellence
             </span>
           </h2>
@@ -171,7 +171,7 @@ const HowWeWorkSection: FC = () => {
         {/* Process Steps Navigation */}
         <div className="relative mb-12">
           {/* Connection Line */}
-          <div className="hidden md:block absolute top-10 left-0 right-0 h-1 bg-gradient-to-r from-purple-200 via-indigo-200 to-purple-200 z-0"></div>
+          <div className="hidden md:block absolute top-10 left-0 right-0 h-1 bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 z-0"></div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
             {workSteps.map((step) => (
@@ -179,26 +179,26 @@ const HowWeWorkSection: FC = () => {
                 key={step.id}
                 onClick={() => setActiveStep(step.id)}
                 className={`flex flex-col items-center text-center p-4 md:p-6 rounded-2xl transition-all duration-300 ${activeStep === step.id
-                    ? 'bg-white shadow-2xl border-2 border-purple-500 transform scale-105'
-                    : 'bg-white shadow-sm border border-gray-200 hover:shadow-lg hover:border-purple-300'
+                    ? 'bg-white shadow-2xl border-2 border-blue-500 transform scale-105'
+                    : 'bg-white shadow-sm border border-gray-200 hover:shadow-lg hover:border-blue-300'
                   }`}
               >
                 {/* Step Number */}
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${activeStep === step.id
-                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white'
-                    : 'bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-600'
+                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white'
+                    : 'bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-600'
                   }`}>
                   <span className="text-lg font-bold">{step.id}</span>
                 </div>
                 
                 {/* Step Title */}
-                <h3 className={`font-bold mb-2 ${activeStep === step.id ? 'text-purple-700' : 'text-gray-900'}`}>
+                <h3 className={`font-bold mb-2 ${activeStep === step.id ? 'text-blue-700' : 'text-gray-900'}`}>
                   {step.title}
                 </h3>
                 
                 {/* Duration */}
                 <span className={`text-sm px-3 py-1 rounded-full ${activeStep === step.id
-                    ? 'bg-purple-100 text-purple-700'
+                    ? 'bg-blue-100 text-blue-700'
                     : 'bg-gray-100 text-gray-600'
                   }`}>
                   {step.duration}
@@ -222,7 +222,7 @@ const HowWeWorkSection: FC = () => {
                   Duration: {activeStepData.duration}
                 </div>
               </div>
-              <div className="text-purple-600">
+              <div className="text-blue-600">
                 {activeStepData.icon}
               </div>
             </div>
@@ -234,13 +234,13 @@ const HowWeWorkSection: FC = () => {
             {/* Key Activities */}
             <div className="mb-8">
               <h4 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <div className="w-2 h-2 rounded-full bg-purple-500 mr-3"></div>
+                <div className="w-2 h-2 rounded-full bg-blue-500 mr-3"></div>
                 Key Activities
               </h4>
               <div className="space-y-3">
                 {activeStepData.keyActivities.map((activity, index) => (
                   <div key={index} className="flex items-center">
-                    <svg className="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-blue-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                     <span className="text-gray-700">{activity}</span>
@@ -252,14 +252,14 @@ const HowWeWorkSection: FC = () => {
             {/* Deliverables */}
             <div>
               <h4 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <div className="w-2 h-2 rounded-full bg-indigo-500 mr-3"></div>
+                <div className="w-2 h-2 rounded-full bg-cyan-500 mr-3"></div>
                 Key Deliverables
               </h4>
               <div className="grid sm:grid-cols-2 gap-3">
                 {activeStepData.deliverables.map((deliverable, index) => (
-                  <div key={index} className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4">
+                  <div key={index} className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-4">
                     <div className="flex items-center">
-                      <div className="w-2 h-2 rounded-full bg-indigo-500 mr-3"></div>
+                      <div className="w-2 h-2 rounded-full bg-cyan-500 mr-3"></div>
                       <span className="text-gray-700">{deliverable}</span>
                     </div>
                   </div>
@@ -270,7 +270,7 @@ const HowWeWorkSection: FC = () => {
 
           {/* Right Column: Process Benefits */}
           <div>
-            <div className="bg-gradient-to-br from-purple-900 to-indigo-900 rounded-2xl p-8 mb-8">
+            <div className="bg-gradient-to-br from-blue-900 to-cyan-900 rounded-2xl p-8 mb-8">
               <h3 className="text-2xl font-bold text-white mb-6">What's Included in Every Engagement</h3>
               <div className="space-y-6">
                 {processBenefits.map((benefit, index) => (
@@ -281,7 +281,7 @@ const HowWeWorkSection: FC = () => {
                       </div>
                       <div>
                         <h4 className="text-lg font-bold text-white mb-2">{benefit.title}</h4>
-                        <p className="text-purple-100">{benefit.description}</p>
+                        <p className="text-blue-100">{benefit.description}</p>
                       </div>
                     </div>
                   </div>
@@ -296,28 +296,28 @@ const HowWeWorkSection: FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-gray-700 font-medium">Response Time SLA</span>
-                    <span className="text-purple-600 font-bold">≤ 2 hours</span>
+                    <span className="text-blue-600 font-bold">≤ 2 hours</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full w-11/12"></div>
+                    <div className="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 rounded-full w-11/12"></div>
                   </div>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-gray-700 font-medium">System Uptime</span>
-                    <span className="text-purple-600 font-bold">99.95%</span>
+                    <span className="text-blue-600 font-bold">99.95%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full w-full"></div>
+                    <div className="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 rounded-full w-full"></div>
                   </div>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-gray-700 font-medium">Weekly Report Delivery</span>
-                    <span className="text-purple-600 font-bold">Every Monday</span>
+                    <span className="text-blue-600 font-bold">Every Monday</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full w-10/12"></div>
+                    <div className="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 rounded-full w-10/12"></div>
                   </div>
                 </div>
               </div>
@@ -326,18 +326,18 @@ const HowWeWorkSection: FC = () => {
         </div>
 
         {/* Process Timeline Visualization */}
-        <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-8 mb-16">
+        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-16">
           <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Our 4-Phase Delivery Model</h3>
           <div className="relative">
             {/* Timeline Line */}
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-purple-300 to-indigo-300 transform -translate-y-1/2"></div>
+            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-300 to-cyan-300 transform -translate-y-1/2"></div>
             
             <div className="grid md:grid-cols-4 gap-8 relative">
               {workSteps.map((step) => (
                 <div key={step.id} className="text-center">
                   <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${activeStep === step.id
-                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-xl'
-                      : 'bg-white text-purple-600 shadow-lg'
+                      ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-xl'
+                      : 'bg-white text-blue-600 shadow-lg'
                     }`}>
                     <span className="text-xl font-bold">{step.id}</span>
                   </div>
@@ -358,13 +358,13 @@ const HowWeWorkSection: FC = () => {
             Let's discuss how our structured process can help you achieve your technology goals with confidence.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold rounded-xl hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/50">
+            <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-xl hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/50">
               <svg className="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               Schedule Discovery Session
             </button>
-            <button className="px-8 py-4 bg-white text-gray-900 font-semibold border-2 border-gray-300 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-500/50">
+            <button className="px-8 py-4 bg-white text-gray-900 font-semibold border-2 border-gray-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-500/50">
               <svg className="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
               </svg>

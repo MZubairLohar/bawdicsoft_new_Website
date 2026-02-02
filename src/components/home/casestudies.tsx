@@ -1,6 +1,5 @@
 "use client";
 import React, { FC, useState } from "react";
-import Image from "next/image";
 
 interface CaseStudy {
   id: number;
@@ -28,73 +27,97 @@ const CaseStudiesSection: FC = () => {
   const caseStudies: CaseStudy[] = [
     {
       id: 1,
-      industry: "Financial Technology",
-      title: "Modernizing Legacy Banking Infrastructure",
-      challenge: "A leading European bank struggled with 20-year-old monolithic systems that couldn't scale, were costly to maintain, and couldn't support modern digital banking features, resulting in poor customer experience and high operational costs.",
-      solution: "We architected and implemented a microservices-based platform with containerized deployment, real-time transaction processing, and enhanced security protocols. Migrated critical services to cloud-native architecture with zero downtime.",
+      industry: "SaaS",
+      title: "Scaling a SaaS Platform with a Dedicated Engineering Team",
+      challenge: "The client was experiencing rapid customer growth but faced: Engineering capacity bottlenecks, delayed feature releases, increasing pressure on the in-house team, and difficulty hiring senior engineers quickly. They needed to scale delivery fast without compromising code quality or security.",
+      solution: "BawdicSoft deployed a dedicated senior engineering team that integrated directly with the client's internal processes. What we delivered: Senior full-stack engineers aligned with the client's tech stack, agile delivery with sprint planning and weekly reporting, code reviews and QA aligned with enterprise standards, and close collaboration with the client's product and engineering leads.",
       results: [
-        "Enabled launch of new digital banking platform 6 months ahead of schedule",
-        "Successfully processed 100K+ concurrent transactions during peak loads",
-        "Achieved full regulatory compliance across EU and UK markets",
-        "Trained and transitioned knowledge to internal teams within 3 months"
+        "Feature release velocity increased by 2×",
+        "Reduced development backlog by 40%",
+        "Enabled the internal team to focus on core architecture and roadmap",
+        "Lowered overall development cost compared to local hiring"
       ],
       metrics: [
-        { value: "60%", label: "Reduction in operational costs", change: "positive" },
-        { value: "99.99%", label: "System uptime", change: "positive" },
-        { value: "2.5s", label: "Average transaction time", change: "positive" },
-        { value: "3M+", label: "Active users migrated", change: "positive" }
+        { value: "2×", label: "Feature release velocity increase", change: "positive" },
+        { value: "40%", label: "Reduction in development backlog", change: "positive" },
+        { value: "100%", label: "Enterprise standards alignment", change: "positive" },
+        { value: "200+", label: "Company size supported", change: "positive" }
       ],
       client: {
-        name: "Global European Bank",
-        description: "A multinational banking institution serving 15+ countries",
+        name: "Confidential B2B SaaS Company",
+        description: "US-based SaaS company with ~200 employees",
         anonymous: true
       }
     },
     {
       id: 2,
-      industry: "Healthcare Technology",
-      title: "AI-Powered Patient Management System",
-      challenge: "A healthcare provider network needed to consolidate 8 disparate patient management systems into a unified platform while ensuring HIPAA compliance, real-time data synchronization, and integration with existing medical devices.",
-      solution: "Developed an enterprise-grade healthcare platform with AI-driven patient insights, secure cloud infrastructure, and API-first architecture. Implemented advanced data anonymization and end-to-end encryption for sensitive health records.",
+      industry: "FinTech",
+      title: "Modernizing a Legacy Platform for a FinTech Company",
+      challenge: "The client's legacy platform struggled with: Poor scalability during peak usage, slow transaction processing, increasing maintenance costs, and security and compliance concerns. They needed a modern, secure, and scalable architecture without disrupting live operations.",
+      solution: "BawdicSoft led a platform modernization initiative, focusing on performance, security, and future scalability. Key actions: Conducted full architecture and risk assessment, refactored legacy components into modular services, implemented performance optimization and security best practices, and introduced automated testing and CI/CD pipelines.",
       results: [
-        "Unified patient data from 8 systems into single source of truth",
-        "Reduced patient data entry errors by 92% through automation",
-        "Achieved HIPAA, GDPR, and HITRUST certifications",
-        "Enabled predictive analytics for patient risk assessment"
+        "Improved system performance by 45%",
+        "Reduced production incidents significantly",
+        "Strengthened security posture for sensitive financial data",
+        "The platform is ready to support future growth and integrations"
       ],
       metrics: [
-        { value: "40%", label: "Faster patient processing", change: "positive" },
-        { value: "99.95%", label: "Data accuracy rate", change: "positive" },
-        { value: "75%", label: "Reduction in manual work", change: "positive" },
-        { value: "1M+", label: "Patient records secured", change: "positive" }
+        { value: "45%", label: "System performance improvement", change: "positive" },
+        { value: "99.9%", label: "Security compliance", change: "positive" },
+        { value: "70%", label: "Reduction in production incidents", change: "positive" },
+        { value: "24/7", label: "Live operations maintained", change: "positive" }
       ],
       client: {
-        name: "Regional Healthcare Network",
-        description: "Network of 50+ hospitals and clinics across 3 states",
+        name: "Confidential Financial Technology Provider",
+        description: "Financial Technology Provider in Middle East region",
         anonymous: true
       }
     },
     {
       id: 3,
-      industry: "Retail & E-commerce",
-      title: "Scalable E-commerce Platform Migration",
-      challenge: "A major retail chain's legacy e-commerce platform couldn't handle holiday season traffic spikes, causing 30% cart abandonment rates and significant revenue loss during peak shopping periods.",
-      solution: "Built a cloud-native, auto-scaling e-commerce platform with edge computing for global performance. Implemented real-time inventory management, AI-powered recommendations, and seamless payment processing across 20+ countries.",
+      industry: "SaaS / Operations",
+      title: "AI Automation to Reduce Operational Costs",
+      challenge: "The client relied heavily on manual processes for: Data processing, internal reporting, and customer operations. These workflows were time-consuming, error-prone, and expensive.",
+      solution: "BawdicSoft designed and implemented AI-driven automation workflows tailored to the client's operations. Scope included: Automated data classification and processing, intelligent workflow automation, system integration with existing tools, and monitoring and performance optimization.",
       results: [
-        "Handled 500K concurrent users during Black Friday without downtime",
-        "Reduced page load times from 8s to 0.8s globally",
-        "Integrated with 15+ payment gateways and local tax systems",
-        "Enabled real-time inventory across 500+ physical stores"
+        "Reduced operational costs by 30%+",
+        "Cut manual processing time by over 50%",
+        "Improved accuracy and reporting consistency",
+        "Freed internal teams to focus on higher-value work"
       ],
       metrics: [
-        { value: "200%", label: "Increase in peak traffic capacity", change: "positive" },
-        { value: "85%", label: "Reduction in cart abandonment", change: "positive" },
-        { value: "45%", label: "Increase in conversion rate", change: "positive" },
-        { value: "$50M+", label: "Additional revenue", change: "positive" }
+        { value: "30%+", label: "Reduction in operational costs", change: "positive" },
+        { value: "50%+", label: "Manual processing time reduction", change: "positive" },
+        { value: "99.5%", label: "Processing accuracy rate", change: "positive" },
+        { value: "150+", label: "Employees supported", change: "positive" }
       ],
       client: {
-        name: "Global Retail Chain",
-        description: "Fortune 500 retailer with 500+ stores worldwide",
+        name: "Confidential Operations Platform",
+        description: "Operations platform with ~150 employees",
+        anonymous: true
+      }
+    },
+    {
+      id: 4,
+      industry: "FinTech / Digital Assets",
+      title: "Secure Blockchain Infrastructure for a Digital Asset Platform",
+      challenge: "The client required a secure, scalable blockchain infrastructure to support digital asset transactions while ensuring: High system integrity, smart contract security, long-term maintainability, and regulatory awareness.",
+      solution: "BawdicSoft delivered an enterprise-grade distributed system, emphasizing security and reliability. What we built: Secure smart contracts with audit-ready architecture, backend systems integrated with blockchain infrastructure, monitoring, logging, and failure handling mechanisms, and clear documentation for long-term maintenance.",
+      results: [
+        "Secure and reliable transaction processing",
+        "Platform scaled smoothly as usage increased",
+        "Reduced operational risk through robust system design",
+        "Enabled the client to move confidently toward commercialization"
+      ],
+      metrics: [
+        { value: "100%", label: "Secure transaction processing", change: "positive" },
+        { value: "99.99%", label: "System reliability", change: "positive" },
+        { value: "Zero", label: "Critical security incidents", change: "positive" },
+        { value: "24/7", label: "Monitoring & logging", change: "positive" }
+      ],
+      client: {
+        name: "Stealth Web3 Infrastructure Company",
+        description: "Web3 Infrastructure Company in Europe region",
         anonymous: true
       }
     }
@@ -107,14 +130,14 @@ const CaseStudiesSection: FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16 md:mb-20">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-emerald-50 to-green-50 mb-6">
-            <span className="text-sm font-semibold text-emerald-600 uppercase tracking-wider">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-cyan-50 mb-6">
+            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">
               Case Studies
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
             Enterprise Success{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-green-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
               Stories
             </span>
           </h2>
@@ -135,13 +158,13 @@ const CaseStudiesSection: FC = () => {
                     key={caseStudy.id}
                     onClick={() => setSelectedCase(caseStudy.id)}
                     className={`w-full text-left p-6 rounded-2xl border transition-all duration-300 ${selectedCase === caseStudy.id
-                        ? 'border-emerald-500 bg-gradient-to-r from-emerald-50 to-white shadow-lg'
-                        : 'border-gray-200 bg-white hover:border-emerald-200 hover:shadow-md'
+                        ? 'border-blue-500 bg-gradient-to-r from-blue-50 to-white shadow-lg'
+                        : 'border-gray-200 bg-white hover:border-blue-200 hover:shadow-md'
                       }`}
                   >
                     <div className="flex items-start justify-between mb-3">
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${selectedCase === caseStudy.id
-                          ? 'bg-emerald-100 text-emerald-800'
+                          ? 'bg-blue-100 text-blue-800'
                           : 'bg-gray-100 text-gray-600'
                         }`}>
                         {caseStudy.industry}
@@ -156,7 +179,7 @@ const CaseStudiesSection: FC = () => {
                     <p className="text-sm text-gray-500 mb-4 line-clamp-2">{caseStudy.challenge.substring(0, 100)}...</p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-emerald-500 to-green-400 flex items-center justify-center text-white text-sm font-bold mr-3">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 flex items-center justify-center text-white text-sm font-bold mr-3">
                           {caseStudy.client.name.charAt(0)}
                         </div>
                         <div>
@@ -165,7 +188,7 @@ const CaseStudiesSection: FC = () => {
                         </div>
                       </div>
                       {selectedCase === caseStudy.id && (
-                        <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
                         </svg>
                       )}
@@ -180,7 +203,7 @@ const CaseStudiesSection: FC = () => {
           <div className="lg:w-3/5">
             <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
               {/* Case Study Header */}
-              <div className="p-8 md:p-10 bg-gradient-to-r from-emerald-500 to-green-500">
+              <div className="p-8 md:p-10 bg-gradient-to-r from-blue-500 to-cyan-500">
                 <div className="flex flex-wrap items-center justify-between mb-6">
                   <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium">
                     {selectedCaseStudy.industry}
@@ -200,7 +223,7 @@ const CaseStudiesSection: FC = () => {
                   </div>
                   <div>
                     <div className="text-white font-semibold">{selectedCaseStudy.client.name}</div>
-                    <div className="text-emerald-100 text-sm">{selectedCaseStudy.client.description}</div>
+                    <div className="text-blue-100 text-sm">{selectedCaseStudy.client.description}</div>
                   </div>
                 </div>
               </div>
@@ -211,7 +234,7 @@ const CaseStudiesSection: FC = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
                   {selectedCaseStudy.metrics.map((metric, index) => (
                     <div key={index} className="bg-gray-50 rounded-xl p-5 text-center">
-                      <div className={`text-2xl md:text-3xl font-bold mb-2 ${metric.change === 'positive' ? 'text-emerald-600' : 'text-gray-900'}`}>
+                      <div className={`text-2xl md:text-3xl font-bold mb-2 ${metric.change === 'positive' ? 'text-blue-600' : 'text-gray-900'}`}>
                         {metric.value}
                       </div>
                       <div className="text-sm text-gray-600">{metric.label}</div>
@@ -240,13 +263,13 @@ const CaseStudiesSection: FC = () => {
                 {/* Results */}
                 <div className="mb-10">
                   <div className="flex items-center mb-6">
-                    <div className="w-3 h-3 rounded-full bg-emerald-500 mr-3"></div>
+                    <div className="w-3 h-3 rounded-full bg-blue-500 mr-3"></div>
                     <h4 className="text-lg font-bold text-gray-900">Key Results</h4>
                   </div>
                   <ul className="space-y-4">
                     {selectedCaseStudy.results.map((result, index) => (
                       <li key={index} className="flex items-start">
-                        <svg className="w-6 h-6 text-emerald-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-6 h-6 text-blue-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                         </svg>
                         <span className="text-gray-700">{result}</span>
@@ -256,34 +279,43 @@ const CaseStudiesSection: FC = () => {
                 </div>
 
                 {/* Technologies Used (Optional) */}
-                <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-2xl p-8">
+                <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8">
                   <h4 className="text-lg font-bold text-gray-900 mb-6">Technologies & Methodologies</h4>
                   <div className="flex flex-wrap gap-3">
-                    {selectedCaseStudy.industry === "Financial Technology" && (
+                    {selectedCaseStudy.industry === "SaaS" && (
                       <>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Microservices</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Kubernetes</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">AWS</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">React/Node.js</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">DevSecOps</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Agile Delivery</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Full-Stack Engineering</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Code Reviews</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Enterprise Standards</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Team Integration</span>
                       </>
                     )}
-                    {selectedCaseStudy.industry === "Healthcare Technology" && (
+                    {selectedCaseStudy.industry === "FinTech" && (
                       <>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">HIPAA Compliance</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">AI/ML</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Azure Cloud</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Python/Django</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Data Encryption</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Architecture Assessment</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Performance Optimization</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Security Best Practices</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">CI/CD Pipelines</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Risk Management</span>
                       </>
                     )}
-                    {selectedCaseStudy.industry === "Retail & E-commerce" && (
+                    {selectedCaseStudy.industry === "SaaS / Operations" && (
                       <>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Cloud Scaling</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Edge Computing</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Next.js</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Payment Integration</span>
-                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">CI/CD</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">AI Automation</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Workflow Optimization</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">System Integration</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Performance Monitoring</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">ROI Focus</span>
+                      </>
+                    )}
+                    {selectedCaseStudy.industry === "FinTech / Digital Assets" && (
+                      <>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Blockchain Infrastructure</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Smart Contract Security</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Distributed Systems</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">System Monitoring</span>
+                        <span className="px-4 py-2 bg-white rounded-full text-sm font-medium text-gray-700 shadow-sm">Regulatory Awareness</span>
                       </>
                     )}
                   </div>

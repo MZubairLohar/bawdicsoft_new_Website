@@ -4,6 +4,7 @@ import TokenSection from "@/components/services/blockChain/deFi/ourTokens";
 import DefiTokenStanderSection from "@/components/services/blockChain/deFi/tokenStanderds";
 import WeOfferSection from "@/components/services/blockChain/deFi/weOffer";
 import WhyCoosUS from "@/components/services/blockChain/deFi/whyChosUs";
+import Expertise from "@/components/home/expertiseblockchain";
 import { FC } from "react"
 interface DeFiProps {}
 
@@ -15,6 +16,7 @@ return (<div>
 <WeOfferSection />
 <DefiTokenStanderSection />
 <WhyCoosUS />
+<Expertise />
 </div>)
 }
 export default DeFi;
