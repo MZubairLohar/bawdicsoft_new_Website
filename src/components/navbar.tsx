@@ -136,7 +136,7 @@ const Navbar: FC<NavbarProps> = () => {
   return (
     <header className="bg-white sticky top-0 z-40">
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-3 lg:px-8"
+        className="mx-auto flex max-w-5xl items-center justify-between p-3 lg:px-8"
         aria-label="Global"
       >
         <div className="flex lg:flex-1 gap-3 items-center ">
