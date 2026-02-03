@@ -6,6 +6,7 @@ interface ContactModalProps {
   onClose: () => void;
 }
 
+
 const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
   const [form, setForm] = useState({
     name: "",
