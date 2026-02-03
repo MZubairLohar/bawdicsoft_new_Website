@@ -350,7 +350,7 @@ const HowWeWorkSection: FC = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center">
+        {/* <div className="text-center">
           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
             Ready to Start Your Journey?
           </h3>
@@ -371,7 +371,7 @@ const HowWeWorkSection: FC = () => {
               Download Process Guide (PDF)
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

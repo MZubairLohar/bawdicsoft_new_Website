@@ -10,29 +10,29 @@ const TrustSignalsSection: FC = () => {
   // Client logos - replace these with actual client logos
 const clients = [
   {
-    name: "Martin Bobarak - USA",
-    detail: "Built a scalable fintech web platform with secure backend architecture.",
+    name: "Martin Mobarak",
+    detail: "Agua",
   },
   {
-    name: "Sophie Williams - UK",
-    detail: "Developed high-conversion eCommerce store with custom integrations.",
+    name: "Jaedin Falcone",
+    detail: "AI stock analyst",
   },
   {
-    name: "Lukas Schneider - Germany",
-    detail: "Created smart contracts, DApp, and complete Web3 ecosystem.",
+    name: "Robert Douglas Scott",
+    detail: "Holovax",
   },
   {
-    name: "Daniel Cooper - Canada",
-    detail: "Designed SaaS dashboard, APIs, and cloud deployment workflow.",
+    name: "Vincent Esposito / Nick Zaryaki",
+    detail: "Stock analyst",
   },
   {
-    name: "Ayesha Khan - UAE",
-    detail: "Built secure healthcare portal with data management system.",
+    name: "Elvis de Oleo",
+    detail: "Smart Contract infrastructure",
   },
-  {
-    name: "Ryan Mitchell - Australia",
-    detail: "Developed interactive EdTech platform with admin panel.",
-  },
+  // {
+  //   name: "Ryan Mitchell - Australia",
+  //   detail: "Developed interactive EdTech platform with admin panel.",
+  // },
 ];
 
 

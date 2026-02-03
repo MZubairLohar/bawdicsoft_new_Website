@@ -114,8 +114,7 @@ const EnterprisePainPointsSection: FC = () => {
         )}
 
         {/* Closing Statement */}
-        <div className="relative bg-gradient-to-r from-blue-900/30 to-cyan-900/30 rounded-2xl p-8 md:p-12 border border-gray-700 overflow-hidden">
-          {/* Background Pattern */}
+        {/* <div className="relative bg-gradient-to-r from-blue-900/30 to-cyan-900/30 rounded-2xl p-8 md:p-12 border border-gray-700 overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full -translate-y-32 translate-x-32"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-500 rounded-full translate-y-32 -translate-x-32"></div>
@@ -139,7 +138,6 @@ const EnterprisePainPointsSection: FC = () => {
               We integrate seamlessly with your team, adopting your processes and culture while bringing enterprise-grade development practices and scalable solutions.
             </p>
             
-            {/* CTA Button */}
             <button className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/50 shadow-xl">
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -147,7 +145,7 @@ const EnterprisePainPointsSection: FC = () => {
               Transform Your Engineering Team
             </button>
           </div>
-        </div>
+        </div> */}
 
         {/* Stats Bar (Optional) */}
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">

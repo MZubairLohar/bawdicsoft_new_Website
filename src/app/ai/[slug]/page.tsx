@@ -14,7 +14,6 @@ import GenerationAISectionNaturalLanguage from "@/components/services/artificial
 import HeroSectionNaturalLanguage from "@/components/services/artificialIntiligiance/naturalLanguageProcessing/heroSectionNaturalLanguage";
 import LanguageModelSectionNaturalLanguage from "@/components/services/artificialIntiligiance/naturalLanguageProcessing/languageModelNaturalLanguage";
 import MasterMachineSectionNaturalLanguage from "@/components/services/artificialIntiligiance/naturalLanguageProcessing/msMachineNaturalLanguage";
-import Expertise from "@/components/home/expertiseai";
 
 export default function AI({ params }: { params: { slug: string } }) {
   const param = params.slug;
@@ -27,7 +26,6 @@ export default function AI({ params }: { params: { slug: string } }) {
           <MasterMachineSectionCustomeAI />
           <LanguageModelSectionCustomAi />
           <GenerationAISectionCustomeAi />
-          <Expertise />
         </div>
       )}
       {/* responsive web Design */}
@@ -37,7 +35,6 @@ export default function AI({ params }: { params: { slug: string } }) {
           <MasterMachineSectionMachineLearning />
           <LanguageModelSectionMachineLearning />
           <GenerationAISectionMachineLearning />
-          <Expertise />
         </div>
       )}
       {/* custom web App */}
@@ -47,7 +44,6 @@ export default function AI({ params }: { params: { slug: string } }) {
           <MasterMachineSectionNaturalLanguage />
           <LanguageModelSectionNaturalLanguage />
           <GenerationAISectionNaturalLanguage />
-          <Expertise />
         </div>
       )}
       {/* full-stack-development */}
@@ -57,7 +53,6 @@ export default function AI({ params }: { params: { slug: string } }) {
           <MasterMachineSectionComputerVision />
           <LanguageModelSectionComputerVision />
           <GenerationAISectionComputerVision />
-          <Expertise />
         </div>
       )}
     </div>

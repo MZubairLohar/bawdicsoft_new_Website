@@ -218,7 +218,7 @@ const WhyBawdicSoftSection: FC = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center">
+        {/* <div className="text-center">
           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
             Ready to Experience the Difference?
           </h3>
@@ -239,7 +239,7 @@ const WhyBawdicSoftSection: FC = () => {
               View Client Success Stories
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

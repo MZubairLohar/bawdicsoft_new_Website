@@ -25,7 +25,6 @@ import TechnologySectionFullStack from "@/components/services/webApplication/ful
 import TokenSectionFullStack from "@/components/services/webApplication/fullStackDevelopment/tokenFullStack";
 import WhyUsSectionFullStack from "@/components/services/webApplication/fullStackDevelopment/whyUsFullStack";
 import DesignProcessSection from "@/components/services/webApplication/webDesign/design-process"
-import Expertise from "@/components/home/expertiseweb";
 
 export default function WebApp({ params }: { params: { slug: string } }) {
   const param = params.slug;
@@ -36,7 +35,6 @@ export default function WebApp({ params }: { params: { slug: string } }) {
         <div>
           <HeroSectionWebDesign />
           <DesignProcessSection/>
-          <Expertise />
           <OfferSectionWebDesign />
            <NeedWebDesign />
           <HelpSectionsWebDesign />
@@ -48,7 +46,6 @@ export default function WebApp({ params }: { params: { slug: string } }) {
           <HeroSectionResponsiveWebApp />
           <BenifiteNftSectionResponsiveWebApp />
           <FullStackSectionResponsiveWebApp />
-           <Expertise />
           <OurServicesSectionResponsiveWebApp />
           <PartnerChoiceSectionResponsiveWebApp />
           <TechnologySectionResponsiveWebApp />
@@ -61,7 +58,6 @@ export default function WebApp({ params }: { params: { slug: string } }) {
         <div>
           <HeroSectionCustomWeb />
           <NeedCustomWeb />
-           <Expertise />
           <HelpSectionsCustomWeb />
           <IntegratSectionCustomWeb />
           <OfferSectionCustomWeb />
@@ -73,7 +69,6 @@ export default function WebApp({ params }: { params: { slug: string } }) {
           <HeroSectionFullStack />
           <BenifiteFullStack />
           <FullStackServiceSection />
-           <Expertise />
           <OurServicesSectionFullStack />
           <PartnerChoiceSectionFullStack />
           <TechnologySectionFullStack />

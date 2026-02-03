@@ -174,6 +174,13 @@ const Navbar: FC<NavbarProps> = () => {
           >
             Home
           </Link>
+          <div className="flex">
+          <Link
+            href="/services"
+            className="text-sm font-bold leading-6 text-sky-60 text-sky-600 hover:text-black text-[17px] focus:text-black focus:border-none"
+          >
+            Services
+          </Link>
           {/* <DropDown /> */}
           <button
             onClick={servicesHandler}
@@ -181,7 +188,7 @@ const Navbar: FC<NavbarProps> = () => {
             data-dropdown-toggle="mega-menu-dropdown"
             className="flex items-center justify-between  w-full py-2 px-3  md:w-auto  text-sm font-bold leading-6 text-sky-600 hover:text-black text-[17px]  border-none lg:p-0   focus:border-none    "
           >
-            Services{" "}
+            {" "}
             <svg
               className="w-2.5 h-2.5 ms-3"
               aria-hidden="true"
@@ -1262,7 +1269,13 @@ const Navbar: FC<NavbarProps> = () => {
               </div>
             </div>
           )}
-
+          </div>
+           <Link
+            href="/casestudies"
+            className="text-sm font-bold leading-6 text-sky-600 hover:text-black text-[17px] focus:text-black focus:border-none"
+          >
+            Case Studies
+          </Link>
           <Link
             href="/portfolio"
             className="text-sm font-bold leading-6 text-sky-600 hover:text-black text-[17px] focus:text-black focus:border-none"

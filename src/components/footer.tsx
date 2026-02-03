@@ -94,7 +94,7 @@ const Footer: FC<footerProps> = () => {
     // </footer>
 
     // New Footer
- <div className="py-10 mt-52 bg-gradient-to-r from-sky-950   via-sky-700 via-30% to-sky-600 to-70%">
+ <div className="py-10 mt-20 bg-gradient-to-r from-sky-950   via-sky-700 via-30% to-sky-600 to-70%">
  <div className="flex justify-center items-center">
     <div className="max-w-7xl flex flex-col justify-center gap-3 items-center px-5">
   <div className="mb-6 md:mb-0 flex flex-col gap-3">

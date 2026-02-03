@@ -1,6 +1,7 @@
 import { FC } from "react";
 import lapImg from "../../../public/images/WebApplication.jpg";
 import lockImg from "../../../public/images/Blockchainweb3.jpg";
+import AiImg from "../../../public/images/ai-pic.webp";
 import Image from "next/image";
 import AnimatedComponent from "./animationLeft";
 import AnimatedComponentLeft from "./animationLeft";
@@ -44,7 +45,7 @@ const Expertise: FC<expserTisePropse> = () => {
           </AnimatedComponentRight>
         </div>
         {/*  */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 pt-10  md:gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 pt-10  md:gap-20">
           <AnimatedComponentLeft>
             <div>
               <Image
@@ -69,9 +70,9 @@ const Expertise: FC<expserTisePropse> = () => {
               security with automation into the mix.
             </p>
           </div>
-        </div> */}
+        </div>
         {/* AI Development */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 pt-10 md:gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 pt-10 md:gap-20">
           <div className="flex flex-col self-center">
             <p className="mb-4 text-xl text-start font-extrabold tracking-tight leading-none text-white md:text-2xl lg:text-4xl">
               Artificial Intelligence (AI) Solutions
@@ -96,13 +97,13 @@ const Expertise: FC<expserTisePropse> = () => {
           <AnimatedComponentRight>
             <div>
               <Image
-                src={lockImg}
+                src={AiImg}
                 alt="AI Solutions"
                 className="w-full h-60 max-w-3xl md:h-80 rounded-3xl"
               />
             </div>
           </AnimatedComponentRight>
-        </div> */}
+        </div>
       </div>
     </div>
   );

@@ -47,7 +47,6 @@ import TechnologySection from "@/components/services/blockChain/nft/nftMarketPla
 import TokenSection from "@/components/services/blockChain/nft/nftMarketPlace/token";
 import WhyUsSection from "@/components/services/blockChain/nft/nftMarketPlace/whyUs";
 import { FC } from "react";
-import Expertise from "@/components/home/expertiseblockchain";
 
 interface nftMarketPlaceDevelpmentProps {}
 
@@ -58,7 +57,6 @@ const NftMarketPlaceDevelpment : FC<nftMarketPlaceDevelpmentProps> = () => {
         <BenifiteNftSection />
         <OurServicesSection />
         <WhyUsSection />
-        <Expertise />
         <TokenSection />
         <TechnologySection />
         <PartnerChoiceSection />

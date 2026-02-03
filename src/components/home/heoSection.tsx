@@ -1,9 +1,11 @@
 "use client";
 import React, { FC } from "react";
+import { useRouter } from "next/navigation";
 
 interface HeroSectionProps {}
 
 const HeroSection: FC<HeroSectionProps> = () => {
+  const router = useRouter();
   const handlePrimaryCTA = (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -15,6 +17,7 @@ const HeroSection: FC<HeroSectionProps> = () => {
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
+    router.push("/casestudies");
     console.log("View Enterprise Case Studies clicked");
   };
 
