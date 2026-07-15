@@ -118,7 +118,7 @@ export default function ExitPopup() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleMouseLeave = (e) => {
+    const handleMouseLeave = (e: MouseEvent) => {
       const popupClosed = sessionStorage.getItem("exitPopupClosed");
 
       if (!popupClosed && e.clientY <= 0) {
