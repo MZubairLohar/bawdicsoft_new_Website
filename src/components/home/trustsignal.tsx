@@ -19,7 +19,7 @@ const clients = [
   },
   {
     name: "Robert Douglas Scott",
-    detail: "Holovax",
+    detail: "Holovox",
   },
   {
     name: "Vincent Esposito / Nick Zaryaki",

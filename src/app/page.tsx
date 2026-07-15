@@ -73,7 +73,7 @@ export default function Home() {
           __html: `{
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "- Complete Bawdicsoft Guide 2024",
+  "name": "Bawdicsoft LLC Pvt. Ltd.",
   "description": "Learn everything about  with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
   "url": "https://www.bawdicsoft.com/",
   "publisher": {
