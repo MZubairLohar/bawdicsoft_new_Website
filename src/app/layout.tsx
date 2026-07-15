@@ -8,13 +8,14 @@ import WhatsAppButton from '@/components/WhatsAppButton';
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     default: "BawdicSoft | AI, Blockchain & Web Development Agency — Karachi",
     template: "%s | BawdicSoft",
   },
   description: "BawdicSoft delivers enterprise-grade AI solutions, blockchain development, and web applications. 250+ projects. 15+ countries. ISO 27001 certified. Get a free consultation.",
 };
+
 export default function RootLayout({
   children,
 }: {
@@ -23,19 +24,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google Analytics - Updated with G-H4K59GP928 */}
         <Script
           strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-HDV25HSV2B"
+          src="https://www.googletagmanager.com/gtag/js?id=G-H4K59GP928"
         />
         <Script
           id="gtag-init"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-HDV25HSV2B');
+              gtag('config', 'G-H4K59GP928');
             `,
           }}
         />
