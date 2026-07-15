@@ -139,10 +139,12 @@ const Footer: FC<footerProps> = () => {
 <Link href={"/"} className="text-white hover:text-gray-500  px-5 font-medium text-sm">Careers</Link>
 <Link href={"/"} className="text-white hover:text-gray-500 px-5 font-medium text-sm">Contact Us</Link>
  </div> */}
- < p className="text-sm md:text-base text-gray-200 text-center">© 2018 BawdicSoft. All rights reserved.</p>
+<p className="text-sm md:text-base text-gray-200 text-center">
+    © {new Date().getFullYear()} BawdicSoft. All rights reserved.
+  </p>
     </div>
   </div> 
-    </div>
-    )
+</div>
+)
 }
 export default Footer;
