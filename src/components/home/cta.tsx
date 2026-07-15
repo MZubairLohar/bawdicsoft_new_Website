@@ -18,35 +18,36 @@ const Cta = () => {
           </div>
 
           <h3 className="text-2xl md:text-3xl font-bold mb-6 text-white leading-relaxed">
-            BawdicSoft acts as an extension of your engineering organization —{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-200">
-              not just another vendor
-            </span>
+            Ready to Build Something Powerful?
           </h3>
 
-          <p className="text-lg text-gray-200 max-w-3xl mx-auto mb-8">
-            We integrate seamlessly with your team, adopting your processes and
-            culture while bringing enterprise-grade development practices and
-            scalable solutions.
+          <p className="text-lg text-gray-200 max-w-3xl mx-auto mb-6">
+            Book a free 30-minute call with Syed Bilal — CEO of BawdicSoft. No sales pitch. Just clarity on your next step.
           </p>
 
-          {/* CTA Button */}
-          <button className="inline-flex text-white items-center px-8 py-4 bg-blue-700 hover:bg-blue-800 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/50 shadow-xl">
-            <svg
-              className="w-5 h-5 mr-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-            Transform Your Engineering Team
-          </button>
+          {/* 2 Buttons Container */}
+<div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+  
+  <a 
+  href="https://calendly.com/lishayarain087/30min" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-700 hover:bg-gray-100 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
+>
+  Book My Free Call →
+</a>
+
+ {/* Secondary Button: WhatsApp */}
+<a 
+  href="https://wa.me/+923178866631" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+>
+   WhatsApp Us Directly →
+</a>
+
+</div>
         </div>
       </div>
     </div>

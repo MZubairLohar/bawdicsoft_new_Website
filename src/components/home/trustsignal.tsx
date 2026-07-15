@@ -160,25 +160,29 @@ const clients = [
         <div className="mt-16 md:mt-20 pt-12 border-t border-gray-200">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">99%</div>
-              <div className="text-gray-600">Client Retention</div>
-            </div>
-            <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-blue-600">250+</div>
-              <div className="text-gray-600">Projects Delivered</div>
+              <div className="text-gray-600">Projects Deliverd</div>
             </div>
             <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-blue-600">15+</div>
-              <div className="text-gray-600">Countries Served</div>
+              <div className="text-gray-600">Counteries Served</div>
             </div>
             <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-blue-600">ISO 27001</div>
-              <div className="text-gray-600">Certified</div>
+              <div className="text-gray-600">Certifiedd</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-3xl md:text-4xl font-bold text-blue-600">99%</div>
+              <div className="text-gray-600">Client Satisfaction</div>
             </div>
           </div>
         </div>
       </div>
     </section>
+
+
+
+
   );
 };
 

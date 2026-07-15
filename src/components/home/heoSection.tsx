@@ -43,13 +43,11 @@ const HeroSection: FC<HeroSectionProps> = () => {
         {/* Content */}
         <div className="relative z-10 px-4 mx-auto max-w-5xl text-center pt-32 md:pt-44 lg:pt-20">
           <h1 className="mb-6 text-3xl font-extrabold tracking-tight leading-tight text-white md:text-4xl lg:text-5xl xl:text-5xl px-2 md:px-4">
-            Enterprise-Ready Software Delivery That Scales With Your Business
+            We Build AI Systems, Blockchain Platforms & Web Applications That Scale
           </h1>
 
           <p className="mb-10 text-lg font-normal text-gray-200 lg:text-xl xl:text-xl max-w-4xl mx-auto px-4 md:px-8 leading-relaxed">
-            We help technology leaders accelerate product delivery, modernize
-            platforms, and reduce engineering bottlenecks — without compromising
-            security or quality.
+            BawdicSoft is a Karachi-based software agency trusted by global clients across 15+ countries. From AI automation to DeFi infrastructure — we turn complex ideas into production-ready products.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 px-4 md:px-0">
@@ -57,14 +55,14 @@ const HeroSection: FC<HeroSectionProps> = () => {
               onClick={handlePrimaryCTA}
               className="w-full sm:w-auto px-8 py-4 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/50 shadow-lg"
             >
-              Talk to an Enterprise Solutions Architect
+              Book a Free 30-Min Strategy Call
             </button>
 
             <button
               onClick={handleSecondaryCTA}
               className="w-full sm:w-auto px-8 py-4 text-lg font-semibold text-white border-2 border-white hover:bg-white/10 rounded-lg transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-white/50 backdrop-blur-sm"
             >
-              View Enterprise Case Studies
+              See Our Work
             </button>
           </div>
         </div>

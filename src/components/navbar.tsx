@@ -134,7 +134,7 @@ const Navbar: FC<NavbarProps> = () => {
   }, [checkClick]);
 
   return (
-    <header className="bg-white sticky top-0 z-40">
+    <header className="bg-black sticky top-0 z-40">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-3 lg:px-8"
         aria-label="Global"
@@ -152,7 +152,7 @@ const Navbar: FC<NavbarProps> = () => {
           </div>
           <Link
             href="/"
-            className="text-sky-600 text-[23px] -ml-2 md:m-0 md:text-[30px] font-semibold md:font-bold"
+            className="text-white text-[23px] -ml-2 md:m-0 md:text-[30px] font-semibold md:font-bold"
           >
             BawdicSoft
           </Link>
@@ -170,14 +170,14 @@ const Navbar: FC<NavbarProps> = () => {
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <Link
             href="/"
-            className="text-sm font-bold leading-6 text-sky-60 text-sky-600 hover:text-black text-[17px] focus:text-black focus:border-none"
+            className="text-sm font-bold leading-6 text-white text-[17px] hover:text-gray-300 focus:text-white focus:outline-none active:text-white"
           >
             Home
           </Link>
           <div className="flex">
           <Link
             href="/services"
-            className="text-sm font-bold leading-6 text-sky-60 text-sky-600 hover:text-black text-[17px] focus:text-black focus:border-none"
+           className="text-sm font-bold leading-6 text-white text-[17px] hover:text-gray-300 focus:text-white focus:outline-none active:text-white"
           >
             Services
           </Link>
@@ -186,7 +186,7 @@ const Navbar: FC<NavbarProps> = () => {
             onClick={servicesHandler}
             id="mega-menu-dropdown-button"
             data-dropdown-toggle="mega-menu-dropdown"
-            className="flex items-center justify-between  w-full py-2 px-3  md:w-auto  text-sm font-bold leading-6 text-sky-600 hover:text-black text-[17px]  border-none lg:p-0   focus:border-none    "
+            className="flex items-center justify-between  w-full py-2 px-3  md:w-auto  text-sm font-bold leading-6 text-white hover:text-black text-[17px]  border-none lg:p-0   focus:border-none    "
           >
             {" "}
             <svg
@@ -1272,31 +1272,31 @@ const Navbar: FC<NavbarProps> = () => {
           </div>
            <Link
             href="/casestudies"
-            className="text-sm font-bold leading-6 text-sky-600 hover:text-black text-[17px] focus:text-black focus:border-none"
+            className="text-sm font-bold leading-6 text-white text-[17px] hover:text-gray-300 focus:text-white focus:outline-none active:text-white"
           >
             Case Studies
           </Link>
           <Link
             href="/portfolio"
-            className="text-sm font-bold leading-6 text-sky-600 hover:text-black text-[17px] focus:text-black focus:border-none"
+            className="text-sm font-bold leading-6 text-white hover:text-gray-300 text-[17px] focus:text-white focus:outline-none active:text-white"
           >
             Portfolio
           </Link>
           <Link
             href="/about-us"
-            className="text-sm font-bold leading-6 text-sky-600 hover:text-black text-[17px] focus:text-black focus:border-none"
+            className="text-sm font-bold leading-6 text-white hover:text-gray-300 text-[17px] focus:text-white focus:outline-none active:text-white"
           >
             About Us
           </Link>
           <Link
             href="/careers"
-            className="text-sm font-bold leading-6 text-sky-600 hover:text-black text-[17px] focus:text-black focus:border-none"
+            className="text-sm font-bold leading-6 text-white hover:text-gray-300 text-[17px] focus:text-white focus:outline-none active:text-white"
           >
             Careers
           </Link>
           <Link
             href="/contact-us"
-            className="text-sm font-bold leading-6 text-sky-600 hover:text-black text-[17px] focus:text-black focus:border-none"
+           className="text-sm font-bold leading-6 text-white text-[17px] hover:text-gray-300 focus:text-white focus:outline-none active:text-white"
           >
             Contact Us
           </Link>
@@ -1308,8 +1308,8 @@ const Navbar: FC<NavbarProps> = () => {
         open={mobileMenuOpen}
         onClose={setMobileMenuOpen}
       >
-        <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <div className="fixed inset-0" />
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Services</span>
