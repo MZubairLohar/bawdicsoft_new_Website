@@ -2,7 +2,7 @@
 export const metadata = {
   title: "Our Services | AI, Blockchain & Web Development — BawdicSoft",
   description: "From AI automation and smart contracts to full-stack web apps — BawdicSoft builds scalable, secure digital solutions for startups and enterprises worldwide.",
-  keywords: [
+  keywords: [ 
     "AI development services, smart contract development, DeFi development, NLP solutions, computer vision"
   ],
   alternates: {

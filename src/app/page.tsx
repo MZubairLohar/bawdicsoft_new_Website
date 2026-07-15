@@ -8,7 +8,7 @@ export const metadata = {
   },
   robots: "index, follow",
   openGraph: {
-    title: "Bawdicsoft.com",
+    title: "Bawdicsoft LLC Pvt. Ltd.",
     description: "Learn everything about  with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
     url: "https://www.bawdicsoft.com/",
     siteName: "Bawdicsoft",
