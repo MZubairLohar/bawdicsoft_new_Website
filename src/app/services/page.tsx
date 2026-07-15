@@ -10,7 +10,7 @@ export const metadata = {
   },
   robots: "index, follow",
   openGraph: {
-    title: "Services - Complete Bawdicsoft Guide 2024",
+    title: "Services Bawdicsoft LLC Pvt. Ltd.",
     description: "Learn everything about services with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
     url: "https://www.bawdicsoft.com/services",
     siteName: "Bawdicsoft",
@@ -19,14 +19,14 @@ export const metadata = {
         url: "https://www.bawdicsoft.com/services/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Services - Complete Bawdicsoft Guide 2024"
+        alt: "Services Bawdicsoft LLC Pvt. Ltd."
       }
     ],
     type: "website"
   },
   twitter: {
     card: "summary_large_image",
-    title: "Services - Complete Bawdicsoft Guide 2024",
+    title: "Services Bawdicsoft LLC Pvt. Ltd.",
     description: "Learn everything about services with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
     images: ["https://www.bawdicsoft.com/services/twitter-image.jpg"]
   }

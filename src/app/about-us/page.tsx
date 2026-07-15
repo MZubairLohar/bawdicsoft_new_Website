@@ -10,7 +10,7 @@ export const metadata = {
   },
   robots: "index, follow",
   openGraph: {
-    title: "About Us - Complete Bawdicsoft Guide 2024",
+    title: "About Us Bawdicsoft LLC Pvt. Ltd.",
     description: "Learn everything about about us with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
     url: "https://www.bawdicsoft.com/about-us",
     siteName: "Bawdicsoft",
@@ -19,14 +19,14 @@ export const metadata = {
         url: "https://www.bawdicsoft.com/about-us/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "About Us - Complete Bawdicsoft Guide 2024"
+        alt: "About Us Bawdicsoft LLC Pvt. Ltd."
       }
     ],
     type: "website"
   },
   twitter: {
     card: "summary_large_image",
-    title: "About Us - Complete Bawdicsoft Guide 2024",
+    title: "About Us Bawdicsoft LLC Pvt. Ltd.",
     description: "Learn everything about about us with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
     images: ["https://www.bawdicsoft.com/about-us/twitter-image.jpg"]
   }
@@ -51,7 +51,7 @@ interface aboutUsProps {}
         dangerouslySetInnerHTML={{ __html: `{
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "About Us - Complete Bawdicsoft Guide 2024",
+  "name": "About Us Bawdicsoft LLC Pvt. Ltd.",
   "description": "Learn everything about about us with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
   "url": "https://www.bawdicsoft.com/about-us",
   "publisher": {

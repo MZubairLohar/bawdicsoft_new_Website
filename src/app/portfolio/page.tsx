@@ -10,7 +10,7 @@ export const metadata = {
   },
   robots: "index, follow",
   openGraph: {
-    title: "Portfolio - Complete Bawdicsoft Guide 2024",
+    title: "Portfolio Bawdicsoft LLC Pvt. Ltd.",
     description: "Learn everything about portfolio with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
     url: "https://www.bawdicsoft.com/portfolio",
     siteName: "Bawdicsoft",
@@ -19,14 +19,14 @@ export const metadata = {
         url: "https://www.bawdicsoft.com/portfolio/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Portfolio - Complete Bawdicsoft Guide 2024"
+        alt: "Portfolio Bawdicsoft LLC Pvt. Ltd."
       }
     ],
     type: "website"
   },
   twitter: {
     card: "summary_large_image",
-    title: "Portfolio - Complete Bawdicsoft Guide 2024",
+    title: "Portfolio Bawdicsoft LLC Pvt. Ltd.",
     description: "Learn everything about portfolio with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
     images: ["https://www.bawdicsoft.com/portfolio/twitter-image.jpg"]
   }

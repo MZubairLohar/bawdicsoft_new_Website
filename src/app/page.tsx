@@ -17,14 +17,14 @@ export const metadata = {
         url: "https://www.bawdicsoft.com/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "- Complete Bawdicsoft Guide 2024"
+        alt: "Bawdicsoft LLC Pvt. Ltd."
       }
     ],
     type: "website"
   },
   twitter: {
     card: "summary_large_image",
-    title: "- Complete Bawdicsoft Guide 2024",
+    title: "Bawdicsoft LLC Pvt. Ltd.",
     description: "Learn everything about  with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
     images: ["https://www.bawdicsoft.com/twitter-image.jpg"]
   }
@@ -58,7 +58,7 @@ export default function Home() {
           __html: `{
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "- Complete Bawdicsoft Guide 2024",
+  "name": "Bawdicsoft LLC Pvt. Ltd.",
   "description": "Learn everything about  with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
   "url": "https://www.bawdicsoft.com/",
   "publisher": {
