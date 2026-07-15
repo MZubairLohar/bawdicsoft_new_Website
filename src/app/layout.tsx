@@ -24,10 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google Analytics - Updated with G-H4K59GP928 */}
+        {/* Google Analytics - Restored to original ID: G-HDV25HSV2B */}
         <Script
           strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-H4K59GP928"
+          src="https://www.googletagmanager.com/gtag/js?id=G-HDV25HSV2B"
         />
         <Script
           id="gtag-init"
@@ -37,7 +37,7 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-H4K59GP928');
+              gtag('config', 'G-HDV25HSV2B');
             `,
           }}
         />
@@ -51,4 +51,3 @@ export default function RootLayout({
     </html>
   );
 }
-
