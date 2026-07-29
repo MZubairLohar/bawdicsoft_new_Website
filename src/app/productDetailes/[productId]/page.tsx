@@ -187,7 +187,7 @@ const ProductDetails = ({ params }: ProductDetailsProps) => {
 
   return (
     <div className="flex justify-center bg-gray-100">
-      {productOneDetail.Video && (
+      {productOneDetail.videoUrl || productOneDetail.Video && (
         <div className="flex max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 content-center">
             {/* Video section */}
@@ -197,7 +197,7 @@ const ProductDetails = ({ params }: ProductDetailsProps) => {
                 autoPlay
                 controls
               >
-                <source src={productOneDetail.Video} type="video/mp4" />
+                <source src={productOneDetail.videoUrl || productOneDetail.Video} type="video/mp4" />
               </video>
             </div>
 

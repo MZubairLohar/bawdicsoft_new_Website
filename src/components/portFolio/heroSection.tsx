@@ -1,29 +1,55 @@
-import React, { FC, ReactNode, MouseEvent } from "react";
-interface HeroSectionProps {}
-import HerSectionimg from "../../../public/images/portfolioimg.gif";
-import { StaticImageData } from "next/image";
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
 
-type heroImg = {
-  img: StaticImageData;
-};
-const data: heroImg = { img: HerSectionimg };
-const HeroSection: FC<HeroSectionProps> = () => {
+const HeroSection = () => {
   return (
-    <section
-      className=" bg-center bg-cover bg-no-repeat  bg-gray-900 bg-blend-soft-light"
-      style={{
-        backgroundImage: `url(${data.img.src})`,
-        height: "calc(100vh - 48px)",
-      }}
-    >
-      <div className="px-4 mx-auto  text-center pt-44 md:py-56 max-w-7xl">
-        <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-7xl md:mx-32 -ml-30">
-          We are innovating today, for a better future​
-        </h1>
-        <p className="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 ">
-          Integrating web and web3 in your daily life creating modern solutions
-          for the digital world.
-        </p>
+    // EXACT THEME MATCH: Uses your darkSkyBlue (#0f3654) and brand-950 (#082f49)
+    <section className="relative flex flex-col items-center justify-center min-h-[87vh]  bg-gradient-to-r from-sky-950   via-sky-700 via-30% to-sky-600 to-70% text-white px-4 md:px-12 overflow-hidden">
+      
+      {/* Blue Radial Glow (Using your exact brand-500) */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#0ea5e9]/15 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="relative z-10 max-w-6xl mx-auto text-center">
+        {/* Pill Badge */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8"
+        >
+          <span className="w-2 h-2 rounded-full bg-[#0ea5e9] animate-pulse" />
+          <span className="text-xs md:text-sm font-medium tracking-widest uppercase text-gray-100">
+            BawdicSoft Portfolio
+          </span>
+        </motion.div>
+
+        {/* Massive Fluid Typography with Blue Gradient */}
+        <motion.h1 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-[14vw] md:text-[10vw] lg:text-[9vw] font-bold leading-[0.9] tracking-tighter mb-8"
+        >
+          Crafting <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] via-[#0ea5e9] to-[#0284c7] mr-8">
+            Digital
+          </span>
+
+          <span className="text-[14vw] md:text-[10vw] lg:text-[9vw] font-bold leading-[0.9] tracking-tighter mb-8">
+             Futures.
+          </span>
+        </motion.h1>
+
+        <motion.p 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-lg md:text-xl text-gray-100 max-w-2xl mx-auto leading-relaxed"
+        >
+          We engineer robust, high-performance web, Web3, and AI solutions. 
+          Security-by-design, built for scale.
+        </motion.p>
       </div>
     </section>
   );

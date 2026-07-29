@@ -1,108 +1,155 @@
+// export interface ProjectData {
+//   id: number;
+//   category: "design" | "video" | "content";
+//   projectName: string;
+//   projectImage: string;
+//   alternate: string;
+//   href: string;
+//   projectDesc: string;
+//   technologies: string[];
+//   videoUrl?: string;
+//   detailDesc?: string;
+  
+//   // New Case Study Fields
+//   challenge?: string;
+//   solution?: string;
+//   features?: string[];
+//   result?: string;
+// }
 
-//   export const allData = [ 
-//       {
+// export const allData: ProjectData[] = [
+//   {
 //     id: 1,
-//     category: "NextJS",
-//     subCategory: "NextJS-Coin",
+//     category: "content",
 //     projectName: "AGUA COIN",
-//     projectImage: "/assets/aguaCoin.png",
+//     projectImage: "/assets/aguacoin.png",
 //     alternate: "AGUA is a DAO token and platform offering stablecoins SAG and SAU.",
 //     href: "https://www.aguacoins.com/",
-//     projectDesc: "AGUA is a DAO token and platform offering stablecoins SAG and SAU.A decentralized digital currency ecosystem featuring asset‑backed stablecoins tied to physical precious metals.Offers stablecoins backed by real gold (SAU) and silver (SAG), providing enhanced financial stability and inflation protection.Designed to combine blockchain transparency with the security of real‑world assets, aiming for long‑term value preservation.Part of a DAO‑governed ecosystem where holders can participate in governance and future protocol decisions.Enables secure decentralized transactions, liquidity, and asset management through blockchain technology.",
+//     projectDesc: "Decentralized digital currency ecosystem featuring asset-backed stablecoins tied to physical precious metals.",
+//     technologies: ["Next.js", "Web3.js", "Tailwind CSS", "Solidity"],
+//     videoUrl: "/videos/agua.mp4",
+//     detailDesc: "A comprehensive Web3 platform enabling users to trade asset-backed stablecoins with full transparency.",
+//     challenge: "The client needed a secure, decentralized currency platform backed by physical precious metals, requiring real-time pricing integration and complex smart contract architecture.",
+//     solution: "We engineered a full-stack Web3 ecosystem with live gold/silver price APIs, multi-signature wallet integration, and a robust DAO governance structure.",
+//     features: ["Real-time precious metal pricing API", "Multi-signature wallet integration", "DAO governance dashboard", "Asset-backed stablecoin minting"],
+//     result: "Successfully launched a secure, scalable platform enabling global users to trade asset-backed stablecoins with complete financial transparency."
 //   },
-
-//    {
+//   {
 //     id: 2,
-//     category: "NextJS",
-//     subCategory: "NextJS-NFT",
+//     category: "design",
 //     projectName: "SIGMANTARIAN",
 //     projectImage: "/assets/sigmantarian.png",
-//     alternate: "A REVOLUTIONARY CRYPTO PLATFORM OFFERING MAXIMUM REWARDS & SUSTAINABILITY",
+//     alternate: "A Revolutionary Crypto Platform Offering Maximum Rewards & Sustainability",
 //     href: "https://www.sigmantarian.com/",
-//     projectDesc: "A Revolutionary Crypto Platform Offering Maximum Rewards & Sustainbility.A blockchain-based affiliate platform enabling secure and transparent crypto rewards.Users can join via membership packages to participate in the ecosystem.Offers affiliate marketing rewards and potential monthly token staking yields.Designed to promote financial independence through decentralized finance (DeFi) integration.Focused on transparency, security, and scalable reward mechanisms for users.",
+//     projectDesc: "A blockchain-based affiliate platform enabling secure and transparent crypto rewards with DeFi integration.",
+//     technologies: ["React", "Node.js", "Blockchain", "Figma"],
+//     detailDesc: "A revolutionary crypto platform offering maximum rewards and sustainability through DeFi integration.",
+//     challenge: "Building a transparent, scalable affiliate marketing platform on the blockchain that could handle complex reward distributions and staking mechanisms.",
+//     solution: "We developed a high-performance React frontend paired with a secure Node.js backend, integrating smart contracts for automated, transparent reward distribution.",
+//     features: ["Automated affiliate reward distribution", "Monthly token staking yields", "DeFi integration for financial independence", "Transparent blockchain ledger"],
+//     result: "Delivered a fully functional, secure crypto ecosystem that promotes financial independence through decentralized finance."
 //   },
-
-//    {
+//   {
 //     id: 3,
-//     category: "NextJS",
-//     subCategory: "NextJS-Coin",
+//     category: "content",
 //     projectName: "HASHFOR",
 //     projectImage: "/assets/hashfor.png",
 //     alternate: "Boost your online presence with Expert SEO & AEO",
 //     href: "https://www.hashfor.com/",
-//     projectDesc: "Boost your online presence with Expert SEO & AEO.Hashfor is a professional digital marketing and SEO service provider that focuses on boosting brands’ online visibility, search engine rankings, and organic traffic through data‑driven optimization strategies.Provides targeted SEO (Search Engine Optimization) and AEO (Answer Engine Optimization) strategies to increase organic traffic, improve search ranking, and drive conversions.Offers keyword research, SEO audits, content creation, and analytics to identify growth opportunities.Emphasizes data‑driven approaches to build brand authority and improve user engagement over the long term.Highlights strong client retention and positive results for businesses using its premium SEO solutions.",
+//     projectDesc: "Professional digital marketing and SEO service provider focusing on boosting brands’ online visibility.",
+//     technologies: ["Next.js", "SEO Optimization", "Analytics", "Tailwind CSS"],
+//     detailDesc: "A professional digital marketing and SEO service provider focusing on boosting brands’ online visibility.",
+//     challenge: "Creating a high-converting, data-driven platform to showcase SEO and Answer Engine Optimization (AEO) services while providing interactive audit tools.",
+//     solution: "We built a lightning-fast Next.js application featuring interactive SEO/AEO audit tools, real-time analytics dashboards, and a conversion-optimized UI.",
+//     features: ["Interactive SEO & AEO Audit Tools", "Real-time ranking analytics dashboard", "Data-driven optimization strategies", "High-converting landing pages"],
+//     result: "Increased organic traffic and search engine rankings for clients through a highly optimized, user-friendly digital presence."
 //   },
-
-//    {
+//   {
 //     id: 4,
-//     category: "NextJS",
-//     subCategory: "NextJS-School",
-//     projectName: "AL-MADINA",
+//     category: "design",
+//     projectName: "AL-MADINA ONLINE",
 //     projectImage: "/assets/almadina.png",
-//     alternate: "Al Madinah Online is an Official Cambridge International School offering 7 full-time IGCSE subjects including English, Mathematics, and Sciences, alongside Islamic Studies and Arabic.",
+//     alternate: "Official Cambridge International School",
 //     href: "https://almadinahonline.co.uk/",
-//     projectDesc: "Al Madinah Online is an Official Cambridge International School offering 7 full-time IGCSE subjects including English,",
+//     projectDesc: "Official Cambridge International School offering 7 full-time IGCSE subjects alongside Islamic Studies and Arabic.",
+//     technologies: ["WordPress", "Custom Theme", "LMS Integration", "UI/UX Design"],
+//     detailDesc: "An Official Cambridge International School offering 7 full-time IGCSE subjects.",
+//     challenge: "Developing a comprehensive, user-friendly online learning environment for an international school that seamlessly blends academic and Islamic studies.",
+//     solution: "We designed a custom WordPress theme with integrated Learning Management System (LMS) capabilities, ensuring a smooth experience for students, parents, and teachers.",
+//     features: ["Custom LMS Integration", "Seamless parent-teacher-student portal", "Responsive design for all devices", "Secure student data management"],
+//     result: "Launched a robust digital campus that successfully delivers 7 full-time IGCSE subjects alongside Islamic Studies to a global student body."
 //   },
 //   {
 //     id: 5,
-//     category: "NextJS",
-//     subCategory: "NextJS-Foundation",
+//     category: "design",
 //     projectName: "FGRF FOUNDATION",
 //     projectImage: "/assets/fgrforg.png",
 //     alternate: "Faizan Global Relief Foundation",
 //     href: "https://fgrf.org/",
-//     projectDesc: "Faizan Global Relief Foundation",
+//     projectDesc: "A non-profit foundation website designed for clarity, trust, and seamless donation navigation.",
+//     technologies: ["Next.js", "Framer Motion", "Stripe API", "Tailwind CSS"],
+//     detailDesc: "A clean, accessible, and trustworthy digital presence designed to maximize donor engagement.",
+//     challenge: "Creating a trustworthy, highly accessible digital presence for a global relief foundation to maximize donor engagement and showcase impact.",
+//     solution: "We built a fast, accessible Next.js website with smooth Framer Motion animations and a secure, frictionless Stripe donation integration.",
+//     features: ["Frictionless Stripe donation flow", "Interactive global impact map", "Accessibility-first design (WCAG compliant)", "Secure donor data handling"],
+//     result: "Significantly increased online donation conversion rates and global donor engagement through a clean, trustworthy interface."
 //   },
 //   {
 //     id: 6,
-//     category: "Ai",
-//     subCategory: "Ai-Foundation",
-//     projectName: "Deep-Trace",
+//     category: "video",
+//     projectName: "DEEP-TRACE",
 //     projectImage: "/assets/deeptrace.png",
 //     alternate: "Detect AI-Generated Content With Confidence",
 //     href: "https://deep-trace-snowy.vercel.app/",
-//     projectDesc: "Advanced AI detection for text, images, and videos. Instantly verify AI-generated or human-written content with scientific accuracy.",
+//     projectDesc: "Advanced AI detection for text, images, and videos. Instantly verify AI-generated content with scientific accuracy.",
+//     technologies: ["Python", "TensorFlow", "Next.js", "Data Visualization"],
+//     videoUrl: "/videos/deeptrace-demo.mp4",
+//     detailDesc: "Advanced AI detection for text, images, and videos with scientific accuracy.",
+//     challenge: "Building a highly accurate, real-time AI detection engine capable of analyzing text, images, and video to distinguish human from machine-generated content.",
+//     solution: "We engineered a Python-based TensorFlow backend for deep learning analysis, paired with a sleek Next.js frontend for instant, visual result reporting.",
+//     features: ["Multi-modal AI detection (Text, Image, Video)", "Real-time probability breakdowns", "Scientific accuracy algorithms", "Instant visual reporting dashboard"],
+//     result: "Delivered a powerful, production-ready AI tool that helps users instantly verify content authenticity with high scientific confidence."
 //   },
 //   {
 //     id: 7,
-//     category: "Ai",
-//     subCategory: "Ai-Foundation",
-//     projectName: "CyberCity",
+//     category: "video",
+//     projectName: "CYBERCITY",
 //     projectImage: "/assets/cyberCity.png",
-//     alternate: "Advanced Security Audit Agent to Protect Your Website from Cyber Threats",
+//     alternate: "Advanced Security Audit Agent",
 //     href: "https://vulnerability-dun.vercel.app/",
-//     projectDesc: "Advanced Security Audit Agent to Protect Your Website from Cyber Threats",
+//     projectDesc: "Advanced Security Audit Agent to Protect Your Website from Cyber Threats with real-time monitoring.",
+//     technologies: ["Cybersecurity", "React", "Node.js", "Docker"],
+//     videoUrl: "/videos/cybercity-demo.mp4",
+//     detailDesc: "Advanced Security Audit Agent to Protect Your Website from Cyber Threats.",
+//     challenge: "Creating an automated, comprehensive security audit agent that could scan websites for vulnerabilities and provide actionable, real-time reports.",
+//     solution: "We developed a robust React and Node.js platform containerized with Docker, featuring automated scanning scripts and a real-time vulnerability dashboard.",
+//     features: ["Automated vulnerability scanning", "Real-time security alerts", "Comprehensive PDF reporting", "Actionable remediation steps"],
+//     result: "Empowered businesses to proactively identify and fix security flaws, significantly reducing their cyber risk exposure."
 //   },
 // ];
 
 
-
-
-
-
-
-
-
-
-
-
-
-// src/components/allData.ts
-
-export interface Product {
+export interface ProjectData {
   id: number;
-  category: string;
-  subCategory: string;
+  category: "design" | "video" | "content";
   projectName: string;
   projectImage: string;
   alternate: string;
   href: string;
   projectDesc: string;
+  technologies: string[];
+  
+  // New Portfolio Fields
+  videoUrl?: string;
+  detailDesc?: string;
+  challenge?: string;
+  solution?: string;
+  features?: string[];
+  result?: string;
 
-  // 🔹 Optional detail-page fields
+  // Legacy Fields (Optional) to prevent breaking the old productDetailes page
   Video?: string;
   mainTitle?: string;
-
   ourAIpowered?: string;
   thinkAboutIt?: string;
   thisIsnt?: string;
@@ -112,109 +159,123 @@ export interface Product {
   imReally?: string;
   thisWould?: string;
   imExcited?: string;
-
   foodRecognization?: string;
   foodRecognizationDec?: string;
-
   qualityAssessment?: string;
   qualityAssessmentDec?: string;
-
   realTimeMonitoring?: string;
   realTimeMonitoringDec?: string;
-
   Applications?: string;
   applicationsDec?: string;
 }
 
-export const allData: Product[] = [
+export const allData: ProjectData[] = [
   {
     id: 1,
-    category: "NextJS",
-    subCategory: "NextJS-Coin",
+    category: "content",
     projectName: "AGUA COIN",
     projectImage: "/assets/aguacoin.png",
-    alternate:
-      "AGUA is a DAO token and platform offering stablecoins SAG and SAU.",
+    alternate: "AGUA is a DAO token and platform offering stablecoins SAG and SAU.",
     href: "https://www.aguacoins.com/",
-    projectDesc:
-      "AGUA is a DAO token and platform offering stablecoins SAG and SAU.A decentralized digital currency ecosystem featuring asset-backed stablecoins tied to physical precious metals.Offers stablecoins backed by real gold (SAU) and silver (SAG), providing enhanced financial stability and inflation protection.Designed to combine blockchain transparency with the security of real-world assets, aiming for long-term value preservation.Part of a DAO-governed ecosystem where holders can participate in governance and future protocol decisions.Enables secure decentralized transactions, liquidity, and asset management through blockchain technology.",
-
-    // ✅ Detail page extras (optional)
-    Video: "/videos/agua.mp4",
-    mainTitle: "AGUA – Asset-Backed Digital Currency",
+    projectDesc: "Decentralized digital currency ecosystem featuring asset-backed stablecoins tied to physical precious metals.",
+    technologies: ["Next.js", "Web3.js", "Tailwind CSS", "Solidity"],
+    videoUrl: "/videos/agua.mp4",
+    detailDesc: "A comprehensive Web3 platform enabling users to trade asset-backed stablecoins with full transparency.",
+    challenge: "The client needed a secure, decentralized currency platform backed by physical precious metals, requiring real-time pricing integration and complex smart contract architecture.",
+    solution: "We engineered a full-stack Web3 ecosystem with live gold/silver price APIs, multi-signature wallet integration, and a robust DAO governance structure.",
+    features: ["Real-time precious metal pricing API", "Multi-signature wallet integration", "DAO governance dashboard", "Asset-backed stablecoin minting"],
+    result: "Successfully launched a secure, scalable platform enabling global users to trade asset-backed stablecoins with complete financial transparency."
   },
-
   {
     id: 2,
-    category: "NextJS",
-    subCategory: "NextJS-NFT",
+    category: "design",
     projectName: "SIGMANTARIAN",
     projectImage: "/assets/sigmantarian.png",
-    alternate:
-      "A REVOLUTIONARY CRYPTO PLATFORM OFFERING MAXIMUM REWARDS & SUSTAINABILITY",
+    alternate: "A Revolutionary Crypto Platform Offering Maximum Rewards & Sustainability",
     href: "https://www.sigmantarian.com/",
-    projectDesc:
-      "A Revolutionary Crypto Platform Offering Maximum Rewards & Sustainbility.A blockchain-based affiliate platform enabling secure and transparent crypto rewards.Users can join via membership packages to participate in the ecosystem.Offers affiliate marketing rewards and potential monthly token staking yields.Designed to promote financial independence through decentralized finance (DeFi) integration.Focused on transparency, security, and scalable reward mechanisms for users.",
+    projectDesc: "A blockchain-based affiliate platform enabling secure and transparent crypto rewards with DeFi integration.",
+    technologies: ["React", "Node.js", "Blockchain", "Figma"],
+    detailDesc: "A revolutionary crypto platform offering maximum rewards and sustainability through DeFi integration.",
+    challenge: "Building a transparent, scalable affiliate marketing platform on the blockchain that could handle complex reward distributions and staking mechanisms.",
+    solution: "We developed a high-performance React frontend paired with a secure Node.js backend, integrating smart contracts for automated, transparent reward distribution.",
+    features: ["Automated affiliate reward distribution", "Monthly token staking yields", "DeFi integration for financial independence", "Transparent blockchain ledger"],
+    result: "Delivered a fully functional, secure crypto ecosystem that promotes financial independence through decentralized finance."
   },
-
   {
     id: 3,
-    category: "NextJS",
-    subCategory: "NextJS-Coin",
+    category: "content",
     projectName: "HASHFOR",
     projectImage: "/assets/hashfor.png",
     alternate: "Boost your online presence with Expert SEO & AEO",
     href: "https://www.hashfor.com/",
-    projectDesc:
-      "Boost your online presence with Expert SEO & AEO.Hashfor is a professional digital marketing and SEO service provider that focuses on boosting brands’ online visibility, search engine rankings, and organic traffic through data-driven optimization strategies.",
+    projectDesc: "Professional digital marketing and SEO service provider focusing on boosting brands’ online visibility.",
+    technologies: ["Next.js", "SEO Optimization", "Analytics", "Tailwind CSS"],
+    detailDesc: "A professional digital marketing and SEO service provider focusing on boosting brands’ online visibility.",
+    challenge: "Creating a high-converting, data-driven platform to showcase SEO and Answer Engine Optimization (AEO) services while providing interactive audit tools.",
+    solution: "We built a lightning-fast Next.js application featuring interactive SEO/AEO audit tools, real-time analytics dashboards, and a conversion-optimized UI.",
+    features: ["Interactive SEO & AEO Audit Tools", "Real-time ranking analytics dashboard", "Data-driven optimization strategies", "High-converting landing pages"],
+    result: "Increased organic traffic and search engine rankings for clients through a highly optimized, user-friendly digital presence."
   },
-
   {
     id: 4,
-    category: "NextJS",
-    subCategory: "NextJS-School",
-    projectName: "AL-MADINA",
+    category: "design",
+    projectName: "AL-MADINA ONLINE",
     projectImage: "/assets/almadina.png",
-    alternate:
-      "Al Madinah Online is an Official Cambridge International School offering 7 full-time IGCSE subjects including English, Mathematics, and Sciences, alongside Islamic Studies and Arabic.",
+    alternate: "Official Cambridge International School",
     href: "https://almadinahonline.co.uk/",
-    projectDesc:
-      "Al Madinah Online is an Official Cambridge International School offering 7 full-time IGCSE subjects including English.",
+    projectDesc: "Official Cambridge International School offering 7 full-time IGCSE subjects alongside Islamic Studies and Arabic.",
+    technologies: ["WordPress", "Custom Theme", "LMS Integration", "UI/UX Design"],
+    detailDesc: "An Official Cambridge International School offering 7 full-time IGCSE subjects.",
+    challenge: "Developing a comprehensive, user-friendly online learning environment for an international school that seamlessly blends academic and Islamic studies.",
+    solution: "We designed a custom WordPress theme with integrated Learning Management System (LMS) capabilities, ensuring a smooth experience for students, parents, and teachers.",
+    features: ["Custom LMS Integration", "Seamless parent-teacher-student portal", "Responsive design for all devices", "Secure student data management"],
+    result: "Launched a robust digital campus that successfully delivers 7 full-time IGCSE subjects alongside Islamic Studies to a global student body."
   },
-
   {
     id: 5,
-    category: "NextJS",
-    subCategory: "NextJS-Foundation",
+    category: "design",
     projectName: "FGRF FOUNDATION",
     projectImage: "/assets/fgrforg.png",
     alternate: "Faizan Global Relief Foundation",
     href: "https://fgrf.org/",
-    projectDesc: "Faizan Global Relief Foundation",
+    projectDesc: "A non-profit foundation website designed for clarity, trust, and seamless donation navigation.",
+    technologies: ["Next.js", "Framer Motion", "Stripe API", "Tailwind CSS"],
+    detailDesc: "A clean, accessible, and trustworthy digital presence designed to maximize donor engagement.",
+    challenge: "Creating a trustworthy, highly accessible digital presence for a global relief foundation to maximize donor engagement and showcase impact.",
+    solution: "We built a fast, accessible Next.js website with smooth Framer Motion animations and a secure, frictionless Stripe donation integration.",
+    features: ["Frictionless Stripe donation flow", "Interactive global impact map", "Accessibility-first design (WCAG compliant)", "Secure donor data handling"],
+    result: "Significantly increased online donation conversion rates and global donor engagement through a clean, trustworthy interface."
   },
-
   {
     id: 6,
-    category: "Ai",
-    subCategory: "Ai-Foundation",
-    projectName: "Deep-Trace",
+    category: "video",
+    projectName: "DEEP-TRACE",
     projectImage: "/assets/deeptrace.png",
     alternate: "Detect AI-Generated Content With Confidence",
     href: "https://deep-trace-snowy.vercel.app/",
-    projectDesc:
-      "Advanced AI detection for text, images, and videos. Instantly verify AI-generated or human-written content with scientific accuracy.",
+    projectDesc: "Advanced AI detection for text, images, and videos. Instantly verify AI-generated content with scientific accuracy.",
+    technologies: ["Python", "TensorFlow", "Next.js", "Data Visualization"],
+    videoUrl: "/videos/deeptrace-demo.mp4",
+    detailDesc: "Advanced AI detection for text, images, and videos with scientific accuracy.",
+    challenge: "Building a highly accurate, real-time AI detection engine capable of analyzing text, images, and video to distinguish human from machine-generated content.",
+    solution: "We engineered a Python-based TensorFlow backend for deep learning analysis, paired with a sleek Next.js frontend for instant, visual result reporting.",
+    features: ["Multi-modal AI detection (Text, Image, Video)", "Real-time probability breakdowns", "Scientific accuracy algorithms", "Instant visual reporting dashboard"],
+    result: "Delivered a powerful, production-ready AI tool that helps users instantly verify content authenticity with high scientific confidence."
   },
-
   {
     id: 7,
-    category: "Ai",
-    subCategory: "Ai-Foundation",
-    projectName: "CyberCity",
+    category: "video",
+    projectName: "CYBERCITY",
     projectImage: "/assets/cyberCity.png",
-    alternate:
-      "Advanced Security Audit Agent to Protect Your Website from Cyber Threats",
+    alternate: "Advanced Security Audit Agent",
     href: "https://vulnerability-dun.vercel.app/",
-    projectDesc:
-      "Advanced Security Audit Agent to Protect Your Website from Cyber Threats",
+    projectDesc: "Advanced Security Audit Agent to Protect Your Website from Cyber Threats with real-time monitoring.",
+    technologies: ["Cybersecurity", "React", "Node.js", "Docker"],
+    videoUrl: "/videos/cybercity-demo.mp4",
+    detailDesc: "Advanced Security Audit Agent to Protect Your Website from Cyber Threats.",
+    challenge: "Creating an automated, comprehensive security audit agent that could scan websites for vulnerabilities and provide actionable, real-time reports.",
+    solution: "We developed a robust React and Node.js platform containerized with Docker, featuring automated scanning scripts and a real-time vulnerability dashboard.",
+    features: ["Automated vulnerability scanning", "Real-time security alerts", "Comprehensive PDF reporting", "Actionable remediation steps"],
+    result: "Empowered businesses to proactively identify and fix security flaws, significantly reducing their cyber risk exposure."
   },
 ];

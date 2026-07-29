@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, MouseEvent } from "react";
-import heroImage from "../../../../../public/images/blockChain/DeFi/heoSection.jpg";
+import heroImage from "../../../../../public/images/blockChain/DeFi/heroSection.jpg";
 import { StaticImageData } from "next/image";
 interface deFiSectionProps {}
 

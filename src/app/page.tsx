@@ -33,7 +33,7 @@ export const metadata = {
 import Footer from "@/components/footer";
 // import Expertise from "@/components/home/expertiseweb";
 // import OurTeam from "@/components/home/team";
-import HeroSection from "@/components/home/heoSection";
+import HeroSection from "@/components/home/heroSection";
 // import OfferSection from "@/components/home/offer";
 import SevicesOffer from "@/components/home/servicesOffer";
 import Navbar from "@/components/navbar";

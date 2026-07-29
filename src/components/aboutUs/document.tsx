@@ -41,7 +41,7 @@ const DocumtentsSectins: FC<documentsProps> = () => {
       </div>
       <div className="flex flex-col gap-3 px-5">
         <p className="text-sky-950">About Us</p>
-        <h4 className="  text-2xl  md:text-4xl lg:text-5xl font-bold">We Are Professional Software Service & development</h4>
+        <h4 className="  text-2xl  md:text-4xl lg:text-5xl font-bold">We Are Professional Software Service & Development</h4>
         <p>Founded with a vision to redefine technological excellence, BawdicSoft is a dynamic team of skilled professionals passionate about harnessing the power of technology to solve real-world challenges. Our expertise spans across Artificial Intelligence (AI), Blockchain, Web Applications, Mobile Applications, and WordPress Website Development, enabling us to provide holistic solutions tailored to your unique needs.</p>
         <div className="flex gap-1 md:gap-3 items-center pt-5">
           <Link href={""} className="bg-sky-950 text-white  py-3 px-2 text-sm md:text-lg text-center md:py-4 md:px-4 lg:px-16 hover:bg-sky-700 rounded-xl font-semibold">Show More</Link>

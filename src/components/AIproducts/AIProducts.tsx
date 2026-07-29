@@ -12,9 +12,9 @@ export default function AIProducts() {
 
                     {/* Deep-Trace */}
                     <div className="p-8 border border-gray-200 rounded-xl hover:shadow-lg transition-shadow">
-                        <h3 className="text-xl font-bold mb-3">Deep-Trace</h3>
+                        <h3 className="text-xl text-blue-600 font-bold mb-3">Deep-Trace</h3>
                         <p className="text-gray-600 mb-6 leading-relaxed">
-                            AI detection for text, images & video. Know instantly if content is AI-generated or human-written.
+                            AI detection for text, images & video. Know instantly if it is AI-generated or human-written.
                         </p>
                         <a href="https://deep-trace-snowy.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">
                             Try Live Demo  →
@@ -23,7 +23,7 @@ export default function AIProducts() {
 
                     {/* CyberCity */}
                     <div className="p-8 border border-gray-200 rounded-xl hover:shadow-lg transition-shadow">
-                        <h3 className="text-xl font-bold mb-3">CyberCity</h3>
+                        <h3 className="text-xl text-blue-600 font-bold mb-3">CyberCity</h3>
                         <p className="text-gray-600 mb-6 leading-relaxed">
                             AI-powered security audit agent. Run a free scan and get an instant vulnerability report.
                         </p>
@@ -34,12 +34,12 @@ export default function AIProducts() {
 
                     {/* Hashfor */}
                     <div className="p-8 border border-gray-200 rounded-xl hover:shadow-lg transition-shadow">
-                        <h3 className="text-xl font-bold mb-3">Hashfor</h3>
+                        <h3 className="text-xl text-blue-600 font-bold mb-3">Hashfor</h3>
                         <p className="text-gray-600 mb-6 leading-relaxed">
                             AI visibility & SEO audit platform. Boost your rankings with data-driven insights.
                         </p>
                         <a href="https://www.hashfor.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">
-                            Get My Free Audit →
+                            Provide your email →
                         </a>
                     </div>
 

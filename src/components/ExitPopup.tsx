@@ -169,7 +169,7 @@ export default function ExitPopup() {
           href="/free-audit"
           className="block w-full text-center bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-all"
         >
-          Get My Free Audit
+          Provide your details →
         </Link>
 
         <button
