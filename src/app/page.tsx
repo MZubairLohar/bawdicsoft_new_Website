@@ -47,7 +47,7 @@ import Cta from "@/components/home/cta";
 import AIProducts from "@/components/AIproducts/AIProducts";
 import LeadMagnet from "@/components/home/LeadMagnet";
 import ExitPopup from '@/components/ExitPopup';
-import StickyHeader from '@/components/StickyHeader';
+// import StickyHeader from '@/components/StickyHeader';
 
 export default function Home() {
   return (
@@ -82,7 +82,7 @@ export default function Home() {
   }
 }` }}
       />
-      <StickyHeader />
+      {/* <StickyHeader /> */}
       <HeroSection />
       <TrustSignalsSection />
       <AIProducts />

@@ -55,7 +55,7 @@ const HeroSection: FC<HeroSectionProps> = () => {
               onClick={handlePrimaryCTA}
               className="w-full sm:w-auto px-8 py-4 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/50 shadow-lg"
             >
-              Book your 30-Min Strategy Call
+              Book your 15-Min Strategy Call
             </button>
 
             <button

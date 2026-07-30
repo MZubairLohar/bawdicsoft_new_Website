@@ -22,7 +22,7 @@ const Cta = () => {
           </h3>
 
           <p className="text-lg text-gray-200 max-w-3xl mx-auto mb-6">
-            Book your 30-minute call with Syed Bilal — CEO of BawdicSoft. No sales pitch. Just clarity on your next step.
+            Book your 15-minute call with Syed Bilal — CEO of BawdicSoft. No sales pitch. Just clarity on your next step.
           </p>
 
           {/* 2 Buttons Container */}
