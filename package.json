@@ -19,6 +19,7 @@
     "framer-motion": "^10.18.0",
     "jspdf": "^4.2.1",
     "lucide-react": "^1.26.0",
+    "mongoose": "^9.9.0",
     "my-app": "file:",
     "next": "^16.2.12",
     "nodemailer": "^6.9.7",
