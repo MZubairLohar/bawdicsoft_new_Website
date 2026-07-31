@@ -30,3 +30,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+
+export async function GET() {
+  try {
+    await connectToDatabase();
+    
+    // Fetch all projects from MongoDB, sorted by newest first
+    const projects = await Project.find({}).sort({ createdAt: -1 });
+    
+    return NextResponse.json({ success: true, data: projects }, { status: 200 });
+  } catch (error: any) {
+    console.error('Error fetching projects:', error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}

@@ -1,11 +1,52 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { allData, ProjectData } from "../allData";
 
 const AgencyPortfolio = () => {
+  const [mongoProjects, setMongoProjects] = useState<ProjectData[]>([]);
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const res = await fetch('/api/admin/projects');
+        const data = await res.json();
+        
+        if (data.success) {
+          // Convert MongoDB projects to match ProjectData interface
+          const formattedProjects = data.data.map((p: any) => ({
+            id: p._id, 
+            category: p.category || "design",
+            projectName: p.projectName,
+            // ✅ AUTO-FIX: If the URL starts with 'public/', remove it.
+            projectImage: p.projectImage ? p.projectImage.replace('public/', '/') : '/assets/placeholder.png',
+            alternate: p.alternate || p.projectName,
+            href: p.href || "#",
+            projectDesc: p.projectDesc,
+            technologies: p.technologies || [],
+            detailDesc: p.detailDesc,
+            challenge: p.challenge,
+            solution: p.solution,
+            features: p.features || [],
+            result: p.result,
+          }));
+          setMongoProjects(formattedProjects);
+        }
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProjects();
+  }, []);
+
+  // Combine existing projects (allData) with new MongoDB projects
+  const allProjects = [...allData, ...mongoProjects];
 
   return (
     <section className="relative bg-white text-gray-900 py-24 px-4 md:px-12 overflow-hidden">
@@ -25,9 +66,17 @@ const AgencyPortfolio = () => {
           </h3>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500 mx-auto mb-4"></div>
+            <p className="text-gray-500">Loading projects...</p>
+          </div>
+        )}
+
         {/* Project List with Alternating Layout */}
         <div className="space-y-24 md:space-y-40">
-          {allData.map((project, index) => {
+          {allProjects.map((project, index) => {
             const isReversed = index % 2 !== 0; // Odd indices: image on right
 
             // 1. The Image Card (Scales as a whole unit)
@@ -43,7 +92,7 @@ const AgencyPortfolio = () => {
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 60vw"
                   className="object-contain p-4 md:p-8" 
-                  priority={project.id <= 2}
+                  priority={index < 3}
                 />
               </div>
             );
