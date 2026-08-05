@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { BarChart3, Folder, Users, Settings, LogOut } from 'lucide-react';
 
 interface User {
   id: string;
@@ -69,14 +70,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   const navLinks = [
-    { name: "Dashboard", href: "/admin", icon: "📊" },
-    { name: "Projects", href: "/admin/projects", icon: "📁" },
-    { name: "CRM / Leads", href: "/admin/crm", icon: "👥" },
+    { name: "Dashboard", href: "/admin", icon: BarChart3 },
+    { name: "Projects", href: "/admin/projects", icon: Folder },
+    { name: "CRM / Leads", href: "/admin/crm", icon: Users },
   ];
 
   // Add Settings link only for admin users
   if (user?.role === 'admin') {
-    navLinks.push({ name: "Settings", href: "/admin/settings", icon: "⚙️" });
+    navLinks.push({ name: "Settings", href: "/admin/settings", icon: Settings });
   }
 
   return (
@@ -102,7 +103,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     : "text-gray-400 hover:bg-gray-800 hover:text-white"
                 }`}
               >
-                <span>{link.icon}</span>
+                <link.icon className="h-5 w-5" />
                 {link.name}
               </Link>
             );
@@ -114,7 +115,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/10 transition-colors"
           >
-            <span>🚪</span> Logout
+            <LogOut className="h-5 w-5" /> Logout
           </button>
         </div>
       </aside>

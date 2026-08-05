@@ -1,12 +1,13 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BarChart3, Folder, Users, Settings } from 'lucide-react';
 
 const navLinks = [
-  { name: "Dashboard", href: "/admin", icon: "📊" },
-  { name: "Projects", href: "/admin/projects", icon: "📁" },
-  { name: "CRM / Leads", href: "/admin/crm", icon: "👥" },
-  { name: "Settings", href: "/admin/settings", icon: "⚙️" },
+  { name: "Dashboard", href: "/admin", icon: BarChart3 },
+  { name: "Projects", href: "/admin/projects", icon: Folder },
+  { name: "CRM / Leads", href: "/admin/crm", icon: Users },
+  { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
 export default function Sidebar() {
@@ -33,7 +34,7 @@ export default function Sidebar() {
                   : "text-gray-400 hover:bg-gray-800 hover:text-white"
               }`}
             >
-              <span>{link.icon}</span>
+              <link.icon className="h-5 w-5" />
               {link.name}
             </Link>
           );
