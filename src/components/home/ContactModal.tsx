@@ -17,6 +17,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     challenge: "",
     timeline: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -24,14 +25,37 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
- const handleSubmit = (e: React.FormEvent) => {
+ const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
+  setIsSubmitting(true);
 
-  console.log("FORM DATA");
-  console.log(form);
-  setTimeout(() => {
-    onClose();
-  }, 500);
+  try {
+    const response = await fetch('/api/admin/leads', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: form.name,
+        email: form.email,
+        service: `Strategy Call Request - ${form.industry || 'Unknown Industry'}`,
+        message: `Company: ${form.company}, Size: ${form.companySize}, Challenge: ${form.challenge}, Timeline: ${form.timeline}`,
+        source: 'Home Page - Book Strategy Call'
+      }),
+    });
+
+    if (response.ok) {
+      console.log("Lead submitted successfully");
+      onClose(); // Close modal after successful submission
+    } else {
+      alert("Failed to submit your information. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error submitting lead:", error);
+    alert("An error occurred. Please try again.");
+  } finally {
+    setIsSubmitting(false);
+  }
 };
 
 
@@ -44,12 +68,13 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-black text-xl"
+          disabled={isSubmitting}
         >
           ✕
         </button>
 
         <h2 className="text-xl font-bold mb-6 text-center">
-          Let’s Understand Your Needs
+          Let's Understand Your Needs
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -62,7 +87,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             required
             value={form.name}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           />
 
           {/* Work Email */}
@@ -73,7 +99,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             required
             value={form.email}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           />
           </div>
 
@@ -86,7 +113,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             required
             value={form.company}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           />
 
           {/* Company Size */}
@@ -95,7 +123,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             required
             value={form.companySize}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           >
             <option value="">Company Size</option>
             <option value="1-10">1–10</option>
@@ -112,7 +141,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             required
             value={form.industry}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           >
             <option value="">Industry</option>
             <option value="SaaS">SaaS</option>
@@ -128,7 +158,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             required
             value={form.challenge}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           />
 
           {/* Timeline */}
@@ -137,7 +168,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             required
             value={form.timeline}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           >
             <option value="">Timeline</option>
             <option value="Now">Now</option>
@@ -148,9 +180,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition"
+            disabled={isSubmitting}
+            className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
-            Submit Details
+            {isSubmitting ? 'Submitting...' : 'Submit Details'}
           </button>
         </form>
       </div>

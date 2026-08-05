@@ -32,6 +32,7 @@ const AgencyPortfolio = () => {
             solution: p.solution,
             features: p.features || [],
             result: p.result,
+            createdAt: p.createdAt, // Include the creation date for sorting
           }));
           setMongoProjects(formattedProjects);
         }
@@ -45,8 +46,15 @@ const AgencyPortfolio = () => {
     fetchProjects();
   }, []);
 
-  // Combine existing projects (allData) with new MongoDB projects
-  const allProjects = [...allData, ...mongoProjects];
+  // Combine existing projects (allData) with new MongoDB projects and sort by date (newest first)
+  const allProjects = [...allData, ...mongoProjects]
+    .map(project => ({
+      ...project,
+      // Ensure consistent ID type and assign an old date to hardcoded projects so DB projects appear first
+      id: project.id || (project as any)._id || Math.random().toString(36).substr(2, 9),
+      createdAt: project.createdAt || '2000-01-01T00:00:00.000Z'
+    }))
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   return (
     <section className="relative bg-white text-gray-900 py-24 px-4 md:px-12 overflow-hidden">

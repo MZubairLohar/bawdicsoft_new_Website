@@ -130,7 +130,7 @@
 
 
 export interface ProjectData {
-  id: number;
+  id: string | number;
   category: "design" | "video" | "content";
   projectName: string;
   projectImage: string;
@@ -167,6 +167,9 @@ export interface ProjectData {
   realTimeMonitoringDec?: string;
   Applications?: string;
   applicationsDec?: string;
+
+  // Added for sorting purposes
+  createdAt?: string;
 }
 
 export const allData: ProjectData[] = [
