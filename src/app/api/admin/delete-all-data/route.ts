@@ -9,7 +9,7 @@ import { cookies } from 'next/headers';
 export async function DELETE() {
   try {
     // Check authentication
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get('session')?.value;
 
     if (!token) {
