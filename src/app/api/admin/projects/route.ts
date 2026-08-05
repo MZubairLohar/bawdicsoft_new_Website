@@ -1,9 +1,29 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import Project from '@/models/project';
+import { verifySessionToken } from '@/lib/auth';
+import { cookies } from 'next/headers';
+
+async function checkAuth() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('session')?.value;
+
+  if (!token) {
+    return null;
+  }
+
+  const payload = verifySessionToken(token);
+  return payload;
+}
 
 export async function POST(request: Request) {
   try {
+    // Check authentication
+    const user = await checkAuth();
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     await connectToDatabase();
 
     const body = await request.json();
@@ -33,6 +53,12 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
+    // Check authentication
+    const user = await checkAuth();
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     await connectToDatabase();
     
     // Fetch all projects from MongoDB, sorted by newest first

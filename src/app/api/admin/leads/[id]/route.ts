@@ -2,12 +2,32 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import Lead from '@/models/lead';
 import mongoose from 'mongoose';
+import { verifySessionToken } from '@/lib/auth';
+import { cookies } from 'next/headers';
+
+async function checkAuth() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('session')?.value;
+
+  if (!token) {
+    return null;
+  }
+
+  const payload = verifySessionToken(token);
+  return payload;
+}
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Check authentication
+    const user = await checkAuth();
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { id } = await params;
     await connectToDatabase();
 
@@ -33,6 +53,12 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Check authentication
+    const user = await checkAuth();
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { id } = await params;
     await connectToDatabase();
 
@@ -72,6 +98,12 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Check authentication
+    const user = await checkAuth();
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { id } = await params;
     await connectToDatabase();
 

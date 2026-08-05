@@ -1,15 +1,72 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleLogout = () => {
-    // TODO: Clear auth cookies/tokens here later
-    router.push("/auth/login");
+  useEffect(() => {
+    // Check session on mount
+    const checkSession = async () => {
+      try {
+        const response = await fetch('/api/auth/session');
+        const data = await response.json();
+        
+        if (!data.success) {
+          // Redirect to login if not authenticated
+          router.push('/auth/login');
+          return;
+        }
+        
+        setUser(data.data);
+      } catch (error) {
+        console.error('Session check failed:', error);
+        router.push('/auth/login');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkSession();
+  }, [router]);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      // Clear any local state and redirect to login
+      setUser(null);
+      router.push('/auth/login');
+      router.refresh();
+    }
   };
+
+  // Show loading state while checking session
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div>
+      </div>
+    );
+  }
+
+  // Don't render anything if still loading or redirecting
+  if (!user && !loading) {
+    return null;
+  }
 
   const navLinks = [
     { name: "Dashboard", href: "/admin", icon: "📊" },
@@ -68,11 +125,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               {pathname === "/admin/crm" && "CRM & Lead Management"}
               {pathname === "/admin/settings" && "Admin Settings"}
             </h2>
-            <p className="text-gray-500 text-sm mt-1">Welcome back, Admin</p>
+            <p className="text-gray-500 text-sm mt-1">Welcome back, {user?.name || 'Admin'}</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold">
-              A
+              {user?.name?.charAt(0)?.toUpperCase() || 'A'}
             </div>
           </div>
         </header>

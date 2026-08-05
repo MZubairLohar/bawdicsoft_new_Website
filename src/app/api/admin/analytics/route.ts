@@ -2,9 +2,29 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import Project from '@/models/project';
 import Lead from '@/models/lead';
+import { verifySessionToken } from '@/lib/auth';
+import { cookies } from 'next/headers';
+
+async function checkAuth() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('session')?.value;
+
+  if (!token) {
+    return null;
+  }
+
+  const payload = verifySessionToken(token);
+  return payload;
+}
 
 export async function GET() {
   try {
+    // Check authentication
+    const user = await checkAuth();
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
     await connectToDatabase();
 
     const [totalProjects, totalLeads, newLeads, contactedLeads, closedLeads] = await Promise.all([

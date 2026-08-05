@@ -22,21 +22,31 @@ export default function LoginPage() {
       return;
     }
 
-    // Mock authentication - replace with your actual authentication logic
-    // This is just a demo - in production, you'd validate against your backend
-    if (email === 'admin@bawdicsoft.com' && password === 'admin123') {
-      // Store session or token here in a real app
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('userRole', 'admin');
-      
-      // Redirect to admin dashboard
-      router.push('/admin');
-      router.refresh();
-    } else {
-      setError('Invalid credentials. Please try again.');
-    }
+    try {
+      // Call the login API
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    setIsLoading(false);
+      const data = await response.json();
+
+      if (data.success) {
+        // Redirect to admin dashboard
+        router.push('/admin');
+        router.refresh();
+      } else {
+        setError(data.error || 'Invalid credentials. Please try again.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('An error occurred during login. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -147,11 +157,7 @@ export default function LoginPage() {
         </form>
         
         <div className="text-center text-sm text-gray-500">
-          <p>Need an account?{' '}
-            <a href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
-              Sign up
-            </a>
-          </p>
+          <p>Contact administrator for access to this system.</p>
         </div>
       </div>
     </div>
