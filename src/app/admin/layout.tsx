@@ -72,8 +72,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Dashboard", href: "/admin", icon: "📊" },
     { name: "Projects", href: "/admin/projects", icon: "📁" },
     { name: "CRM / Leads", href: "/admin/crm", icon: "👥" },
-    { name: "Settings", href: "/admin/settings", icon: "⚙️" },
   ];
+
+  // Add Settings link only for admin users
+  if (user?.role === 'admin') {
+    navLinks.push({ name: "Settings", href: "/admin/settings", icon: "⚙️" });
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50">
