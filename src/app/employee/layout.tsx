@@ -2,8 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BarChart3, Folder, Users, Settings, LogOut, Briefcase, Crown } from 'lucide-react';
-import { hasRole, EMPLOYEE_MGMT_ROLES, SETTINGS_ROLES } from '@/lib/roles';
+import { LayoutDashboard, CalendarCheck, CalendarDays, Wallet, LogOut } from 'lucide-react';
 
 interface User {
   id: string;
@@ -12,36 +11,26 @@ interface User {
   role: string;
 }
 
-// Map of role -> display label and badge styling
-const roleBadgeStyles: Record<string, { label: string; className: string }> = {
-  super_admin: { label: "Super Admin", className: "bg-yellow-100 text-yellow-800 border border-yellow-300" },
-  admin: { label: "Admin", className: "bg-purple-100 text-purple-800 border border-purple-300" },
-  manager: { label: "Manager", className: "bg-blue-100 text-blue-800 border border-blue-300" },
-  rep: { label: "Representative", className: "bg-green-100 text-green-800 border border-green-300" },
-};
-
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function EmployeeLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check session on mount
     const checkSession = async () => {
       try {
         const response = await fetch('/api/auth/session');
         const data = await response.json();
 
         if (!data.success) {
-          // Redirect to login if not authenticated
           router.push('/auth/login');
           return;
         }
 
-        // If user is a plain employee (user role), redirect to employee portal
-        if (data.data.role === 'user') {
-          router.push('/employee');
+        // If user is admin, redirect to admin portal
+        if (data.data.role === 'admin') {
+          router.push('/admin');
           return;
         }
 
@@ -63,14 +52,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      // Clear any local state and redirect to login
       setUser(null);
       router.push('/auth/login');
       router.refresh();
     }
   };
 
-  // Show loading state while checking session
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -79,39 +66,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  // Don't render anything if still loading or redirecting
   if (!user && !loading) {
     return null;
   }
 
-  // Build nav links based on role hierarchy
-  const role = user?.role || '';
-  const navLinks = [
-    { name: "Dashboard", href: "/admin", icon: BarChart3 },
-    { name: "Portfolio", href: "/admin/projects", icon: Folder },
-    { name: "Leads", href: "/admin/crm", icon: Users },
+const navLinks = [
+    { name: "Dashboard", href: "/employee", icon: LayoutDashboard },
+    { name: "Attendance", href: "/employee/attendance", icon: CalendarCheck },
+    { name: "Leave Applications", href: "/employee/leaves", icon: CalendarDays },
+    { name: "My Salary", href: "/employee/salary", icon: Wallet },
   ];
-
-  // Employee Management: super_admin, admin, manager
-  if (hasRole(role, EMPLOYEE_MGMT_ROLES)) {
-    navLinks.push({ name: "Employee Management", href: "/admin/employees", icon: Briefcase });
-  }
-
-  // Settings: super_admin, admin
-  if (hasRole(role, SETTINGS_ROLES)) {
-    navLinks.push({ name: "Settings", href: "/admin/settings", icon: Settings });
-  }
-
-  const roleBadge = roleBadgeStyles[role] || { label: role, className: "bg-gray-100 text-gray-700 border border-gray-300" };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <aside className="w-64 bg-[#0a0a0a] text-white flex flex-col fixed h-full justify-between">
         <div className="p-6 border-b border-gray-800">
-          <h1 className="text-xl font-bold tracking-tight flex items-center gap-2">
-            {role === 'super_admin' && <Crown className="h-5 w-5 text-yellow-400" />}
-            Bawdic<span className="text-brand-500">Soft</span> Admin
+          <h1 className="text-xl font-bold tracking-tight">
+            Bawdic<span className="text-brand-500">Soft</span> Portal
           </h1>
         </div>
 
@@ -150,20 +122,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <header className="flex justify-between items-center mb-8">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">
-              {pathname === "/admin" && "Dashboard Overview"}
-              {pathname === "/admin/projects" && "Portfolio"}
-              {pathname === "/admin/crm" && "Lead Management"}
-              {pathname === "/admin/employees" && "Employee Management"}
-              {pathname === "/admin/settings" && "Admin Settings"}
+{pathname === "/employee" && "Employee Dashboard"}
+              {pathname === "/employee/attendance" && "My Attendance"}
+              {pathname === "/employee/leaves" && "Leave Applications"}
+              {pathname === "/employee/salary" && "My Salary"}
             </h2>
-            <p className="text-gray-500 text-sm mt-1">Welcome back, {user?.name || 'Admin'}</p>
+            <p className="text-gray-500 text-sm mt-1">Welcome back, {user?.name || 'Employee'}</p>
           </div>
           <div className="flex items-center gap-4">
-            <span className={`px-3 py-1 text-xs font-semibold rounded-full ${roleBadge.className}`}>
-              {roleBadge.label}
-            </span>
             <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold">
-              {user?.name?.charAt(0)?.toUpperCase() || 'A'}
+              {user?.name?.charAt(0)?.toUpperCase() || 'E'}
             </div>
           </div>
         </header>
@@ -173,5 +141,3 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </div>
   );
 }
-
-

@@ -35,8 +35,15 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (data.success) {
-        // Redirect to admin dashboard
-        router.push('/admin');
+        // Redirect based on role:
+        // super_admin/admin/manager/rep -> admin portal
+        // user -> employee portal
+        const role = data.data?.role;
+        if (role === 'super_admin' || role === 'admin' || role === 'manager' || role === 'rep') {
+          router.push('/admin');
+        } else {
+          router.push('/employee');
+        }
         router.refresh();
       } else {
         setError(data.error || 'Invalid credentials. Please try again.');
@@ -129,12 +136,6 @@ export default function LoginPage() {
               <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                 Remember me
               </label>
-            </div>
-
-            <div className="text-sm">
-              <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-                Forgot your password?
-              </a>
             </div>
           </div>
 

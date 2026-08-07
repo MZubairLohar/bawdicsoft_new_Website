@@ -117,22 +117,6 @@ import Link from "next/link";
 export default function ExitPopup() {
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    const handleMouseLeave = (e: MouseEvent) => {
-      const popupClosed = sessionStorage.getItem("exitPopupClosed");
-
-      if (!popupClosed && e.clientY <= 0) {
-        setIsVisible(true);
-      }
-    };
-
-    document.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      document.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
-
   // Temporary close (Cross button)
   const closeTemporary = () => {
     setIsVisible(false);
