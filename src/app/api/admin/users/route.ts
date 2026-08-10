@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const { name, email, password, role } = await request.json();
+    const { name, email, password, role, avatar, phone, bio } = await request.json();
 
     if (!name || !email || !password || !role) {
       return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
@@ -79,7 +79,10 @@ export async function POST(request: Request) {
       name,
       email: email.toLowerCase(),
       password: hashedPassword,
-      role
+      role,
+      avatar: typeof avatar === 'string' ? avatar.trim() : '',
+      phone: typeof phone === 'string' ? phone.trim() : '',
+      bio: typeof bio === 'string' ? bio.trim() : '',
     });
 
     await newUser.save();
@@ -109,7 +112,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const { userId, name, email, password, role } = await request.json();
+    const { userId, name, email, password, role, avatar, phone, bio } = await request.json();
 
     if (!userId) {
       return NextResponse.json({ success: false, error: 'User ID is required' }, { status: 400 });
@@ -142,6 +145,9 @@ export async function PUT(request: Request) {
     if (email) updates.email = email.toLowerCase();
     if (role) updates.role = role;
     if (password) updates.password = hashPassword(password);
+    if (typeof avatar === 'string') updates.avatar = avatar.trim();
+    if (typeof phone === 'string') updates.phone = phone.trim();
+    if (typeof bio === 'string') updates.bio = bio.trim();
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,

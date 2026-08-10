@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { hasRole, SALARY_ROLES } from '@/lib/roles';
+import EmployeeTabs from "@/components/admin/employees/EmployeeTabs";
 
 interface LeaveRecord {
   _id: string;
@@ -37,8 +36,6 @@ export default function AdminLeavesPage() {
     }
     fetchRole();
   }, []);
-
-  const canViewSalary = role ? hasRole(role, SALARY_ROLES) : false;
 
   const fetchLeaves = async (status?: string) => {
     setLoading(true);
@@ -118,46 +115,37 @@ export default function AdminLeavesPage() {
   const filteredLeaves = filter === "All" ? leaves : leaves.filter(l => l.status === filter);
 
   return (
-    <div className="space-y-6">
-      {/* Sub-nav */}
-      <div className="flex gap-2">
-        <Link href="/admin/employees" className="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">
-          Employees
-        </Link>
-        <Link href="/admin/employees/attendance" className="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">
-          Attendance
-        </Link>
-        {canViewSalary && (
-          <Link href="/admin/employees/salary" className="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">
-            Salary
-          </Link>
-        )}
-        <Link href="/admin/employees/leaves" className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-900 text-white">
-          Leaves
-        </Link>
-      </div>
+    <div className="space-y-8 p-4 md:p-6 [perspective:1200px]">
+      <EmployeeTabs activeTab="leaves" role={role} />
+
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-700 p-6 text-white shadow-2xl shadow-indigo-900/30 md:p-8">
+        <div className="pointer-events-none absolute -right-12 -top-10 h-40 w-40 rounded-full bg-white/20 blur-2xl" />
+        <div className="pointer-events-none absolute -bottom-14 left-1/3 h-40 w-40 rounded-full bg-purple-300/25 blur-2xl" />
+        <h2 className="text-2xl font-black tracking-tight">Leave Operations Hub</h2>
+        <p className="mt-1 text-sm text-white/85">Review requests, capture decisions, and maintain a clean leave audit trail.</p>
+      </section>
 
       {message && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+        <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 shadow-sm">
           {message}
         </div>
       )}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 shadow-sm">
           {error}
         </div>
       )}
 
       {/* Filters */}
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2 rounded-3xl border border-white/70 bg-white/85 p-4 shadow-xl shadow-sky-100/70 backdrop-blur">
         {["All", "Pending", "Approved", "Rejected"].map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 ${
               filter === f
-                ? "bg-gray-900 text-white"
-                : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                ? "bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-700/25"
+                : "border border-slate-200 bg-white text-slate-600 hover:border-sky-200 hover:text-sky-700 hover:shadow-md"
             }`}
           >
             {f}
@@ -166,50 +154,50 @@ export default function AdminLeavesPage() {
       </div>
 
       {/* Leave applications */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="p-4 md:p-6 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">Leave Applications</h3>
-          <p className="text-sm text-gray-500 mt-1">Review and manage employee leave requests</p>
+      <div className="overflow-hidden rounded-3xl border border-white/70 bg-white shadow-2xl shadow-sky-100/80 transition-all duration-300 hover:shadow-2xl">
+        <div className="border-b border-slate-100 bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 p-4 text-white md:p-6">
+          <h3 className="text-lg font-bold text-white">Leave Applications</h3>
+          <p className="mt-1 text-sm text-white/80">Review and manage employee leave requests</p>
         </div>
 
         {loading ? (
           <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-amber-600" />
           </div>
         ) : filteredLeaves.length === 0 ? (
-          <div className="p-12 text-center text-gray-500">
+          <div className="p-12 text-center text-slate-500">
             <p>No leave applications found.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-gray-50 text-gray-500">
+            <table className="w-full min-w-[1100px] text-left text-sm">
+              <thead className="bg-gradient-to-r from-sky-50 via-indigo-50 to-violet-50 text-slate-500">
                 <tr>
-                  <th className="px-6 py-3 font-medium">Employee</th>
-                  <th className="px-6 py-3 font-medium">Type</th>
-                  <th className="px-6 py-3 font-medium">Dates</th>
-                  <th className="px-6 py-3 font-medium">Reason</th>
-                  <th className="px-6 py-3 font-medium">Status</th>
-                  <th className="px-6 py-3 font-medium">Admin Remarks</th>
-                  <th className="px-6 py-3 font-medium text-right">Actions</th>
+                  <th className="px-6 py-3 font-semibold">Employee</th>
+                  <th className="px-6 py-3 font-semibold">Type</th>
+                  <th className="px-6 py-3 font-semibold">Dates</th>
+                  <th className="px-6 py-3 font-semibold">Reason</th>
+                  <th className="px-6 py-3 font-semibold">Status</th>
+                  <th className="px-6 py-3 font-semibold">Admin Remarks</th>
+                  <th className="px-6 py-3 text-right font-semibold">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-slate-100">
                 {filteredLeaves.map((leave) => (
-                  <tr key={leave._id} className="hover:bg-gray-50 align-top">
+                  <tr key={leave._id} className="group align-top transition-all duration-300 hover:bg-sky-50/35 hover:[transform:translateX(2px)]">
                     <td className="px-6 py-4">
-                      <p className="font-medium text-gray-900">{leave.employeeId?.name || "Employee"}</p>
-                      <p className="text-gray-500 text-xs">{leave.employeeId?.position || ""}</p>
+                      <p className="font-semibold text-slate-900">{leave.employeeId?.name || "Employee"}</p>
+                      <p className="text-xs text-slate-500">{leave.employeeId?.position || ""}</p>
                     </td>
-                    <td className="px-6 py-4 text-gray-600">{leave.type}</td>
-                    <td className="px-6 py-4 text-gray-600">
+                    <td className="px-6 py-4 text-slate-600">{leave.type}</td>
+                    <td className="px-6 py-4 text-slate-600">
                       {new Date(leave.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                       {" - "}
                       {new Date(leave.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </td>
-                    <td className="px-6 py-4 text-gray-600 max-w-[200px]">{leave.reason}</td>
+                    <td className="max-w-[240px] px-6 py-4 text-slate-600">{leave.reason}</td>
                     <td className="px-6 py-4">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusColor[leave.status]}`}>
+                      <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${statusColor[leave.status]}`}>
                         {leave.status}
                       </span>
                     </td>
@@ -219,7 +207,7 @@ export default function AdminLeavesPage() {
                         value={remarks[leave._id] || ""}
                         onChange={(e) => setRemarks({ ...remarks, [leave._id]: e.target.value })}
                         placeholder="Add remarks..."
-                        className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-brand-500 outline-none"
+                        className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 outline-none transition-all duration-300 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                         disabled={leave.status !== 'Pending'}
                       />
                     </td>
@@ -228,13 +216,13 @@ export default function AdminLeavesPage() {
                         <div className="flex gap-2 justify-end">
                           <button
                             onClick={() => handleStatusChange(leave, 'Approved')}
-                            className="text-green-600 hover:text-green-800 font-medium"
+                            className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-emerald-100 hover:shadow-sm"
                           >
                             Approve
                           </button>
                           <button
                             onClick={() => handleStatusChange(leave, 'Rejected')}
-                            className="text-red-600 hover:text-red-800 font-medium"
+                            className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose-100 hover:shadow-sm"
                           >
                             Reject
                           </button>
@@ -242,7 +230,7 @@ export default function AdminLeavesPage() {
                       ) : (
                         <button
                           onClick={() => handleDelete(leave._id)}
-                          className="text-red-500 hover:text-red-700 font-medium"
+                          className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose-100 hover:shadow-sm"
                         >
                           Delete
                         </button>

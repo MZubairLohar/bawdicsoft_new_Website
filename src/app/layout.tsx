@@ -57,10 +57,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 import Script from "next/script";
-import WhatsAppButton from '@/components/WhatsAppButton';
+import SiteChrome from "@/components/SiteChrome";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -94,13 +92,8 @@ export default function RootLayout({
             `,
           }}
         />
-        
-        <Navbar />
-        <main>
-          {children}
-        </main>
-        <WhatsAppButton />
-        <Footer />
+
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

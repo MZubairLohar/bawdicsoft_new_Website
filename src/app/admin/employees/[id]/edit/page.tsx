@@ -7,6 +7,7 @@ interface Employee {
   _id: string;
   name: string;
   email: string;
+  avatar?: string;
   phone?: string;
   position: string;
   department?: string;
@@ -26,6 +27,7 @@ export default function EditEmployeePage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    avatar: "",
     phone: "",
     position: "",
     department: "",
@@ -40,6 +42,9 @@ export default function EditEmployeePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [avatarError, setAvatarError] = useState("");
 
   useEffect(() => {
     async function fetchEmployee() {
@@ -52,6 +57,7 @@ export default function EditEmployeePage() {
           setForm({
             name: emp.name || "",
             email: emp.email || "",
+            avatar: emp.avatar || "",
             phone: emp.phone || "",
             position: emp.position || "",
             department: emp.department || "",
@@ -81,6 +87,67 @@ status: emp.status || "Active",
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const toDataUrl = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || ""));
+      reader.onerror = () => reject(new Error("Failed to read image file"));
+      reader.readAsDataURL(file);
+    });
+
+  const optimizeAvatar = async (file: File): Promise<string> => {
+    const raw = await toDataUrl(file);
+    const image = new Image();
+
+    await new Promise<void>((resolve, reject) => {
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error("Failed to load image"));
+      image.src = raw;
+    });
+
+    const maxSize = 420;
+    const ratio = Math.min(maxSize / image.width, maxSize / image.height, 1);
+    const width = Math.max(1, Math.round(image.width * ratio));
+    const height = Math.max(1, Math.round(image.height * ratio));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Failed to prepare image preview");
+
+    ctx.drawImage(image, 0, 0, width, height);
+    return canvas.toDataURL("image/jpeg", 0.86);
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setAvatarError("Please select a valid image file.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setAvatarError("Image is too large. Please choose a file under 5MB.");
+      return;
+    }
+
+    setAvatarError("");
+    setAvatarUploading(true);
+    try {
+      const optimized = await optimizeAvatar(file);
+      setForm((prev) => ({ ...prev, avatar: optimized }));
+    } catch (uploadErr) {
+      console.error("Failed to process avatar:", uploadErr);
+      setAvatarError("Failed to process image. Please try another file.");
+    } finally {
+      setAvatarUploading(false);
+      e.target.value = "";
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -94,6 +161,7 @@ status: emp.status || "Active",
           ...form,
           salary: form.salary ? Number(form.salary) : undefined,
           dateOfJoining: form.dateOfJoining || undefined,
+          avatar: form.avatar.trim() || undefined,
         }),
       });
 
@@ -114,42 +182,85 @@ status: emp.status || "Active",
     }
   };
 
+  const handleDeleteEmployee = async () => {
+    const approved = confirm("Are you sure you want to permanently delete this employee?");
+    if (!approved) return;
+
+    setDeleting(true);
+    setError("");
+    try {
+      const res = await fetch(`/api/admin/employees/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Employee deleted successfully!");
+        router.push("/admin/employees");
+        router.refresh();
+      } else {
+        setError(data.error || "Failed to delete employee");
+      }
+    } catch (deleteErr) {
+      console.error("Error deleting employee:", deleteErr);
+      setError("An error occurred while deleting the employee");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div>
+      <div className="relative flex h-64 items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
+        <div className="absolute -left-12 -top-10 h-40 w-40 rounded-full bg-cyan-300/20 blur-3xl" />
+        <div className="absolute -bottom-10 -right-12 h-40 w-40 rounded-full bg-violet-300/20 blur-3xl" />
+        <div className="h-12 w-12 animate-spin rounded-full border-2 border-white/30 border-t-cyan-300" />
       </div>
     );
   }
 
-  const inputClass = "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm";
-  const labelClass = "block text-sm font-medium text-gray-700 mb-1";
+  const inputClass = "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-sky-500 focus:ring-4 focus:ring-sky-100";
+  const labelClass = "mb-1 block text-sm font-semibold text-slate-700";
 
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="max-w-4xl space-y-8 p-4 md:p-6 [perspective:1200px]">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Edit Employee</h3>
-          <p className="text-sm text-gray-500 mt-1">Update the details for {form.name || "this employee"}.</p>
+          <h3 className="text-xl font-black tracking-tight text-slate-900">Edit Employee</h3>
+          <p className="mt-1 text-sm text-slate-500">Update the details for {form.name || "this employee"}.</p>
         </div>
         <Link
           href={`/admin/employees/${id}`}
-          className="text-sm text-gray-500 hover:text-gray-700 font-medium"
+          className="text-sm font-semibold text-slate-500 transition-colors hover:text-slate-700"
         >
           ← Back to Details
         </Link>
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-6">
+      <form onSubmit={handleSubmit} className="relative overflow-hidden rounded-3xl border border-white/70 bg-white p-6 shadow-2xl shadow-sky-100/80 transition-transform duration-500 hover:[transform:translateY(-2px)_rotateX(0.35deg)] space-y-6">
+        <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-sky-300/20 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 left-1/4 h-32 w-32 rounded-full bg-violet-200/20 blur-3xl" />
+
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-700 p-6 text-white shadow-xl">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold ring-1 ring-white/30 backdrop-blur-sm">
+            Employee Editor
+          </div>
+          <h4 className="mt-3 text-2xl font-black tracking-tight">Refine profile, access, and records</h4>
+          <p className="mt-2 max-w-2xl text-sm text-white/85">
+            Keep identity, employment data, and portal access aligned within the same visual system as the dashboard.
+          </p>
+        </div>
+
         {/* Basic Info */}
         <div>
-          <h4 className="font-medium text-gray-900 mb-4">Basic Information</h4>
+          <h4 className="mb-4 text-base font-bold text-slate-900">Basic Information</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Full Name *</label>
@@ -199,11 +310,54 @@ status: emp.status || "Active",
               />
             </div>
           </div>
+
+          <div className="mt-4 rounded-2xl border border-sky-100 bg-gradient-to-br from-white via-sky-50/50 to-indigo-50/60 p-4 shadow-md backdrop-blur">
+            <h5 className="text-sm font-bold text-slate-900">Profile Photo</h5>
+            <p className="mt-1 text-xs text-slate-500">Upload from your computer, or paste an image URL if the employee sends one online.</p>
+            <div className="mt-4 space-y-3">
+              <div className="flex flex-wrap items-center gap-3">
+                {form.avatar ? (
+                  <img src={form.avatar} alt="Avatar preview" className="h-16 w-16 rounded-full border-2 border-white object-cover shadow-md" />
+                ) : (
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 via-indigo-600 to-violet-600 text-xl font-black text-white shadow-md shadow-indigo-700/25">
+                    {form.name ? form.name.charAt(0).toUpperCase() : "E"}
+                  </div>
+                )}
+                <div className="flex flex-wrap items-center gap-2">
+                  <label className="inline-flex h-10 cursor-pointer items-center whitespace-nowrap rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-50 hover:shadow-md">
+                    {avatarUploading ? "Processing..." : "Upload Photo"}
+                    <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} disabled={avatarUploading} />
+                  </label>
+                  {form.avatar && (
+                    <button
+                      type="button"
+                      className="inline-flex h-10 items-center whitespace-nowrap rounded-xl border border-red-200 bg-red-50 px-4 text-sm font-semibold text-red-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-100"
+                      onClick={() => setForm((prev) => ({ ...prev, avatar: "" }))}
+                    >
+                      Remove Photo
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className="w-full">
+                <label className={labelClass}>Avatar Image URL (Optional)</label>
+                <input
+                  type="url"
+                  name="avatar"
+                  value={form.avatar}
+                  onChange={handleChange}
+                  className={inputClass}
+                  placeholder="https://example.com/employee-photo.jpg"
+                />
+              </div>
+            </div>
+            {avatarError && <p className="mt-2 text-xs font-medium text-red-600">{avatarError}</p>}
+          </div>
         </div>
 
         {/* Employment Details */}
         <div>
-          <h4 className="font-medium text-gray-900 mb-4">Employment Details</h4>
+          <h4 className="mb-4 text-base font-bold text-slate-900">Employment Details</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Department</label>
@@ -268,9 +422,9 @@ status: emp.status || "Active",
         </div>
 
         {/* Login Credentials */}
-        <div className="bg-brand-50/50 border border-brand-100 rounded-xl p-4">
-          <h4 className="font-medium text-gray-900 mb-1">Login Credentials</h4>
-          <p className="text-sm text-gray-600 mb-4">
+        <div className="rounded-2xl border border-sky-100 bg-gradient-to-br from-white via-sky-50/50 to-indigo-50/60 p-4 shadow-md backdrop-blur">
+          <h4 className="mb-1 font-bold text-slate-900">Login Credentials</h4>
+          <p className="mb-4 text-sm text-slate-600">
             {hasLogin
               ? "This employee already has a login account. Set a new password below to reset it."
               : "This employee has no login account yet. Set a password to create one so they can sign in with their email."}
@@ -282,7 +436,7 @@ status: emp.status || "Active",
                 type="email"
                 value={form.email}
                 readOnly
-                className={`${inputClass} bg-gray-50 text-gray-500 cursor-not-allowed`}
+                className={`${inputClass} cursor-not-allowed bg-slate-50 text-slate-500`}
                 placeholder="Employee email is used for login"
               />
             </div>
@@ -299,7 +453,7 @@ status: emp.status || "Active",
               />
             </div>
             <div className="flex items-end pb-1">
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-slate-500">
                 {hasLogin
                   ? "Leave blank to keep the current password."
                   : "Leave blank to keep employee without login access."}
@@ -310,7 +464,7 @@ status: emp.status || "Active",
 
         {/* Notes */}
         <div>
-          <h4 className="font-medium text-gray-900 mb-4">Additional Notes</h4>
+          <h4 className="mb-4 text-base font-bold text-slate-900">Additional Notes</h4>
           <textarea
             name="notes"
             value={form.notes}
@@ -320,17 +474,25 @@ status: emp.status || "Active",
           />
         </div>
 
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+        <div className="flex justify-end gap-3 border-t border-slate-200/80 pt-4">
           <Link
             href={`/admin/employees/${id}`}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-50"
           >
             Cancel
           </Link>
           <button
+            type="button"
+            onClick={handleDeleteEmployee}
+            disabled={deleting || saving}
+            className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose-100 disabled:opacity-50"
+          >
+            {deleting ? "Deleting..." : "Delete Employee"}
+          </button>
+          <button
             type="submit"
-            disabled={saving}
-            className="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+            disabled={saving || deleting}
+            className="rounded-xl bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-700/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-50"
           >
             {saving ? "Saving..." : "Update Employee"}
           </button>

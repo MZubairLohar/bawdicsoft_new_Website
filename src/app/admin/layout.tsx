@@ -9,15 +9,16 @@ interface User {
   id: string;
   name: string;
   email: string;
+  avatar?: string;
   role: string;
 }
 
 // Map of role -> display label and badge styling
 const roleBadgeStyles: Record<string, { label: string; className: string }> = {
-  super_admin: { label: "Super Admin", className: "bg-yellow-100 text-yellow-800 border border-yellow-300" },
-  admin: { label: "Admin", className: "bg-purple-100 text-purple-800 border border-purple-300" },
-  manager: { label: "Manager", className: "bg-blue-100 text-blue-800 border border-blue-300" },
-  rep: { label: "Representative", className: "bg-green-100 text-green-800 border border-green-300" },
+  super_admin: { label: "Super Admin", className: "bg-gradient-to-r from-amber-100 via-yellow-100 to-orange-100 text-amber-900 border border-amber-300/80 ring-1 ring-amber-200/80 shadow-[0_8px_22px_-12px_rgba(217,119,6,0.85)]" },
+  admin: { label: "Admin", className: "bg-gradient-to-r from-violet-100 to-fuchsia-100 text-violet-900 border border-violet-300/80 ring-1 ring-violet-200/80 shadow-[0_8px_22px_-12px_rgba(124,58,237,0.8)]" },
+  manager: { label: "Manager", className: "bg-gradient-to-r from-sky-100 to-cyan-100 text-sky-900 border border-sky-300/80 ring-1 ring-sky-200/80 shadow-[0_8px_22px_-12px_rgba(3,105,161,0.8)]" },
+  rep: { label: "Representative", className: "bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-900 border border-emerald-300/80 ring-1 ring-emerald-200/80 shadow-[0_8px_22px_-12px_rgba(5,150,105,0.8)]" },
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -102,16 +103,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     navLinks.push({ name: "Settings", href: "/admin/settings", icon: Settings });
   }
 
-  const roleBadge = roleBadgeStyles[role] || { label: role, className: "bg-gray-100 text-gray-700 border border-gray-300" };
+  const roleBadge = roleBadgeStyles[role] || {
+    label: role,
+    className: "bg-gradient-to-r from-slate-100 to-gray-100 text-slate-700 border border-slate-300/80 ring-1 ring-slate-200/80 shadow-[0_8px_22px_-14px_rgba(51,65,85,0.55)]",
+  };
 
-  return (
-    <div className="flex min-h-screen bg-gray-50">
+return (
+    <div className="flex min-h-screen bg-gradient-to-br from-slate-50 via-sky-50/40 to-indigo-50/50">
+      {/* Ambient background accents */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-sky-300/20 blur-3xl animate-float-slow" />
+        <div className="absolute bottom-0 left-1/4 w-80 h-80 rounded-full bg-indigo-300/20 blur-3xl animate-float" />
+      </div>
+
       {/* Sidebar */}
-      <aside className="w-64 bg-[#0a0a0a] text-white flex flex-col fixed h-full justify-between">
-        <div className="p-6 border-b border-gray-800">
-          <h1 className="text-xl font-bold tracking-tight flex items-center gap-2">
+      <aside className="w-64 bg-[#0a0a0a] text-white flex flex-col fixed h-full justify-between z-10">
+        <div className="p-6 border-b border-gray-800 relative overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-brand-500/10 blur-2xl" />
+          <h1 className="text-xl font-bold tracking-tight flex items-center gap-2 relative">
             {role === 'super_admin' && <Crown className="h-5 w-5 text-yellow-400" />}
-            Bawdic<span className="text-brand-500">Soft</span> Admin
+            Bawdic<span className="text-brand-400">Soft</span> Admin
           </h1>
         </div>
 
@@ -122,13 +133,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                className={`group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 relative overflow-hidden ${
                   isActive
-                    ? "bg-brand-600 text-white"
-                    : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                    ? "bg-gradient-to-r from-brand-600 to-brand-500 text-white shadow-lg shadow-brand-900/40"
+                    : "text-gray-400 hover:bg-gray-800 hover:text-white hover:translate-x-1"
                 }`}
               >
-                <link.icon className="h-5 w-5" />
+                {isActive && (
+                  <span className="absolute left-0 top-0 bottom-0 w-1 bg-white/80 rounded-r" />
+                )}
+                <link.icon className={`h-5 w-5 ${!isActive && "group-hover:text-brand-400"} transition-colors`} />
                 {link.name}
               </Link>
             );
@@ -138,7 +152,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="p-4 border-t border-gray-800">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors border border-transparent hover:border-red-700/50"
+            className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300 border border-transparent hover:border-red-700/50 hover:translate-x-1"
           >
             <LogOut className="h-5 w-5" /> Logout
           </button>
@@ -146,25 +160,35 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-64 p-8">
+      <main className="flex-1 ml-64 p-6 md:p-8 relative">
         <header className="flex justify-between items-center mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">
               {pathname === "/admin" && "Dashboard Overview"}
               {pathname === "/admin/projects" && "Portfolio"}
               {pathname === "/admin/crm" && "Lead Management"}
               {pathname === "/admin/employees" && "Employee Management"}
               {pathname === "/admin/settings" && "Admin Settings"}
             </h2>
-            <p className="text-gray-500 text-sm mt-1">Welcome back, {user?.name || 'Admin'}</p>
+            <p className="text-gray-500 text-sm mt-1">
+              Welcome back, <span className="font-semibold text-gray-700">{user?.name || 'Admin'}</span>
+            </p>
           </div>
           <div className="flex items-center gap-4">
-            <span className={`px-3 py-1 text-xs font-semibold rounded-full ${roleBadge.className}`}>
+            <span className={`px-4 py-1.5 text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.14em] rounded-full backdrop-blur ${roleBadge.className}`}>
               {roleBadge.label}
             </span>
-            <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold">
-              {user?.name?.charAt(0)?.toUpperCase() || 'A'}
-            </div>
+            {user?.avatar ? (
+              <img
+                src={user.avatar}
+                alt={`${user?.name || 'User'} avatar`}
+                className="w-10 h-10 rounded-full object-cover shadow-md ring-2 ring-white"
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-indigo-500 text-white flex items-center justify-center font-bold shadow-md ring-2 ring-white">
+                {user?.name?.charAt(0)?.toUpperCase() || 'A'}
+              </div>
+            )}
           </div>
         </header>
 

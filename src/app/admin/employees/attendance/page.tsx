@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { hasRole, SALARY_ROLES } from '@/lib/roles';
+import EmployeeTabs from "@/components/admin/employees/EmployeeTabs";
 
 interface Employee {
   _id: string;
@@ -43,7 +43,6 @@ export default function AdminAttendancePage() {
     fetchRole();
   }, []);
 
-  const canViewSalary = role ? hasRole(role, SALARY_ROLES) : false;
   const [month, setMonth] = useState(() => {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
@@ -126,48 +125,40 @@ export default function AdminAttendancePage() {
   });
 
   return (
-    <div className="space-y-6">
-      {/* Sub-nav */}
-      <div className="flex gap-2">
-        <Link href="/admin/employees" className="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">
-          Employees
-        </Link>
-        <Link href="/admin/employees/attendance" className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-900 text-white">
-          Attendance
-        </Link>
-        {canViewSalary && (
-          <Link href="/admin/employees/salary" className="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">
-            Salary
-          </Link>
-        )}
-        <Link href="/admin/employees/leaves" className="px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">
-          Leaves
-        </Link>
-      </div>
+    <div className="space-y-8 p-4 md:p-6 [perspective:1200px]">
+      <EmployeeTabs activeTab="attendance" role={role} />
+
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-700 p-6 text-white shadow-2xl shadow-indigo-900/30 md:p-8">
+        <div className="pointer-events-none absolute -right-12 -top-10 h-40 w-40 rounded-full bg-white/20 blur-2xl" />
+        <div className="pointer-events-none absolute -bottom-14 left-1/3 h-40 w-40 rounded-full bg-purple-300/25 blur-2xl" />
+        <h2 className="text-2xl font-black tracking-tight">Attendance Intelligence</h2>
+        <p className="mt-1 text-sm text-white/85">Filter, track, and maintain clean attendance history with faster workflow actions.</p>
+      </section>
 
       {message && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+        <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 shadow-sm">
           {message}
         </div>
       )}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 shadow-sm">
           {error}
         </div>
       )}
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="rounded-3xl border border-white/70 bg-white/85 p-4 shadow-xl shadow-sky-100/70 backdrop-blur">
+        <div className="flex flex-col gap-3 sm:flex-row">
         <input
           type="month"
           value={month}
           onChange={(e) => setMonth(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm"
+            className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition-all duration-300 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
         />
         <select
           value={selectedEmployee}
           onChange={(e) => setSelectedEmployee(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all text-sm"
+            className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition-all duration-300 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
         >
           <option value="">All Employees</option>
           {employees.map((emp) => (
@@ -175,17 +166,18 @@ export default function AdminAttendancePage() {
           ))}
         </select>
       </div>
+      </div>
 
       {/* Attendance Records */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="p-4 md:p-6 border-b border-gray-200 flex justify-between items-center">
+      <div className="overflow-hidden rounded-3xl border border-white/70 bg-white shadow-2xl shadow-sky-100/80 transition-all duration-300 hover:shadow-2xl">
+        <div className="flex items-center justify-between border-b border-slate-100 bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 p-4 text-white md:p-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">Attendance Records</h3>
-            <p className="text-sm text-gray-500 mt-1">View attendance for {month}</p>
+            <h3 className="text-lg font-bold text-white">Attendance Records</h3>
+            <p className="mt-1 text-sm text-white/80">View attendance for {month}</p>
           </div>
           <Link
             href="/admin/employees/attendance/mark"
-            className="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            className="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-sky-700 shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
           >
             + Mark Attendance
           </Link>
@@ -193,54 +185,54 @@ export default function AdminAttendancePage() {
 
         {loading ? (
           <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-sky-600" />
           </div>
         ) : records.length === 0 ? (
-          <div className="p-12 text-center text-gray-500">
+          <div className="p-12 text-center text-slate-500">
             <p>No attendance records found for this period.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-gray-50 text-gray-500">
+            <table className="w-full min-w-[980px] text-left text-sm">
+              <thead className="bg-gradient-to-r from-sky-50 via-indigo-50 to-violet-50 text-slate-500">
                 <tr>
-                  <th className="px-6 py-3 font-medium">Employee</th>
-                  <th className="px-6 py-3 font-medium">Date</th>
-                  <th className="px-6 py-3 font-medium">Check In</th>
-                  <th className="px-6 py-3 font-medium">Check Out</th>
-                  <th className="px-6 py-3 font-medium">Hours</th>
-                  <th className="px-6 py-3 font-medium">Status</th>
-                  <th className="px-6 py-3 font-medium text-right">Actions</th>
+                  <th className="px-6 py-3 font-semibold">Employee</th>
+                  <th className="px-6 py-3 font-semibold">Date</th>
+                  <th className="px-6 py-3 font-semibold">Check In</th>
+                  <th className="px-6 py-3 font-semibold">Check Out</th>
+                  <th className="px-6 py-3 font-semibold">Hours</th>
+                  <th className="px-6 py-3 font-semibold">Status</th>
+                  <th className="px-6 py-3 text-right font-semibold">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-slate-100">
                 {records.map((record) => (
-                  <tr key={record._id} className="hover:bg-gray-50">
+                  <tr key={record._id} className="group transition-all duration-300 hover:bg-sky-50/35 hover:[transform:translateX(2px)]">
                     <td className="px-6 py-4">
-                      <p className="font-medium text-gray-900">
+                      <p className="font-semibold text-slate-900">
                         {record.employeeId?.name || "Employee"}
                       </p>
-                      <p className="text-gray-500 text-xs">{record.employeeId?.position || ""}</p>
+                      <p className="text-xs text-slate-500">{record.employeeId?.position || ""}</p>
                     </td>
-                    <td className="px-6 py-4 text-gray-600">
+                    <td className="px-6 py-4 text-slate-600">
                       {new Date(record.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </td>
-                    <td className="px-6 py-4 text-gray-600">
+                    <td className="px-6 py-4 text-slate-600">
                       {record.checkIn ? new Date(record.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "—"}
                     </td>
-                    <td className="px-6 py-4 text-gray-600">
+                    <td className="px-6 py-4 text-slate-600">
                       {record.checkOut ? new Date(record.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "—"}
                     </td>
-                    <td className="px-6 py-4 text-gray-600">{record.hoursWorked ? `${record.hoursWorked}h` : "—"}</td>
+                    <td className="px-6 py-4 font-semibold text-slate-700">{record.hoursWorked ? `${record.hoursWorked}h` : "—"}</td>
                     <td className="px-6 py-4">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusColor[record.status] || "bg-gray-100 text-gray-600"}`}>
+                      <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${statusColor[record.status] || "bg-gray-100 text-gray-600"}`}>
                         {record.status}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={() => handleDelete(record._id)}
-                        className="text-red-500 hover:text-red-700 font-medium"
+                        className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-rose-100 hover:shadow-sm"
                       >
                         Delete
                       </button>
