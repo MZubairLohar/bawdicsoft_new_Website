@@ -221,6 +221,35 @@ const [sourceDistribution, setSourceDistribution] = useState<SourceDistribution[
     },
   ];
 
+  const monthlyVisits = analytics?.siteVisits.monthlyBreakdown ?? [];
+  const monthlyMax = Math.max(...monthlyVisits.map((m) => m.opens), 1);
+  const monthlyAverage = monthlyVisits.length
+    ? Math.round(monthlyVisits.reduce((sum, item) => sum + item.opens, 0) / monthlyVisits.length)
+    : 0;
+  const monthlyMin = monthlyVisits.length ? Math.min(...monthlyVisits.map((m) => m.opens)) : 0;
+  const monthlyTotal = monthlyVisits.reduce((sum, item) => sum + item.opens, 0);
+
+  const chartWidth = 560;
+  const chartHeight = 180;
+  const padX = 24;
+  const padY = 18;
+  const drawableHeight = chartHeight - padY * 2;
+  const chartPoints = monthlyVisits.map((item, idx) => {
+    const x =
+      monthlyVisits.length === 1
+        ? chartWidth / 2
+        : padX + (idx * (chartWidth - padX * 2)) / (monthlyVisits.length - 1);
+    const y = chartHeight - padY - (item.opens / monthlyMax) * drawableHeight;
+    return { ...item, x, y };
+  });
+  const linePath = chartPoints
+    .map((point, idx) => `${idx === 0 ? "M" : "L"} ${point.x} ${point.y}`)
+    .join(" ");
+  const areaPath =
+    chartPoints.length > 0
+      ? `${linePath} L ${chartPoints[chartPoints.length - 1].x} ${chartHeight - padY} L ${chartPoints[0].x} ${chartHeight - padY} Z`
+      : "";
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -440,7 +469,7 @@ const [sourceDistribution, setSourceDistribution] = useState<SourceDistribution[
           </div>
 
           {/* ===== Growth Comparison Chart ===== */}
-          {analytics.siteVisits.monthlyBreakdown.length > 0 && (
+          {monthlyVisits.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -461,30 +490,96 @@ const [sourceDistribution, setSourceDistribution] = useState<SourceDistribution[
                 </div>
               </div>
 
-              <div className="flex items-end justify-between gap-2 sm:gap-4 h-44">
-                {analytics.siteVisits.monthlyBreakdown.map((item, idx) => {
-                  const max = Math.max(...analytics.siteVisits.monthlyBreakdown.map((m) => m.opens), 1);
-                  const height = Math.max((item.opens / max) * 100, 4);
-                  const gradient = barGradients[idx % barGradients.length];
-                  return (
-                    <div key={idx} className="flex flex-col items-center justify-end flex-1 h-full group">
-                      <div className="relative w-full flex justify-center">
-                        <motion.div
-                          initial={{ height: 0 }}
-                          animate={{ height: `${height}%` }}
-                          transition={{ duration: 0.8, delay: 0.3 + idx * 0.1, ease: "easeOut" }}
-                          className={`w-full max-w-[56px] rounded-t-xl bg-gradient-to-t ${gradient} relative group-hover:scale-y-105 origin-bottom transition-transform`}
-                          style={{ boxShadow: "0 0 14px rgba(14,165,233,0.25)" }}
-                        >
-                          <span className="absolute -top-7 left-1/2 -translate-x-1/2 text-xs font-bold text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity">
-                            {item.opens}
-                          </span>
-                        </motion.div>
-                      </div>
-                      <span className="mt-2 text-xs font-medium text-gray-500">{item.month}</span>
+              <div className="relative h-64 rounded-xl border border-sky-100 bg-white/75 p-3">
+                <div className="pointer-events-none absolute inset-x-3 top-3 bottom-10 flex flex-col justify-between">
+                  {[100, 75, 50, 25, 0].map((level) => (
+                    <div key={level} className="flex items-center gap-2">
+                      <span className="w-8 text-right text-[10px] font-semibold text-slate-400">
+                        {Math.round((monthlyMax * level) / 100)}
+                      </span>
+                      <span className="h-px flex-1 bg-slate-200/90" />
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
+
+                <div className="relative h-full pl-10 pr-1 pb-8">
+                  <svg viewBox={`0 0 ${chartWidth} ${chartHeight + 24}`} className="h-full w-full overflow-visible">
+                    <defs>
+                      <linearGradient id="growthLineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#0ea5e9" />
+                        <stop offset="50%" stopColor="#6366f1" />
+                        <stop offset="100%" stopColor="#8b5cf6" />
+                      </linearGradient>
+                      <linearGradient id="growthAreaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.32" />
+                        <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.04" />
+                      </linearGradient>
+                    </defs>
+
+                    {areaPath && <path d={areaPath} fill="url(#growthAreaGradient)" />}
+                    {linePath && (
+                      <path
+                        d={linePath}
+                        fill="none"
+                        stroke="url(#growthLineGradient)"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    )}
+
+                    {chartPoints.map((point, idx) => (
+                      <g key={idx}>
+                        <circle cx={point.x} cy={point.y} r="6" fill="white" stroke="#0284c7" strokeWidth="2.5" />
+                        <circle cx={point.x} cy={point.y} r="2.5" fill="#0ea5e9" />
+                        <text
+                          x={point.x}
+                          y={Math.max(12, point.y - 12)}
+                          textAnchor="middle"
+                          className="fill-slate-700 text-[10px] font-bold"
+                        >
+                          {point.opens}
+                        </text>
+                        <title>{`${point.month}: ${point.opens} opens`}</title>
+                      </g>
+                    ))}
+
+                    {chartPoints.map((point, idx) => (
+                      <text
+                        key={`month-${idx}`}
+                        x={point.x}
+                        y={chartHeight + 16}
+                        textAnchor="middle"
+                        className="fill-slate-500 text-[11px] font-medium"
+                      >
+                        {point.month}
+                      </text>
+                    ))}
+                  </svg>
+                </div>
+              </div>
+
+              <p className="mt-3 text-xs font-medium text-slate-500">
+                Hover over each point to see monthly values.
+              </p>
+
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <div className="rounded-lg border border-slate-200 bg-white/90 px-3 py-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Peak Month</p>
+                  <p className="text-sm font-bold text-slate-800">{monthlyMax}</p>
+                </div>
+                <div className="rounded-lg border border-slate-200 bg-white/90 px-3 py-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Average</p>
+                  <p className="text-sm font-bold text-slate-800">{monthlyAverage}</p>
+                </div>
+                <div className="rounded-lg border border-slate-200 bg-white/90 px-3 py-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Lowest</p>
+                  <p className="text-sm font-bold text-slate-800">{monthlyMin}</p>
+                </div>
+                <div className="rounded-lg border border-slate-200 bg-white/90 px-3 py-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Total 6 Months</p>
+                  <p className="text-sm font-bold text-slate-800">{monthlyTotal}</p>
+                </div>
               </div>
             </motion.div>
           )}
