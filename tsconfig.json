@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "ignoreDeprecations": "5.0",
+    "target": "ES2017",   // ← ES5 ki jagah yeh likhein
+    // "ignoreDeprecations": "5.0",  // ← yeh line bilkul hata dein
     "lib": [
       "dom",
       "dom.iterable",

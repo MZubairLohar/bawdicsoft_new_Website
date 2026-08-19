@@ -1288,6 +1288,13 @@ const Navbar: FC<NavbarProps> = () => {
           >
             About Us
           </Link>
+<Link
+  href="/blogs"
+  className="text-sm font-bold leading-6 text-white hover:text-gray-300 text-[17px] focus:text-white focus:outline-none active:text-white"
+>
+  Blog
+</Link>
+
           <Link
             href="/careers"
             className="text-sm font-bold leading-6 text-white hover:text-gray-300 text-[17px] focus:text-white focus:outline-none active:text-white"
@@ -2704,6 +2711,15 @@ const Navbar: FC<NavbarProps> = () => {
                 >
                   About Us
                 </Link>
+
+                <Link
+                  href="/blogs"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Blog
+                </Link>
+
                 <Link
                   href="/careers"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
