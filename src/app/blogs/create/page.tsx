@@ -90,7 +90,7 @@ export default function CreateBlogPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-            ✍️ Write a Blog Post
+              Write a Blog Post
           </h1>
           <p className="text-gray-600 mt-2">
             Share your insights on AI, Blockchain, Cybersecurity, and scalable technologies.
@@ -249,7 +249,7 @@ export default function CreateBlogPage() {
                     Publishing...
                   </>
                 ) : (
-                  '🚀 Publish Blog'
+                  'Publish Blog'
                 )}
               </button>
               <button

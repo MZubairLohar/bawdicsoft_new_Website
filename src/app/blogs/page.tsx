@@ -7,26 +7,27 @@ export default function BlogsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* ===== HERO SECTION ===== */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-16 md:py-24">
+      <section className="bg-gradient-to-r from-sky-950 px-8  via-sky-700 via-30% to-sky-600 to-70%
+     bg-blend-multiply text-white py-16 md:py-24">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               Insights on AI, Blockchain &amp; <br />
-              <span className="text-blue-200">Scalable Innovation</span>
+              <span className="text-blue-100">Scalable Innovation</span>
             </h1>
-            <p className="mt-4 text-lg md:text-xl text-blue-100 max-w-2xl">
+            <p className="mt-4 text-lg md:text-xl text-blue-100 max-w-2xl ">
               Expert perspectives on building AI-powered systems, DeFi infrastructure, 
-              and web applications that scale — from the team at BawdicSoft.
+              and web applications that scale from the team at BawdicSoft.
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
               <Link
                 href="/blogs/create"
                 className="inline-flex items-center px-6 py-3 bg-white text-blue-700 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
               >
-                ✍️ Write a Blog
+                 Write a Blog
               </Link>
               <span className="inline-flex items-center px-6 py-3 bg-blue-700/50 text-white rounded-lg">
-                📚 {blogs.length}+ Articles
+                 {blogs.length}+ Articles
               </span>
             </div>
           </div>
