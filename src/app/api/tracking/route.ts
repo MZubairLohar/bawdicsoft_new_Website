@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/db';
+// import { connectToDatabase } from '@/lib/db';
+import connectDB from '@/lib/db';               // ✅ correct
 import SiteVisit from '@/models/siteVisit';
 import Interaction from '@/models/interaction';
 import { cookies } from 'next/headers';
@@ -28,7 +29,7 @@ async function resolveLocation(): Promise<{ country: string; city: string; regio
 
 export async function POST(request: Request) {
   try {
-    await connectToDatabase();
+    await connectDB();
     const body = await request.json();
     const type = body?.type || 'visit'; // 'visit' | 'interaction'
     const label = body?.label || 'unknown';
