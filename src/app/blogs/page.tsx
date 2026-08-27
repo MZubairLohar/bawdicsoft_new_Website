@@ -9,12 +9,19 @@ const blogTopics = ['Machine Learning', 'DeFi', 'React', 'Next.js', 'Scalability
 // Revalidate every 60 seconds (optional)
 export const revalidate = 60;
 
+
 async function getBlogs(): Promise<IBlog[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const res = await fetch(`${baseUrl}/api/blogs`, { cache: 'no-store' });
   if (!res.ok) throw new Error('Failed to fetch blogs');
   return res.json();
 }
+// async function getBlogs(): Promise<IBlog[]> {
+//   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+//   const res = await fetch(`${baseUrl}/api/blogs`, { cache: 'no-store' });
+//   if (!res.ok) throw new Error('Failed to fetch blogs');
+//   return res.json();
+// }
 
 export default async function BlogsPage() {
   const blogs = await getBlogs();

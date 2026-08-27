@@ -4,8 +4,9 @@ import { IBlog } from '@/models/Blog';
 
 export const revalidate = 60;
 
+
 async function getBlogBySlug(slug: string): Promise<IBlog | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const res = await fetch(`${baseUrl}/api/blogs/${slug}`, { cache: 'no-store' });
   if (!res.ok) {
     if (res.status === 404) return null;
@@ -13,6 +14,15 @@ async function getBlogBySlug(slug: string): Promise<IBlog | null> {
   }
   return res.json();
 }
+// async function getBlogBySlug(slug: string): Promise<IBlog | null> {
+//   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+//   const res = await fetch(`${baseUrl}/api/blogs/${slug}`, { cache: 'no-store' });
+//   if (!res.ok) {
+//     if (res.status === 404) return null;
+//     throw new Error('Failed to fetch blog');
+//   }
+//   return res.json();
+// }
 
 // Generate static paths at build time (optional)
 export async function generateStaticParams() {
@@ -29,7 +39,7 @@ interface BlogDetailPageProps {
 }
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const blog = await getBlogBySlug(slug);
 
   if (!blog) {
