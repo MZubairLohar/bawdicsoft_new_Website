@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { IBlog } from '@/models/Blog';
+import { Blog } from '@/models/Blog';
+import connectDB from '@/lib/db';
+import { blogs as fallbackBlogs } from '@/data/blogs';
 
 // Static categories & topics (could also be fetched)
 const blogCategories = ['All', 'AI', 'Blockchain', 'Web Development', 'DevOps'];
@@ -11,10 +14,13 @@ export const revalidate = 60;
 
 
 async function getBlogs(): Promise<IBlog[]> {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  const res = await fetch(`${baseUrl}/api/blogs`, { cache: 'no-store' });
-  if (!res.ok) throw new Error('Failed to fetch blogs');
-  return res.json();
+  try {
+    await connectDB();
+    return (await Blog.find().sort({ date: -1 }).lean()) as IBlog[];
+  } catch (error) {
+    console.error('Failed to load blogs from MongoDB:', error);
+    return fallbackBlogs;
+  }
 }
 // async function getBlogs(): Promise<IBlog[]> {
 //   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';

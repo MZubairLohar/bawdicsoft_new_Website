@@ -82,6 +82,10 @@ export async function POST(request: Request) {
     return response;
   } catch (error: any) {
     console.error('Tracking error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    // Analytics must not make normal page requests fail when the database is unavailable.
+    return NextResponse.json(
+      { success: false, persisted: false },
+      { status: 202 }
+    );
   }
 }

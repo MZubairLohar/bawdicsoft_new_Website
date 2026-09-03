@@ -19,22 +19,15 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Validate required fields
-    // const required = ['title', 'slug', 'excerpt', 'content', 'category', 'date', 'author'];
     const required = ['title', 'slug', 'excerpt', 'content', 'category', 'date', 'readTime', 'author'];
-    // for (const field of required) {
-    //   if (!body[field]) {
-    //     return NextResponse.json({ error: `Missing required field: ${field}` }, { status: 400 });
-    //   }
-    // }
-
-    // if (body.image && typeof body.image !== 'string') {
-    //   return NextResponse.json({ error: 'Image must be a valid path or URL' }, { status: 400 });
-    // }
-
-    // if (body.image && !body.image.startsWith('/') && !/^https?:\/\//i.test(body.image)) {
-    //   return NextResponse.json({ error: 'Image must start with / or http:// or https://' }, { status: 400 });
-    // }
+    for (const field of required) {
+      if (typeof body[field] !== 'string' || !body[field].trim()) {
+        return NextResponse.json(
+          { error: `Missing required field: ${field}` },
+          { status: 400 }
+        );
+      }
+    }
 
     await connectDB();
     const newBlog = await Blog.create(body);
@@ -44,6 +37,9 @@ export async function POST(request: NextRequest) {
     if (error.code === 11000) {
       return NextResponse.json({ error: 'Slug must be unique' }, { status: 400 });
     }
-    return NextResponse.json({ error: 'Failed to create blog' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Database unavailable. Blog was not saved.' },
+      { status: 503 }
+    );
   }
 }

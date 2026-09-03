@@ -1,19 +1,21 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { IBlog } from '@/models/Blog';
+import { Blog, IBlog } from '@/models/Blog';
+import connectDB from '@/lib/db';
+import { blogs as fallbackBlogs } from '@/data/blogs';
 
 export const revalidate = 60;
 export const dynamic = 'force-dynamic';
 
 
 async function getBlogBySlug(slug: string): Promise<IBlog | null> {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  const res = await fetch(`${baseUrl}/api/blogs/${slug}`, { cache: 'no-store' });
-  if (!res.ok) {
-    if (res.status === 404) return null;
-    throw new Error('Failed to fetch blog');
+  try {
+    await connectDB();
+    return (await Blog.findOne({ slug }).lean()) as IBlog | null;
+  } catch (error) {
+    console.error('Failed to load blog from MongoDB:', error);
+    return fallbackBlogs.find((blog) => blog.slug === slug) ?? null;
   }
-  return res.json();
 }
 // async function getBlogBySlug(slug: string): Promise<IBlog | null> {
 //   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
