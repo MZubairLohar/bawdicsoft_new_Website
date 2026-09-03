@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { IBlog } from '@/models/Blog';
 
 export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 
 async function getBlogBySlug(slug: string): Promise<IBlog | null> {
@@ -23,16 +24,6 @@ async function getBlogBySlug(slug: string): Promise<IBlog | null> {
 //   }
 //   return res.json();
 // }
-
-// Generate static paths at build time (optional)
-export async function generateStaticParams() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  const res = await fetch(`${baseUrl}/api/blogs`, { cache: 'no-store' });
-  const blogs: IBlog[] = await res.json();
-  return blogs.map((blog) => ({
-    slug: blog.slug,
-  }));
-}
 
 interface BlogDetailPageProps {
   params: { slug: string };
