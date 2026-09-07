@@ -157,26 +157,27 @@ const clients = [
         </div>
 
         {/* Optional: Stats Section */}
-        <div className="mt-16 md:mt-20 pt-12 border-t border-gray-200">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">250+</div>
-              <div className="text-gray-600">Projects Deliverd</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">15+</div>
-              <div className="text-gray-600">Counteries Served</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">ISO 27001</div>
-              <div className="text-gray-600">Certifiedd</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">99%</div>
-              <div className="text-gray-600">Client Satisfaction</div>
-            </div>
-          </div>
-        </div>
+        {/* Optional: Stats Section */}
+<div className="mt-16 md:mt-20 pt-12 border-t border-gray-200 bg-gradient-to-r from-sky-950 via-sky-700 to-sky-600 text-white rounded-xl p-8">
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <div className="space-y-2">
+      <div className="text-3xl md:text-4xl font-bold text-white">250+</div>
+      <div className="text-blue-100">Projects Delivered</div>
+    </div>
+    <div className="space-y-2">
+      <div className="text-3xl md:text-4xl font-bold text-white">15+</div>
+      <div className="text-blue-100">Countries Served</div>
+    </div>
+    <div className="space-y-2">
+      <div className="text-3xl md:text-4xl font-bold text-white">ISO 27001</div>
+      <div className="text-blue-100">Certified</div>
+    </div>
+    <div className="space-y-2">
+      <div className="text-3xl md:text-4xl font-bold text-white">99%</div>
+      <div className="text-blue-100">Client Satisfaction</div>
+    </div>
+  </div>
+</div>
       </div>
     </section>
 

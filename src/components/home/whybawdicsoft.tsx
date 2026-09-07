@@ -159,63 +159,63 @@ const WhyBawdicSoftSection: FC = () => {
         </div>
 
         {/* Comparison Table */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 mb-16">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-            How We Compare to Traditional Vendors
-          </h3>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-4 px-4 font-semibold text-gray-900">Criteria</th>
-                  <th className="text-center py-4 px-4 font-semibold text-blue-600 bg-blue-50 rounded-lg">BawdicSoft</th>
-                  <th className="text-center py-4 px-4 font-semibold text-gray-500">Typical Vendors</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-4 px-4 font-medium text-gray-900">Team Experience Level</td>
-                  <td className="py-4 px-4 text-center">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 text-sm font-semibold">
-                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Senior-First
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 text-center text-gray-600">Mixed experience levels</td>
-                </tr>
-                <tr className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-4 px-4 font-medium text-gray-900">Security Integration</td>
-                  <td className="py-4 px-4 text-center">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 text-sm font-semibold">
-                      Built-in from Day 1
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 text-center text-gray-600">Often added later</td>
-                </tr>
-                <tr className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-4 px-4 font-medium text-gray-900">Communication Frequency</td>
-                  <td className="py-4 px-4 text-center">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold">
-                      Daily & Real-time
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 text-center text-gray-600">Weekly or bi-weekly</td>
-                </tr>
-                <tr className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-4 px-4 font-medium text-gray-900">Engagement Flexibility</td>
-                  <td className="py-4 px-4 text-center">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-sm font-semibold">
-                      Multiple Models
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 text-center text-gray-600">Limited options</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+       <div className="bg-gradient-to-r from-sky-950 via-sky-700 to-sky-600 rounded-2xl shadow-lg border border-gray-200 p-8 mb-16">
+  <h3 className="text-2xl font-bold text-white mb-8 text-center">
+    How We Compare to Traditional Vendors
+  </h3>
+  <div className="overflow-x-auto">
+    <table className="w-full">
+      <thead>
+        <tr className="border-b border-white/20">
+          <th className="text-left py-4 px-4 font-semibold text-white/90">Criteria</th>
+          <th className="text-center py-4 px-4 font-semibold text-white bg-white/20 rounded-lg">BawdicSoft</th>
+          <th className="text-center py-4 px-4 font-semibold text-white/70">Typical Vendors</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr className="border-b border-white/10 hover:bg-white/5 transition-colors">
+          <td className="py-4 px-4 font-medium text-white">Team Experience Level</td>
+          <td className="py-4 px-4 text-center">
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-sm font-semibold backdrop-blur-sm">
+              <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              Senior-First
+            </span>
+          </td>
+          <td className="py-4 px-4 text-center text-white/70">Mixed experience levels</td>
+        </tr>
+        <tr className="border-b border-white/10 hover:bg-white/5 transition-colors">
+          <td className="py-4 px-4 font-medium text-white">Security Integration</td>
+          <td className="py-4 px-4 text-center">
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-sm font-semibold backdrop-blur-sm">
+              Built-in from Day 1
+            </span>
+          </td>
+          <td className="py-4 px-4 text-center text-white/70">Often added later</td>
+        </tr>
+        <tr className="border-b border-white/10 hover:bg-white/5 transition-colors">
+          <td className="py-4 px-4 font-medium text-white">Communication Frequency</td>
+          <td className="py-4 px-4 text-center">
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-sm font-semibold backdrop-blur-sm">
+              Daily & Real-time
+            </span>
+          </td>
+          <td className="py-4 px-4 text-center text-white/70">Weekly or bi-weekly</td>
+        </tr>
+        <tr className="border-b border-white/10 hover:bg-white/5 transition-colors">
+          <td className="py-4 px-4 font-medium text-white">Engagement Flexibility</td>
+          <td className="py-4 px-4 text-center">
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm font-semibold backdrop-blur-sm">
+              Multiple Models
+            </span>
+          </td>
+          <td className="py-4 px-4 text-center text-white/70">Limited options</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
         {/* Bottom CTA */}
         {/* <div className="text-center">
