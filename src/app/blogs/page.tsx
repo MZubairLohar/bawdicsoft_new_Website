@@ -103,7 +103,7 @@ interface BlogCardProps {
 function isValidImageSource(image: string | undefined): image is string {
   if (!image) return false;
   if (image.startsWith('/')) return true;
-
+  if (image.startsWith('data:image/')) return true; // 🔥 YEHS WALA ADD KARO
   try {
     const url = new URL(image);
     return url.protocol === 'http:' || url.protocol === 'https:';
@@ -120,18 +120,30 @@ function BlogCard({ blog }: BlogCardProps) {
     >
       <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-blue-400 font-medium">
         {isValidImageSource(blog.image) ? (
-          <Image
-            src={blog.image}
-            alt={blog.title}
-            width={400}
-            height={200}
-            className="w-full h-full object-cover"
-          />
+          // 🟢 Yahan TypeScript jaanta hai ke blog.image string hai
+          blog.image.startsWith('data:image/') ? (
+            // Data URL ke liye simple img tag
+            <img
+              src={blog.image}
+              alt={blog.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            // External/local URL ke liye Next.js Image
+            <Image
+              src={blog.image}
+              alt={blog.title}
+              width={400}
+              height={200}
+              className="w-full h-full object-cover"
+            />
+          )
         ) : (
           <span className="text-lg">📄 {blog.category}</span>
         )}
       </div>
       <div className="p-5 flex-1 flex flex-col">
+        {/* Baaki ka code waisa hi rahega – aap copy kar lein */}
         <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
           <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
             {blog.category}

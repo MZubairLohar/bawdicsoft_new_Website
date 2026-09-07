@@ -2,25 +2,39 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function CreateBlogPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    title: '',
-    slug: '',
-    excerpt: '',
-    content: '',
-    category: '',
-    date: new Date().toISOString().split('T')[0], // today's date
-    readTime: '',
-    author: '',
-    image: '',
-  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // Form fields
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [content, setContent] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type and size (optional)
+      if (!file.type.startsWith('image/')) {
+        setError('Please upload an image file.');
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) { // 10MB
+        setError('Image size should be less than 10MB.');
+        return;
+      }
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,17 +42,33 @@ export default function CreateBlogPage() {
     setLoading(true);
     setError('');
 
+    // Build blog data
+    const blogData = {
+      title,
+      author,
+      content,
+      // Agar image upload ho toh base64 send karo, warna empty string
+      image: imagePreview || '',
+      // Auto-generate slug from title
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      // Optional fields (aap chahe toh auto-set kar sakte hain)
+      excerpt: content.slice(0, 150) + '...',
+      category: 'Uncategorized',
+      readTime: Math.ceil(content.split(' ').length / 200) + ' min read',
+      date: new Date().toISOString().split('T')[0],
+    };
+
     try {
       const res = await fetch('/api/blogs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(blogData),
       });
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.error || 'Failed to create blog');
       }
-      router.push('/blogs'); // redirect to list
+      router.push('/blogs');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -47,89 +77,148 @@ export default function CreateBlogPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container max-w-2xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Write a New Blog</h1>
-        {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            name="title"
-            placeholder="Title"
-            value={formData.title}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-            required
-          />
-          <input
-            name="slug"
-            placeholder="Slug (e.g., my-awesome-blog)"
-            value={formData.slug}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-            required
-          />
-          <textarea
-            name="excerpt"
-            placeholder="Excerpt (short description)"
-            value={formData.excerpt}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-            rows={2}
-            required
-          />
-          <textarea
-            name="content"
-            placeholder="Full content (use newlines for paragraphs)"
-            value={formData.content}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-            rows={10}
-            required
-          />
-          <input
-            name="category"
-            placeholder="Category (e.g., AI, Blockchain)"
-            value={formData.category}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-            required
-          />
-          <input
-            name="readTime"
-            placeholder="Read time (e.g., 5 min read)"
-            value={formData.readTime}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-            required
-          />
-          <input
-            name="author"
-            placeholder="Author name"
-            value={formData.author}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-            required
-          />
-          <input
-            name="image"
-            placeholder="Image URL (optional)"
-            value={formData.image}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-          >
-            {loading ? 'Publishing...' : 'Publish Blog'}
-          </button>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="container max-w-3xl mx-auto px-4">
+        {/* Back link aur heading */}
+        <div className="flex items-center justify-between mb-6">
+          <Link href="/blogs" className="text-blue-600 hover:underline">
+            ← Back to Blog
+          </Link>
+          <span className="text-sm text-gray-500">+ Create New Blog</span>
+        </div>
+
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">WRITE YOUR ARTICLE</h1>
+
+        {error && (
+          <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Title */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Title <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Enter a compelling title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+
+          {/* Author */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Author <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Your name"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+
+          {/* Content */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Content <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              placeholder="Write your blog content here... Use #, ### for headings, and - for bullet lists."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={12}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+            <p className="mt-1 text-sm text-gray-500">
+              Supports Markdown-like formatting: # Heading, ## Subheading, - bullet points, and bold text.
+            </p>
+          </div>
+
+          {/* Featured Image */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Featured Image <span className="text-red-500">*</span>
+            </label>
+            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-400 transition-colors">
+              <div className="space-y-1 text-center">
+                {imagePreview ? (
+                  <div className="mb-2">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="mx-auto max-h-48 rounded-lg shadow"
+                    />
+                  </div>
+                ) : (
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-400"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+                <div className="flex text-sm text-gray-600">
+                  <label
+                    htmlFor="file-upload"
+                    className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
+                  >
+                    <span>Click to upload image</span>
+                    <input
+                      id="file-upload"
+                      name="file-upload"
+                      type="file"
+                      className="sr-only"
+                      accept="image/png,image/jpeg,image/gif"
+                      onChange={handleImageChange}
+                    />
+                  </label>
+                  <p className="pl-1">or drag and drop</p>
+                </div>
+                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex items-center gap-4 pt-4">
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+            >
+              {loading ? 'Publishing...' : '+ Publish Blog'}
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push('/blogs')}
+              className="px-6 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
 }
-
 
 
 
