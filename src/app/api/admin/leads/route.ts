@@ -100,6 +100,19 @@ import { NextResponse } from 'next/server';
 // 🔥 Mock Data (Database ki jagah ye return hoga)
 let mockLeads = [
   {
+    _id: '3',
+    name: 'Pakistan Telecommuication company limited',
+    email: 'info@ptcl.com.pk',
+    phone: '1234567890',
+    service: 'AI Services',
+    message: 'Auto-captured from Company Tracker',
+    source: 'Company Tracker',
+    status: 'New',
+    createdAt: new Date().toISOString(),
+  },
+
+
+  {
     _id: '1',
     name: 'SAFIUILAH ARAIN',
     email: 'safiarain273@gmail.com',
