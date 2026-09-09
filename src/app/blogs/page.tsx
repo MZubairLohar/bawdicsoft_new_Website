@@ -10,7 +10,7 @@ const blogCategories = ['All', 'AI', 'Blockchain', 'Web Development', 'DevOps'];
 const blogTopics = ['Machine Learning', 'DeFi', 'React', 'Next.js', 'Scalability'];
 
 // Revalidate every 60 seconds (optional)
-export const revalidate = 60;
+export const revalidate = 300;
 
 async function getBlogs(): Promise<IBlog[]> {
   try {
