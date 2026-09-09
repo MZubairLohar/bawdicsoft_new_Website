@@ -193,6 +193,7 @@ return (
         </header>
 
         {children}
+
       </main>
     </div>
   );
