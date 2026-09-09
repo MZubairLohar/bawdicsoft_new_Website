@@ -12,29 +12,29 @@ const blogTopics = ['Machine Learning', 'DeFi', 'React', 'Next.js', 'Scalability
 // Revalidate every 60 seconds (optional)
 export const revalidate = 60;
 
-
 async function getBlogs(): Promise<IBlog[]> {
   try {
     await connectDB();
-    return (await Blog.find().sort({ date: -1 }).lean()) as IBlog[];
+    // FIX: only select the fields this page actually renders. Without this,
+    // Mongoose was pulling full `content` (and any other heavy field) for
+    // every blog just to render a card — that's what blew the ISR payload
+    // past Vercel's 19.07MB limit (was hitting 34.91MB).
+    return (await Blog.find()
+      .select('title slug excerpt category date readTime author image')
+      .sort({ date: -1 })
+      .lean()) as IBlog[];
   } catch (error) {
     console.error('Failed to load blogs from MongoDB:', error);
     return fallbackBlogs;
   }
 }
-// async function getBlogs(): Promise<IBlog[]> {
-//   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-//   const res = await fetch(`${baseUrl}/api/blogs`, { cache: 'no-store' });
-//   if (!res.ok) throw new Error('Failed to fetch blogs');
-//   return res.json();
-// }
 
 export default async function BlogsPage() {
   const blogs = await getBlogs();
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* HERO SECTION – same as before */}
+      {/* HERO SECTION */}
       <section className="bg-gradient-to-r from-sky-950 px-8 via-sky-700 via-30% to-sky-600 to-70% bg-blend-multiply text-white py-16 md:py-24">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="max-w-3xl">
@@ -100,10 +100,13 @@ interface BlogCardProps {
   blog: IBlog;
 }
 
+// FIX: dropped the `data:image/` branch. Now that /api/blogs uploads to
+// Cloudinary server-side, `image` should only ever be a real URL or a
+// local `/public` path — never base64. This also means we can always use
+// next/image (proper optimization) instead of a raw <img> fallback.
 function isValidImageSource(image: string | undefined): image is string {
   if (!image) return false;
   if (image.startsWith('/')) return true;
-  if (image.startsWith('data:image/')) return true; // 🔥 YEHS WALA ADD KARO
   try {
     const url = new URL(image);
     return url.protocol === 'http:' || url.protocol === 'https:';
@@ -120,30 +123,18 @@ function BlogCard({ blog }: BlogCardProps) {
     >
       <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-blue-400 font-medium">
         {isValidImageSource(blog.image) ? (
-          // 🟢 Yahan TypeScript jaanta hai ke blog.image string hai
-          blog.image.startsWith('data:image/') ? (
-            // Data URL ke liye simple img tag
-            <img
-              src={blog.image}
-              alt={blog.title}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            // External/local URL ke liye Next.js Image
-            <Image
-              src={blog.image}
-              alt={blog.title}
-              width={400}
-              height={200}
-              className="w-full h-full object-cover"
-            />
-          )
+          <Image
+            src={blog.image}
+            alt={blog.title}
+            width={400}
+            height={200}
+            className="w-full h-full object-cover"
+          />
         ) : (
           <span className="text-lg">📄 {blog.category}</span>
         )}
       </div>
       <div className="p-5 flex-1 flex flex-col">
-        {/* Baaki ka code waisa hi rahega – aap copy kar lein */}
         <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
           <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
             {blog.category}
@@ -169,3 +160,181 @@ function BlogCard({ blog }: BlogCardProps) {
     </Link>
   );
 }
+
+
+
+
+
+
+
+// import Link from 'next/link';
+// import Image from 'next/image';
+// import { IBlog } from '@/models/Blog';
+// import { Blog } from '@/models/Blog';
+// import connectDB from '@/lib/db';
+// import { blogs as fallbackBlogs } from '@/data/blogs';
+
+// // Static categories & topics (could also be fetched)
+// const blogCategories = ['All', 'AI', 'Blockchain', 'Web Development', 'DevOps'];
+// const blogTopics = ['Machine Learning', 'DeFi', 'React', 'Next.js', 'Scalability'];
+
+// // Revalidate every 60 seconds (optional)
+// export const revalidate = 60;
+
+
+// async function getBlogs(): Promise<IBlog[]> {
+//   try {
+//     await connectDB();
+//     return (await Blog.find().sort({ date: -1 }).lean()) as IBlog[];
+//   } catch (error) {
+//     console.error('Failed to load blogs from MongoDB:', error);
+//     return fallbackBlogs;
+//   }
+// }
+// // async function getBlogs(): Promise<IBlog[]> {
+// //   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+// //   const res = await fetch(`${baseUrl}/api/blogs`, { cache: 'no-store' });
+// //   if (!res.ok) throw new Error('Failed to fetch blogs');
+// //   return res.json();
+// // }
+
+// export default async function BlogsPage() {
+//   const blogs = await getBlogs();
+
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+//       {/* HERO SECTION – same as before */}
+//       <section className="bg-gradient-to-r from-sky-950 px-8 via-sky-700 via-30% to-sky-600 to-70% bg-blend-multiply text-white py-16 md:py-24">
+//         <div className="container mx-auto px-4 max-w-7xl">
+//           <div className="max-w-3xl">
+//             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+//               Insights on AI, Blockchain &amp; <br />
+//               <span className="text-blue-100">Scalable Innovation</span>
+//             </h1>
+//             <p className="mt-4 text-lg md:text-xl text-blue-100 max-w-2xl">
+//               Expert perspectives on building AI-powered systems, DeFi infrastructure,
+//               and web applications that scale from the team at BawdicSoft.
+//             </p>
+//             <div className="mt-6 flex flex-wrap gap-4">
+//               <Link
+//                 href="/blogs/create"
+//                 className="inline-flex items-center px-6 py-3 bg-white text-blue-700 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+//               >
+//                 Write a Blog
+//               </Link>
+//               <span className="inline-flex items-center px-6 py-3 bg-blue-700/50 text-white rounded-lg">
+//                 {blogs.length}+ Articles
+//               </span>
+//             </div>
+//           </div>
+//         </div>
+//       </section>
+
+//       {/* MAIN CONTENT */}
+//       <div className="container mx-auto px-4 max-w-7xl py-12">
+//         <div className="flex flex-col lg:flex-row gap-8">
+//           <div className="flex-1">
+//             {/* Category Filter – static for now */}
+//             <div className="flex flex-wrap gap-2 mb-8">
+//               {blogCategories.map((cat) => (
+//                 <button
+//                   key={cat}
+//                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+//                     cat === 'All'
+//                       ? 'bg-blue-600 text-white'
+//                       : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+//                   }`}
+//                 >
+//                   {cat}
+//                 </button>
+//               ))}
+//             </div>
+
+//             {/* Blog Cards Grid */}
+//             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+//               {blogs.map((blog) => (
+//                 <BlogCard key={blog._id?.toString()} blog={blog} />
+//               ))}
+//             </div>
+//           </div>
+//           {/* Sidebar remains commented */}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// // ===== BLOG CARD COMPONENT =====
+// interface BlogCardProps {
+//   blog: IBlog;
+// }
+
+// function isValidImageSource(image: string | undefined): image is string {
+//   if (!image) return false;
+//   if (image.startsWith('/')) return true;
+//   if (image.startsWith('data:image/')) return true; // 🔥 YEHS WALA ADD KARO
+//   try {
+//     const url = new URL(image);
+//     return url.protocol === 'http:' || url.protocol === 'https:';
+//   } catch {
+//     return false;
+//   }
+// }
+
+// function BlogCard({ blog }: BlogCardProps) {
+//   return (
+//     <Link
+//       href={`/blogs/${blog.slug}`}
+//       className="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col"
+//     >
+//       <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-blue-400 font-medium">
+//         {isValidImageSource(blog.image) ? (
+//           // 🟢 Yahan TypeScript jaanta hai ke blog.image string hai
+//           blog.image.startsWith('data:image/') ? (
+//             // Data URL ke liye simple img tag
+//             <img
+//               src={blog.image}
+//               alt={blog.title}
+//               className="w-full h-full object-cover"
+//             />
+//           ) : (
+//             // External/local URL ke liye Next.js Image
+//             <Image
+//               src={blog.image}
+//               alt={blog.title}
+//               width={400}
+//               height={200}
+//               className="w-full h-full object-cover"
+//             />
+//           )
+//         ) : (
+//           <span className="text-lg">📄 {blog.category}</span>
+//         )}
+//       </div>
+//       <div className="p-5 flex-1 flex flex-col">
+//         {/* Baaki ka code waisa hi rahega – aap copy kar lein */}
+//         <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+//           <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+//             {blog.category}
+//           </span>
+//           <span>•</span>
+//           <span>{blog.date}</span>
+//           <span>•</span>
+//           <span>{blog.readTime}</span>
+//         </div>
+//         <h2 className="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
+//           {blog.title}
+//         </h2>
+//         <p className="mt-2 text-gray-600 text-sm line-clamp-2 flex-1">
+//           {blog.excerpt}
+//         </p>
+//         <div className="mt-4 flex items-center justify-between">
+//           <span className="text-sm text-gray-500">By {blog.author}</span>
+//           <span className="text-blue-600 font-medium group-hover:translate-x-1 transition-transform">
+//             Read More →
+//           </span>
+//         </div>
+//       </div>
+//     </Link>
+//   );
+// }
