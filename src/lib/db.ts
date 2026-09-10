@@ -1,34 +1,102 @@
+// import mongoose from "mongoose";
+
+// let connectionPromise: Promise<typeof mongoose> | null = null;
+
+// const connectDB = async (): Promise<void> => {
+//   if (mongoose.connection.readyState === 1) {
+//     console.log("MongoDB is already connected.");
+//     return;
+//   }
+
+//   const mongoURI = process.env.MONGODB_URI;
+
+//   if (!mongoURI) {
+//     throw new Error("MONGODB_URI is not defined in environment variables.");
+//   }
+
+//   if (!connectionPromise) {
+//     connectionPromise = mongoose.connect(mongoURI, {
+//       serverSelectionTimeoutMS: 5000,
+//       bufferCommands: false,
+//     });
+//   }
+
+//   try {
+//     const connectionInstance = await connectionPromise;
+//     console.log(
+//       `✅ MongoDB connected !! DB Host: ${connectionInstance.connection.host}`
+//     );
+//   } catch (error) {
+//     connectionPromise = null;
+//     console.error("❌ MongoDB connection error:", error);
+//     throw error;
+//   }
+// };
+
+// export default connectDB;
+// export const connectToDatabase = connectDB;
+
 import mongoose from "mongoose";
+import dns from "node:dns";
 
-let connectionPromise: Promise<typeof mongoose> | null = null;
+// Force Node.js DNS resolver to use reliable public DNS.
+// MongoDB Atlas mongodb+srv requires SRV/TXT DNS lookups.
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
-const connectDB = async (): Promise<void> => {
-  if (mongoose.connection.readyState === 1) {
-    console.log("MongoDB is already connected.");
-    return;
+interface MongooseCache {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
+declare global {
+  var mongooseCache: MongooseCache | undefined;
+}
+
+const cached: MongooseCache =
+  global.mongooseCache || {
+    conn: null,
+    promise: null,
+  };
+
+if (!global.mongooseCache) {
+  global.mongooseCache = cached;
+}
+
+const connectDB = async (): Promise<typeof mongoose> => {
+  if (cached.conn) {
+    return cached.conn;
   }
 
   const mongoURI = process.env.MONGODB_URI;
 
   if (!mongoURI) {
-    throw new Error("MONGODB_URI is not defined in environment variables.");
+    throw new Error(
+      "MONGODB_URI is not defined in environment variables."
+    );
   }
 
-  if (!connectionPromise) {
-    connectionPromise = mongoose.connect(mongoURI, {
-      serverSelectionTimeoutMS: 5000,
+  if (!cached.promise) {
+    console.log("🔌 Connecting to MongoDB...");
+
+    cached.promise = mongoose.connect(mongoURI, {
       bufferCommands: false,
+      serverSelectionTimeoutMS: 10000,
     });
   }
 
   try {
-    const connectionInstance = await connectionPromise;
+    cached.conn = await cached.promise;
+
     console.log(
-      `✅ MongoDB connected !! DB Host: ${connectionInstance.connection.host}`
+      `✅ MongoDB connected !! DB Host: ${cached.conn.connection.host}`
     );
+
+    return cached.conn;
   } catch (error) {
-    connectionPromise = null;
+    cached.promise = null;
+
     console.error("❌ MongoDB connection error:", error);
+
     throw error;
   }
 };
@@ -36,6 +104,29 @@ const connectDB = async (): Promise<void> => {
 export default connectDB;
 export const connectToDatabase = connectDB;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // import mongoose from 'mongoose';
 
 // const MONGODB_URI = process.env.MONGODB_URI!;
