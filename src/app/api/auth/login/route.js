@@ -69,41 +69,90 @@
 // }
 
 // src/app/api/auth/login/route.js
+// import { NextResponse } from 'next/server';
+
+// export async function POST(req) {
+//   try {
+//     const { email, password } = await req.json();
+
+//     // 🔥 Debug logs (Terminal mein dekho)
+//     console.log('📥 Email received:', email);
+//     console.log('📥 Password received:', password);
+
+//     // 🔥 Hardcoded credentials (exact match)
+//     const VALID_EMAIL = 'Safiarain273@gmail.com';
+//     const VALID_PASSWORD = '12345678';
+
+//     // Case-insensitive email compare (optional, lekin safe hai)
+//     if (email.toLowerCase() === VALID_EMAIL.toLowerCase() && password === VALID_PASSWORD) {
+//       console.log('✅ Login Success!');
+//       return NextResponse.json({
+//         success: true,
+//         data: {
+//           id: '1',
+//           name: 'Safi Arrain',
+//           email: VALID_EMAIL,
+//           role: 'super_admin'
+//         }
+//       });
+//     } else {
+//       console.log('❌ Login Failed - Mismatch');
+//       return NextResponse.json(
+//         { success: false, error: 'Invalid credentials' },
+//         { status: 401 }
+//       );
+//     }
+//   } catch (error) {
+//     console.error('Server error:', error);
+//     return NextResponse.json(
+//       { success: false, error: 'Server error' },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+
+
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
   try {
     const { email, password } = await req.json();
 
-    // 🔥 Debug logs (Terminal mein dekho)
-    console.log('📥 Email received:', email);
-    console.log('📥 Password received:', password);
-
-    // 🔥 Hardcoded credentials (exact match)
-    const VALID_EMAIL = 'Safiarain273@gmail.com';
+    const VALID_EMAIL = 'safiarain273@gmail.com';
     const VALID_PASSWORD = '12345678';
 
-    // Case-insensitive email compare (optional, lekin safe hai)
-    if (email.toLowerCase() === VALID_EMAIL.toLowerCase() && password === VALID_PASSWORD) {
-      console.log('✅ Login Success!');
-      return NextResponse.json({
+    if (
+      email.toLowerCase() === VALID_EMAIL.toLowerCase() &&
+      password === VALID_PASSWORD
+    ) {
+      const response = NextResponse.json({
         success: true,
         data: {
           id: '1',
           name: 'Safi Arrain',
           email: VALID_EMAIL,
-          role: 'super_admin'
-        }
+          role: 'super_admin',
+        },
       });
-    } else {
-      console.log('❌ Login Failed - Mismatch');
-      return NextResponse.json(
-        { success: false, error: 'Invalid credentials' },
-        { status: 401 }
-      );
+
+      // 🔥 HttpOnly cookie set karo (secure)
+      response.cookies.set('admin_session', 'authenticated', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24, // 24 hours
+        path: '/',
+      });
+
+      return response;
     }
+
+    return NextResponse.json(
+      { success: false, error: 'Ghalat email ya password' },
+      { status: 401 }
+    );
   } catch (error) {
-    console.error('Server error:', error);
     return NextResponse.json(
       { success: false, error: 'Server error' },
       { status: 500 }

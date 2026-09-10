@@ -70,11 +70,36 @@
 //   });
 // }
 
-import { NextResponse } from 'next/server';
+// import { NextResponse } from 'next/server';
+
+// export async function GET() {
+//   return NextResponse.json({
+//     success: true,
+//     data: { id: '1', name: 'Admin User', email: 'Safiarain273@gmail.com', role: 'super_admin' }
+//   });
+// }
+
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export async function GET() {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("admin_session");
+
+  if (!sessionCookie || sessionCookie.value !== "authenticated") {
+    return NextResponse.json(
+      { success: false, error: "Not authenticated" },
+      { status: 401 }
+    );
+  }
+
   return NextResponse.json({
     success: true,
-    data: { id: '1', name: 'Admin User', email: 'Safiarain273@gmail.com', role: 'super_admin' }
+    data: {
+      id: "1",
+      name: "Bilal Hashmi",
+      email: "safiarain273@gmail.com",
+      role: "super_admin",
+    },
   });
 }
