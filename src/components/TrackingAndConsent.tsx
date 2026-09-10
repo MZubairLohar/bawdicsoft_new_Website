@@ -122,7 +122,7 @@ export default function TrackingAndConsent() {
       });
     }
 
-    // 🔥 Tracking Function
+    // 🔥 Tracking Function (Toast removed)
     function startTracking() {
       console.log('✅ Tracking Active (Public Page)');
 
@@ -163,53 +163,7 @@ export default function TrackingAndConsent() {
             })
           }).catch((err: any) => console.log('Track error:', err));
 
-          const city = data.city || 'Unknown';
-          const country = data.country || 'Location';
-          const company = data.isp || 'Guest';
-
-          const toast = document.createElement('div');
-          toast.style.cssText = `
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            background: rgba(30, 41, 59, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            color: #f8fafc;
-            padding: 14px 22px;
-            border-radius: 16px;
-            font-size: 13px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            z-index: 99999;
-            box-shadow: 0 16px 48px rgba(0,0,0,0.25);
-            border: 1px solid rgba(255,255,255,0.08);
-            max-width: 380px;
-            opacity: 0;
-            transform: translateY(20px) scale(0.96);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            pointer-events: none;
-          `;
-          toast.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <span style="font-size: 22px;">🍪</span>
-              <div>
-                <div style="font-weight: 600; font-size: 13px; color: #e2e8f0; letter-spacing: -0.2px;">Tracking Active</div>
-                <div style="font-size: 12px; color: #94a3b8; margin-top: 2px; letter-spacing: -0.1px;">
-                  Detected: ${city}, ${country} · ${company}
-                </div>
-              </div>
-              <span style="font-size: 9px; background: rgba(255,255,255,0.08); padding: 2px 10px; border-radius: 20px; color: #94a3b8; letter-spacing: 0.3px; border: 1px solid rgba(255,255,255,0.05);">
-                Cookie Set
-              </span>
-            </div>
-          `;
-          document.body.appendChild(toast);
-          setTimeout(() => { toast.style.opacity = '1'; toast.style.transform = 'translateY(0) scale(1)'; }, 200);
-          setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(20px) scale(0.96)';
-            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 400);
-          }, 5000);
+          // ❌ TOAST REMOVED — sirf tracking data save ho raha hai, koi notification nahi
         })
         .catch((err: any) => console.log('IP fetch error:', err));
     }
@@ -227,12 +181,6 @@ export default function TrackingAndConsent() {
       banner.style.opacity = '0';
       banner.style.transform = 'translateX(-30px) scale(0.96)';
       setTimeout(() => { if (banner.parentNode) banner.remove(); }, 400);
-    }
-    if (prefs.analytics || prefs.functional || prefs.targeting) {
-      // startTracking will be called on next page load or we can call it directly
-      // but we can trigger tracking here as well
-      // For simplicity, we rely on useEffect to start tracking when consent changes,
-      // but we can also call startTracking directly if needed.
     }
   };
 
