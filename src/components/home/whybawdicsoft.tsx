@@ -30,7 +30,7 @@ const WhyBawdicSoftSection: FC = () => {
         </svg>
       ),
       stats: {
-        value: "15+ years",
+        value: "10+ years",
         label: "Average Team Experience"
       }
     },

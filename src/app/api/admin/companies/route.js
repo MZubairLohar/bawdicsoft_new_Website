@@ -1,42 +1,38 @@
 // src/app/api/admin/companies/route.js
+import { connectDB } from '@/lib/dbConnect';
+import Visitor from '@/models/Visitor';
 import { NextResponse } from 'next/server';
-
-// 🔥 Mock Companies Data (Dashboard Company Tracker mein dikhega)
-let mockCompanies = [
-  {
-    _id: 'Acme Corp',
-    count: 12,
-    pages: ['/ai', '/blockchain', '/contact'],
-    lastVisit: new Date().toISOString(),
-    locations: ['New York, US'],
-    sessions: ['sess_1', 'sess_2'],
-    totalVisits: 3,
-  },
-  {
-    _id: 'TechStart Inc',
-    count: 5,
-    pages: ['/web', '/about-us'],
-    lastVisit: new Date(Date.now() - 3600000).toISOString(),
-    locations: ['London, UK'],
-    sessions: ['sess_3'],
-    totalVisits: 1,
-  },
-  {
-    _id: 'DataFlow Systems',
-    count: 8,
-    pages: ['/ai', '/casestudies'],
-    lastVisit: new Date(Date.now() - 86400000).toISOString(),
-    locations: ['Dubai, UAE'],
-    sessions: ['sess_4', 'sess_5'],
-    totalVisits: 2,
-  },
-];
 
 export async function GET() {
   try {
-    return NextResponse.json({ success: true, data: mockCompanies }, { status: 200 });
+    await connectDB();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const companies = await Visitor.aggregate([
+      { $match: { visitedAt: { $gte: sevenDaysAgo }, company: { $ne: 'Unknown' } } },
+      {
+        $group: {
+          _id: '$company',
+          count: { $sum: 1 },
+          pages: { $addToSet: '$page' },
+          lastVisit: { $max: '$visitedAt' },
+          locations: { $addToSet: '$city' },
+          sessions: { $addToSet: '$sessionId' },
+        },
+      },
+      {
+        $addFields: {
+          totalVisits: { $size: '$sessions' },
+        },
+      },
+      { $sort: { lastVisit: -1 } },
+      { $limit: 20 },
+    ]);
+
+    return NextResponse.json({ success: true, data: companies });
   } catch (error) {
-    console.error('Companies API error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    console.error('❌ Companies fetch error:', error);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
