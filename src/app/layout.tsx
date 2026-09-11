@@ -334,7 +334,7 @@ import "./globals.css";
 import Script from "next/script";
 import SiteChrome from "@/components/SiteChrome";
 import TrackingAndConsent from "@/components/TrackingAndConsent";
-import PopupCapture from "@/components/PopupCapture";
+// import PopupCapture from "@/components/PopupCapture";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -373,7 +373,7 @@ export default function RootLayout({
 
         {/* Sirf public visitors ke liye */}
         <TrackingAndConsent />
-        <PopupCapture />
+        {/* <PopupCapture /> */}
       </body>
     </html>
   );

@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Mail, CheckCircle2 } from 'lucide-react';
 
-const STORAGE_KEY = 'popup_dismissed_permanently';
+const STORAGE_KEY = 'popup_dismissed_until';
+const DISMISS_DURATION_MS = 24 * 60 * 60 * 1000; // 🔥 24 ghante
 
 export default function PopupCapture() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -19,10 +20,21 @@ export default function PopupCapture() {
     }
   }, []);
 
-  // 🔥 Sirf exit intent (no timer)
+  // 🔥 Sirf exit intent (no timer) — 24 ghante wali condition ke saath
   useEffect(() => {
     if (isAdmin) return;
-    if (localStorage.getItem(STORAGE_KEY)) return;
+
+    // 🕐 Check karo ke 24 ghante guzar gaye ya nahi
+    const dismissedUntil = localStorage.getItem(STORAGE_KEY);
+    if (dismissedUntil) {
+      const dismissedTime = parseInt(dismissedUntil, 10);
+      if (Date.now() < dismissedTime) {
+        // Abhi 24 ghante nahi guzre → popup mat dikhao
+        return;
+      }
+      // 24 ghante guzar gaye → purani entry hata do
+      localStorage.removeItem(STORAGE_KEY);
+    }
 
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0) {
@@ -48,7 +60,9 @@ export default function PopupCapture() {
       });
       if (res.ok) {
         setSubmitted(true);
-        localStorage.setItem(STORAGE_KEY, 'submitted');
+        // Submit hone ke baad 24 ghante ke liye band
+        const until = Date.now() + DISMISS_DURATION_MS;
+        localStorage.setItem(STORAGE_KEY, until.toString());
         setTimeout(() => setIsOpen(false), 4000);
       } else {
         alert('Something went wrong.');
@@ -60,8 +74,10 @@ export default function PopupCapture() {
     }
   };
 
+  // 🔥 "Don't show again" — 24 ghante ke liye band
   const handleDontShow = () => {
-    localStorage.setItem(STORAGE_KEY, 'dismissed');
+    const until = Date.now() + DISMISS_DURATION_MS;
+    localStorage.setItem(STORAGE_KEY, until.toString());
     setIsOpen(false);
   };
 
@@ -193,7 +209,6 @@ export default function PopupCapture() {
     </AnimatePresence>
   );
 }
-
 
 
 

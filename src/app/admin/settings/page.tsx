@@ -91,16 +91,16 @@ export default function SettingsPage() {
   const fetchSystemStats = async () => {
     try {
       const [usersRes, employeesRes, projectsRes, leadsRes] = await Promise.all([
-        fetch("/api/admin/users"),
-        fetch("/api/admin/employees"),
-        fetch("/api/admin/projects"),
-        fetch("/api/admin/leads"),
+        fetch("/api/admin/users", { credentials: "include" }),
+        fetch("/api/admin/employees", { credentials: "include" }),
+        fetch("/api/admin/projects", { credentials: "include" }),
+        fetch("/api/admin/leads", { credentials: "include" }),
       ]);
 
-      const usersData = await usersRes.json();
-      const employeesData = await employeesRes.json();
-      const projectsData = await projectsRes.json();
-      const leadsData = await leadsRes.json();
+      const usersData = usersRes.ok ? await usersRes.json() : { success: false };
+      const employeesData = employeesRes.ok ? await employeesRes.json() : { success: false };
+      const projectsData = projectsRes.ok ? await projectsRes.json() : { success: false };
+      const leadsData = leadsRes.ok ? await leadsRes.json() : { success: false };
 
       setSystemStats({
         users: usersData.success ? usersData.users?.length || 0 : 0,
@@ -116,8 +116,8 @@ export default function SettingsPage() {
   const fetchUsers = async () => {
     try {
       setLoadingUsers(true);
-      const response = await fetch("/api/admin/users");
-      const data = await response.json();
+      const response = await fetch("/api/admin/users", { credentials: "include" });
+      const data = response.ok ? await response.json() : { success: false };
 
       if (data.success) {
         setUsers(data.users);
@@ -160,6 +160,7 @@ export default function SettingsPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ currentPassword, newPassword }),
       });
 
@@ -190,6 +191,7 @@ export default function SettingsPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(newUser),
       });
 
@@ -258,6 +260,7 @@ export default function SettingsPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
@@ -289,6 +292,7 @@ export default function SettingsPage() {
     try {
       const response = await fetch(`/api/admin/users?id=${user._id}`, {
         method: "DELETE",
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -344,6 +348,7 @@ export default function SettingsPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           userId: resetUserId._id,
           password: resetPassword,
@@ -519,13 +524,13 @@ export default function SettingsPage() {
   const roleBadgeColor = (role: string) => {
     switch (role) {
       case "super_admin":
-        return "bg-amber-100 text-amber-700 ring-1 ring-amber-200";
+        return "bg-amber-50 text-amber-700 ring-1 ring-amber-200";
       case "admin":
-        return "bg-cyan-100 text-cyan-700 ring-1 ring-cyan-200";
+        return "bg-sky-50 text-sky-700 ring-1 ring-sky-200";
       case "manager":
-        return "bg-blue-100 text-blue-700 ring-1 ring-blue-200";
+        return "bg-blue-50 text-blue-700 ring-1 ring-blue-200";
       case "rep":
-        return "bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200";
+        return "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200";
       case "user":
         return "bg-slate-100 text-slate-700 ring-1 ring-slate-200";
       default:
@@ -567,33 +572,29 @@ export default function SettingsPage() {
     {
       label: "System Users",
       value: systemStats.users,
-      icon: <Users className="h-5 w-5" />,
-      gradient: "from-sky-500 via-blue-600 to-indigo-700",
-      glow: "bg-sky-400",
+      icon: Users,
+      gradient: "from-sky-500 to-blue-600",
       change: "Access directory",
     },
     {
       label: "Employees",
       value: systemStats.employees,
-      icon: <Shield className="h-5 w-5" />,
-      gradient: "from-emerald-500 via-green-600 to-teal-700",
-      glow: "bg-emerald-400",
+      icon: Shield,
+      gradient: "from-cyan-500 to-sky-600",
       change: "People records",
     },
     {
       label: "Projects",
       value: systemStats.projects,
-      icon: <Activity className="h-5 w-5" />,
-      gradient: "from-violet-500 via-purple-600 to-indigo-700",
-      glow: "bg-violet-400",
+      icon: Activity,
+      gradient: "from-blue-500 to-indigo-600",
       change: "Execution board",
     },
     {
       label: "Leads",
       value: systemStats.leads,
-      icon: <Sparkles className="h-5 w-5" />,
-      gradient: "from-amber-500 via-orange-500 to-rose-600",
-      glow: "bg-amber-400",
+      icon: Sparkles,
+      gradient: "from-indigo-500 to-blue-700",
       change: "Pipeline inflow",
     },
   ];
@@ -627,24 +628,26 @@ export default function SettingsPage() {
   const resetUserStrength = getPasswordStrength(resetPassword);
 
   return (
-    <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 p-6 text-white shadow-2xl">
-        <div className="absolute -top-16 -right-16 h-44 w-44 rounded-full bg-white/30 blur-3xl" />
-        <div className="absolute -bottom-14 left-1/3 h-36 w-36 rounded-full bg-teal-200/40 blur-3xl" />
+    <div className="space-y-6 max-w-[1600px] mx-auto">
+      {/* ===== Hero Banner ===== */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-sky-950 via-sky-800 to-sky-600 p-6 md:p-10 text-white shadow-xl">
+        <div className="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-white/5 blur-3xl" />
+        <div className="absolute -bottom-20 left-1/4 w-64 h-64 rounded-full bg-cyan-400/10 blur-3xl" />
+        <div className="absolute top-8 right-1/4 w-24 h-24 rounded-full border-2 border-white/10" />
         <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/20 px-3 py-1 text-xs font-semibold text-cyan-50 backdrop-blur-sm">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white/90 backdrop-blur-sm">
               <Wrench className="h-3.5 w-3.5" />
               Control Tower
             </div>
-            <h2 className="text-2xl font-black tracking-tight md:text-3xl">System Settings</h2>
-            <p className="mt-2 max-w-2xl text-sm text-white/80 md:text-base">
+            <h2 className="text-2xl font-black tracking-tight md:text-4xl">System Settings</h2>
+            <p className="mt-2 max-w-2xl text-sm text-white/70 md:text-base">
               Manage access, secure admin credentials, and tune platform operations with a cleaner and stronger workflow.
             </p>
           </div>
           <button
             onClick={handleRefreshData}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/80 bg-white px-4 py-2 text-sm font-bold text-sky-700 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-sky-50 hover:text-sky-800 hover:shadow-lg"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/80 bg-white px-4 py-2.5 text-sm font-bold text-sky-800 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-sky-50 hover:shadow-xl"
           >
             <RefreshCcw className="h-4 w-4" />
             Refresh Data
@@ -652,46 +655,45 @@ export default function SettingsPage() {
         </div>
       </div>
 
+      {/* ===== Overview Stats ===== */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {overviewStats.map((stat) => (
-          <div key={stat.label} className="group [perspective:1000px]">
-            <div className="relative transition-all duration-300 group-hover:-translate-y-2 group-hover:scale-[1.02]">
-              <div className={`absolute -inset-2 rounded-3xl ${stat.glow} opacity-30 blur-xl`} />
-              <div className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${stat.gradient} p-6 text-white shadow-xl card-gloss`}>
-                <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full border-4 border-white/15" />
-                <div className="pointer-events-none absolute -bottom-10 -left-6 h-24 w-24 rounded-full bg-white/10 blur-xl" />
-
-                <div className="relative flex items-start justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-white/85">{stat.label}</p>
-                    <h4 className="mt-2 text-3xl font-black tracking-tight text-white transition-transform duration-300 group-hover:translate-x-0.5">
-                      {stat.value}
-                    </h4>
-                  </div>
-                  <div className="rounded-2xl bg-white/20 p-3 backdrop-blur-sm ring-1 ring-white/30">
-                    {stat.icon}
-                  </div>
-                </div>
-
-                <div className="relative mt-4 flex items-center justify-between">
-                  <span className="inline-flex items-center rounded-full bg-white/20 px-3 py-1 text-xs font-semibold ring-1 ring-white/25 backdrop-blur-sm">
-                    {stat.change}
-                  </span>
-                  <span className="text-xs font-bold text-white/85">Live</span>
+        {overviewStats.map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <div
+              key={stat.label}
+              className="relative bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+            >
+              <div
+                className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.gradient}`}
+              />
+              <div className="flex items-start justify-between mb-3">
+                <div
+                  className={`p-2.5 rounded-xl bg-gradient-to-br ${stat.gradient} text-white shadow-sm group-hover:scale-110 transition-transform`}
+                >
+                  <Icon className="h-5 w-5" />
                 </div>
               </div>
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {stat.label}
+              </p>
+              <p className="text-3xl font-bold text-gray-900 mt-1 tracking-tight">
+                {stat.value}
+              </p>
+              <p className="text-xs text-gray-400 mt-2">{stat.change}</p>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
+      {/* ===== General Settings ===== */}
+      <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
         <div className="mb-5 flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-extrabold text-slate-900">General Settings</h3>
-            <p className="mt-1 text-sm text-slate-500">Primary information for your admin control center.</p>
+            <h3 className="text-lg font-extrabold text-gray-900">General Settings</h3>
+            <p className="mt-1 text-sm text-gray-500">Primary information for your admin control center.</p>
           </div>
-          <div className="hidden items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500 md:inline-flex">
+          <div className="hidden items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-500 md:inline-flex">
             <Sparkles className="h-3.5 w-3.5" />
             Configuration Preview
           </div>
@@ -699,42 +701,43 @@ export default function SettingsPage() {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Site Name</label>
+            <label className="mb-1 block text-sm font-semibold text-gray-700">Site Name</label>
             <input
               type="text"
               defaultValue="BawdicSoft"
-              className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+              className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Admin Email</label>
+            <label className="mb-1 block text-sm font-semibold text-gray-700">Admin Email</label>
             <input
               type="email"
               defaultValue="xyz123@example.com"
-              className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+              className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
             />
           </div>
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
+      {/* ===== User Management ===== */}
+      <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
         <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <h3 className="text-lg font-extrabold text-slate-900">User Management</h3>
-            <p className="mt-1 text-sm text-slate-500">Search, filter, edit, secure and export users with faster workflows.</p>
+            <h3 className="text-lg font-extrabold text-gray-900">User Management</h3>
+            <p className="mt-1 text-sm text-gray-500">Search, filter, edit, secure and export users with faster workflows.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={exportUsersCsv}
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-400 hover:text-cyan-700"
+              className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-3 py-2 text-xs font-semibold text-gray-700 transition-all duration-200 hover:-translate-y-0.5 hover:border-sky-400 hover:text-sky-700"
             >
               <Download className="h-3.5 w-3.5" />
               Export CSV
             </button>
             <button
               onClick={() => setShowAddUserForm(!showAddUserForm)}
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
             >
               <UserPlus className="h-4 w-4" />
               {showAddUserForm ? "Cancel" : "Add User"}
@@ -744,21 +747,21 @@ export default function SettingsPage() {
 
         <div className="mb-4 grid grid-cols-1 gap-3 md:grid-cols-3">
           <div className="relative md:col-span-2">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name, email or role"
-              className="h-11 w-full rounded-xl border border-slate-300 pl-10 pr-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+              className="h-11 w-full rounded-xl border border-gray-300 pl-10 pr-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
             />
           </div>
           <div className="relative">
-            <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              className="h-11 w-full appearance-none rounded-xl border border-slate-300 bg-white pl-10 pr-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+              className="h-11 w-full appearance-none rounded-xl border border-gray-300 bg-white pl-10 pr-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
             >
               <option value="all">All Roles</option>
               <option value="super_admin">Super Admin</option>
@@ -770,21 +773,21 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-600">
-          <span className="rounded-full bg-slate-100 px-3 py-1">Total: {users.length}</span>
-          <span className="rounded-full bg-cyan-100 px-3 py-1 text-cyan-700">Visible: {filteredUsers.length}</span>
-          <span className="rounded-full bg-amber-100 px-3 py-1 text-amber-700">Super Admin: {roleCount.super_admin || 0}</span>
-          <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700">Managers: {roleCount.manager || 0}</span>
+        <div className="mb-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-gray-600">
+          <span className="rounded-full bg-gray-100 px-3 py-1">Total: {users.length}</span>
+          <span className="rounded-full bg-sky-50 text-sky-700 px-3 py-1 border border-sky-100">Visible: {filteredUsers.length}</span>
+          <span className="rounded-full bg-amber-50 text-amber-700 px-3 py-1 border border-amber-100">Super Admin: {roleCount.super_admin || 0}</span>
+          <span className="rounded-full bg-emerald-50 text-emerald-700 px-3 py-1 border border-emerald-100">Managers: {roleCount.manager || 0}</span>
         </div>
 
         {showAddUserForm && (
-          <div className="mb-6 rounded-2xl border border-cyan-100 bg-gradient-to-br from-cyan-50 to-sky-50 p-4 shadow-inner transition-all duration-300">
+          <div className="mb-6 rounded-2xl border border-sky-100 bg-gradient-to-br from-sky-50 to-blue-50 p-4 shadow-inner transition-all duration-300">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <h4 className="font-semibold text-slate-800">Add New User</h4>
+              <h4 className="font-semibold text-gray-800">Add New User</h4>
               <button
                 type="button"
                 onClick={applyGeneratedPasswordToNewUser}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-200 bg-white px-3 py-1.5 text-xs font-semibold text-cyan-700 transition-all duration-200 hover:-translate-y-0.5 hover:shadow"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-sky-200 bg-white px-3 py-1.5 text-xs font-semibold text-sky-700 transition-all duration-200 hover:-translate-y-0.5 hover:shadow"
               >
                 <KeyRound className="h-3.5 w-3.5" />
                 Generate Strong Password
@@ -792,19 +795,19 @@ export default function SettingsPage() {
             </div>
 
             <form onSubmit={handleAddUser} className="space-y-3">
-              <div className="rounded-2xl border border-cyan-100 bg-gradient-to-br from-white via-cyan-50/60 to-sky-50/70 p-4">
-                <h5 className="text-sm font-bold text-slate-900">Profile Photo</h5>
-                <p className="mt-1 text-xs text-slate-500">Upload a profile picture or paste an image URL.</p>
+              <div className="rounded-2xl border border-sky-100 bg-gradient-to-br from-white via-sky-50/60 to-blue-50/70 p-4">
+                <h5 className="text-sm font-bold text-gray-900">Profile Photo</h5>
+                <p className="mt-1 text-xs text-gray-500">Upload a profile picture or paste an image URL.</p>
                 <div className="mt-3 flex flex-wrap items-center gap-3">
                   {newUser.avatar ? (
                     <img src={newUser.avatar} alt="User avatar preview" className="h-14 w-14 rounded-full border-2 border-white object-cover shadow-md" />
                   ) : (
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 text-lg font-black text-white shadow-md">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-blue-600 text-lg font-black text-white shadow-md">
                       {newUser.name ? initialsOf(newUser.name) : "U"}
                     </div>
                   )}
                   <div className="flex flex-wrap items-center gap-2">
-                    <label className="inline-flex h-10 cursor-pointer items-center whitespace-nowrap rounded-xl border border-cyan-200 bg-white px-4 text-sm font-semibold text-cyan-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-cyan-50 hover:shadow-md">
+                    <label className="inline-flex h-10 cursor-pointer items-center whitespace-nowrap rounded-xl border border-sky-200 bg-white px-4 text-sm font-semibold text-sky-700 transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-50 hover:shadow-md">
                       {addUserAvatarUploading ? "Processing..." : "Upload Photo"}
                       <input type="file" accept="image/*" className="hidden" onChange={handleNewUserAvatarUpload} disabled={addUserAvatarUploading} />
                     </label>
@@ -820,12 +823,12 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 <div className="mt-3">
-                  <label className="mb-1 block text-sm font-medium text-slate-700">Avatar Image URL (Optional)</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Avatar Image URL (Optional)</label>
                   <input
                     type="url"
                     value={newUser.avatar}
                     onChange={(e) => setNewUser({ ...newUser, avatar: e.target.value })}
-                    className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                     placeholder="https://example.com/profile-photo.jpg"
                   />
                 </div>
@@ -834,51 +837,51 @@ export default function SettingsPage() {
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">Full Name</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Full Name</label>
                   <input
                     type="text"
                     value={newUser.name}
                     onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                    className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                     placeholder="Enter user's full name"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">Email Address</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Email Address</label>
                   <input
                     type="email"
                     value={newUser.email}
                     onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                    className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                     placeholder="user@example.com"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">Password</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Password</label>
                   <input
                     type="text"
                     value={newUser.password}
                     onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                    className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                     placeholder="Set password"
                     required
                   />
-                  <div className="mt-2 h-1.5 w-full rounded-full bg-slate-200">
+                  <div className="mt-2 h-1.5 w-full rounded-full bg-gray-200">
                     <div className={`h-full rounded-full transition-all duration-300 ${newUserStrength.barClass}`} />
                   </div>
                   <p className={`mt-1 text-xs font-semibold ${newUserStrength.textClass}`}>Strength: {newUserStrength.label}</p>
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">Role</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Role</label>
                   <select
                     value={newUser.role}
                     onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                    className="h-11 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="h-11 w-full rounded-xl border border-gray-300 bg-white px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                   >
                     <option value="admin">Admin</option>
                     <option value="manager">Manager</option>
@@ -888,33 +891,33 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">Phone (Optional)</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Phone (Optional)</label>
                   <input
                     type="tel"
                     value={newUser.phone}
                     onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
-                    className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                     placeholder="+1 234 567 890"
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="mb-1 block text-sm font-medium text-slate-700">Bio (Optional)</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Bio (Optional)</label>
                   <textarea
                     value={newUser.bio}
                     onChange={(e) => setNewUser({ ...newUser, bio: e.target.value })}
-                    className="min-h-[92px] w-full rounded-xl border border-slate-300 px-4 py-3 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="min-h-[92px] w-full rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                     placeholder="Short profile summary, team responsibility, or notes."
                     maxLength={500}
                   />
-                  <p className="mt-1 text-xs text-slate-400">{newUser.bio.length}/500</p>
+                  <p className="mt-1 text-xs text-gray-400">{newUser.bio.length}/500</p>
                 </div>
               </div>
 
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                  className="rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
                 >
                   Create User
                 </button>
@@ -934,15 +937,14 @@ export default function SettingsPage() {
         {loadingUsers ? (
           <div className="flex justify-center py-12">
             <div className="relative">
-              <div className="h-10 w-10 animate-spin rounded-full border-4 border-cyan-200 border-t-cyan-600" />
-              <div className="absolute inset-0 rounded-full bg-cyan-300/20 blur-md" />
+              <div className="h-10 w-10 animate-spin rounded-full border-4 border-sky-100 border-t-sky-600" />
             </div>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-2xl border border-slate-200">
+          <div className="overflow-hidden rounded-2xl border border-gray-100">
             <div className="overflow-x-auto">
               <table className="min-w-full">
-                <thead className="bg-gradient-to-r from-sky-700 to-cyan-700 text-white">
+                <thead className="bg-gray-50/80 text-gray-500">
                   <tr>
                     <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Name</th>
                     <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider">Email</th>
@@ -951,28 +953,28 @@ export default function SettingsPage() {
                     <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 bg-white">
+                <tbody className="divide-y divide-gray-100 bg-white">
                   {filteredUsers.map((user) => (
-                    <tr key={user._id} className="transition-colors duration-200 hover:bg-cyan-50/50">
+                    <tr key={user._id} className="transition-colors duration-200 hover:bg-sky-50/50">
                       <td className="px-5 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 text-xs font-bold text-white shadow-sm">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-blue-600 text-xs font-bold text-white shadow-sm overflow-hidden">
                             {user.avatar ? (
                               <img src={user.avatar} alt={`${user.name} avatar`} className="h-9 w-9 rounded-full object-cover" />
                             ) : (
                               initialsOf(user.name)
                             )}
                           </div>
-                          <span className="text-sm font-semibold text-slate-800">{user.name}</span>
+                          <span className="text-sm font-semibold text-gray-800">{user.name}</span>
                         </div>
                       </td>
-                      <td className="px-5 py-3 whitespace-nowrap text-sm text-slate-600">
+                      <td className="px-5 py-3 whitespace-nowrap text-sm text-gray-600">
                         <div className="inline-flex items-center gap-2">
                           {user.email}
                           <button
                             type="button"
                             onClick={() => copyToClipboard(user.email, "Email copied to clipboard.")}
-                            className="rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
+                            className="rounded-md p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
                             title="Copy email"
                           >
                             <Copy className="h-3.5 w-3.5" />
@@ -984,16 +986,16 @@ export default function SettingsPage() {
                           {roleLabel(user.role)}
                         </span>
                       </td>
-                      <td className="px-5 py-3 whitespace-nowrap text-sm text-slate-500">
+                      <td className="px-5 py-3 whitespace-nowrap text-sm text-gray-500">
                         {new Date(user.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-5 py-3 whitespace-nowrap text-right text-sm font-medium">
                         {user.role === "super_admin" ? (
-                          <span className="text-xs text-slate-400">Protected</span>
+                          <span className="text-xs text-gray-400">Protected</span>
                         ) : (
                           <button
                             onClick={() => handleEditUser(user)}
-                            className="rounded-lg border border-cyan-200 bg-cyan-50 px-3 py-1.5 text-xs font-semibold text-cyan-700 transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-300 hover:bg-cyan-100"
+                            className="rounded-lg border border-sky-200 bg-sky-50 px-3 py-1.5 text-xs font-semibold text-sky-700 transition-all duration-200 hover:-translate-y-0.5 hover:border-sky-300 hover:bg-sky-100"
                           >
                             Edit User
                           </button>
@@ -1006,20 +1008,20 @@ export default function SettingsPage() {
             </div>
 
             {filteredUsers.length === 0 && (
-              <div className="py-8 text-center text-sm text-slate-500">No users match current filters.</div>
+              <div className="py-8 text-center text-sm text-gray-500">No users match current filters.</div>
             )}
           </div>
         )}
 
         {editingUserId && editingTargetUser && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-sky-950/45 p-4 backdrop-blur-sm">
-            <div className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+            <div className="w-full max-w-xl rounded-2xl border border-gray-100 bg-white p-6 shadow-2xl">
               <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <h3 className="text-xl font-extrabold text-slate-900">Edit User</h3>
-                  <p className="text-sm text-slate-500">Update profile, role, password and account access actions from one place.</p>
+                  <h3 className="text-xl font-extrabold text-gray-900">Edit User</h3>
+                  <p className="text-sm text-gray-500">Update profile, role, password and account access actions from one place.</p>
                 </div>
-                <span className="rounded-full bg-cyan-100 px-2.5 py-1 text-xs font-semibold text-cyan-700">
+                <span className="rounded-full bg-sky-50 text-sky-700 border border-sky-100 px-2.5 py-1 text-xs font-semibold">
                   {roleLabel(editingTargetUser.role)}
                 </span>
               </div>
@@ -1027,23 +1029,23 @@ export default function SettingsPage() {
               <form onSubmit={handleUpdateUser} className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700">Full Name</label>
+                    <label className="mb-1 block text-sm font-medium text-gray-700">Full Name</label>
                     <input
                       type="text"
                       value={editingUserData.name}
                       onChange={(e) => setEditingUserData({ ...editingUserData, name: e.target.value })}
-                      className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                      className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700">Email Address</label>
+                    <label className="mb-1 block text-sm font-medium text-gray-700">Email Address</label>
                     <input
                       type="email"
                       value={editingUserData.email}
                       onChange={(e) => setEditingUserData({ ...editingUserData, email: e.target.value })}
-                      className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                      className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                       required
                     />
                   </div>
@@ -1051,11 +1053,11 @@ export default function SettingsPage() {
 
                 <div>
                   <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
-                    <label className="block text-sm font-medium text-slate-700">Password (leave blank to keep current)</label>
+                    <label className="block text-sm font-medium text-gray-700">Password (leave blank to keep current)</label>
                     <button
                       type="button"
                       onClick={applyGeneratedPasswordToEditUser}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-200 bg-cyan-50 px-2.5 py-1 text-xs font-semibold text-cyan-700 transition-colors hover:bg-cyan-100"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-sky-200 bg-sky-50 px-2.5 py-1 text-xs font-semibold text-sky-700 transition-colors hover:bg-sky-100"
                     >
                       <KeyRound className="h-3.5 w-3.5" />
                       Generate
@@ -1065,21 +1067,21 @@ export default function SettingsPage() {
                     type="text"
                     value={editingUserData.password}
                     onChange={(e) => setEditingUserData({ ...editingUserData, password: e.target.value })}
-                    className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                     placeholder="Optional password update"
                   />
-                  <div className="mt-2 h-1.5 w-full rounded-full bg-slate-200">
+                  <div className="mt-2 h-1.5 w-full rounded-full bg-gray-200">
                     <div className={`h-full rounded-full transition-all duration-300 ${editUserStrength.barClass}`} />
                   </div>
                   <p className={`mt-1 text-xs font-semibold ${editUserStrength.textClass}`}>Strength: {editUserStrength.label}</p>
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">Role</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Role</label>
                   <select
                     value={editingUserData.role}
                     onChange={(e) => setEditingUserData({ ...editingUserData, role: e.target.value })}
-                    className="h-11 w-full rounded-xl border border-slate-300 bg-white px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="h-11 w-full rounded-xl border border-gray-300 bg-white px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                   >
                     <option value="admin">Admin</option>
                     <option value="manager">Manager</option>
@@ -1088,7 +1090,7 @@ export default function SettingsPage() {
                   </select>
                 </div>
 
-                <div className="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-3 rounded-xl border border-gray-100 bg-gray-50 p-3 sm:grid-cols-2">
                   <button
                     type="button"
                     onClick={() => openResetPassword(editingTargetUser)}
@@ -1111,13 +1113,13 @@ export default function SettingsPage() {
                   <button
                     type="button"
                     onClick={handleCancelEdit}
-                    className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow-sm transition-colors hover:bg-slate-50"
+                    className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-bold text-gray-700 shadow-sm transition-colors hover:bg-gray-50"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="rounded-xl border border-blue-700 bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 text-sm font-bold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                    className="rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 px-4 py-2 text-sm font-bold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
                   >
                     Update User
                   </button>
@@ -1129,10 +1131,10 @@ export default function SettingsPage() {
 
         {resetUserId && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
-            <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
-              <h3 className="mb-2 text-lg font-extrabold text-slate-900">Reset Password</h3>
-              <p className="mb-4 text-sm text-slate-500">
-                Set a new password for <span className="font-semibold text-slate-700">{resetUserId.name}</span> ({resetUserId.email}).
+            <div className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-6 shadow-2xl">
+              <h3 className="mb-2 text-lg font-extrabold text-gray-900">Reset Password</h3>
+              <p className="mb-4 text-sm text-gray-500">
+                Set a new password for <span className="font-semibold text-gray-700">{resetUserId.name}</span> ({resetUserId.email}).
               </p>
 
               {resetMessage && (
@@ -1145,11 +1147,11 @@ export default function SettingsPage() {
               <form onSubmit={handleResetPassword} className="space-y-4">
                 <div>
                   <div className="mb-1 flex items-center justify-between">
-                    <label className="block text-sm font-medium text-slate-700">New Password</label>
+                    <label className="block text-sm font-medium text-gray-700">New Password</label>
                     <button
                       type="button"
                       onClick={applyGeneratedPasswordToReset}
-                      className="inline-flex items-center gap-1 rounded-lg border border-cyan-200 bg-cyan-50 px-2 py-1 text-xs font-semibold text-cyan-700 transition-colors hover:bg-cyan-100"
+                      className="inline-flex items-center gap-1 rounded-lg border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-semibold text-sky-700 transition-colors hover:bg-sky-100"
                     >
                       <KeyRound className="h-3 w-3" />
                       Generate
@@ -1159,23 +1161,23 @@ export default function SettingsPage() {
                     type="text"
                     value={resetPassword}
                     onChange={(e) => setResetPassword(e.target.value)}
-                    className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                     placeholder="Enter new password"
                     required
                   />
-                  <div className="mt-2 h-1.5 w-full rounded-full bg-slate-200">
+                  <div className="mt-2 h-1.5 w-full rounded-full bg-gray-200">
                     <div className={`h-full rounded-full transition-all duration-300 ${resetUserStrength.barClass}`} />
                   </div>
                   <p className={`mt-1 text-xs font-semibold ${resetUserStrength.textClass}`}>Strength: {resetUserStrength.label}</p>
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">Confirm New Password</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">Confirm New Password</label>
                   <input
                     type="text"
                     value={resetConfirmPassword}
                     onChange={(e) => setResetConfirmPassword(e.target.value)}
-                    className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                    className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                     placeholder="Confirm new password"
                     required
                   />
@@ -1185,7 +1187,7 @@ export default function SettingsPage() {
                   <button
                     type="button"
                     onClick={() => setResetUserId(null)}
-                    className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+                    className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50"
                   >
                     Cancel
                   </button>
@@ -1202,42 +1204,43 @@ export default function SettingsPage() {
         )}
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
-        <h3 className="mb-4 text-lg font-extrabold text-slate-900">Admin Account</h3>
+      {/* ===== Admin Account ===== */}
+      <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
+        <h3 className="mb-4 text-lg font-extrabold text-gray-900">Admin Account</h3>
         <div className="space-y-4">
           {message && <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{message}</div>}
           {error && <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div>}
 
           <form onSubmit={handleChangePassword} className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">Current Password</label>
+              <label className="mb-1 block text-sm font-medium text-gray-700">Current Password</label>
               <input
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                 placeholder="Enter current password"
               />
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">New Password</label>
+              <label className="mb-1 block text-sm font-medium text-gray-700">New Password</label>
               <input
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                 placeholder="Enter new password"
               />
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">Confirm New Password</label>
+              <label className="mb-1 block text-sm font-medium text-gray-700">Confirm New Password</label>
               <input
                 type="password"
                 value={confirmNewPassword}
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
-                className="h-11 w-full rounded-xl border border-slate-300 px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
+                className="h-11 w-full rounded-xl border border-gray-300 px-4 text-sm text-gray-700 outline-none transition-all duration-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
                 placeholder="Confirm new password"
               />
             </div>
@@ -1245,7 +1248,7 @@ export default function SettingsPage() {
             <div className="flex items-center gap-4 pt-2">
               <button
                 type="submit"
-                className="rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                className="rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
               >
                 Update Password
               </button>

@@ -15,8 +15,7 @@
 
 // src/app/api/track/route.js
 // src/app/api/track/route.js
-
-import { connectDB } from '@/lib/dbConnect';
+import { connectDB } from '@/lib/dbConnect'; // 👈 Check karein agar file ka naam db.ts hai toh '@lib/db' karein
 import Visitor from '@/models/Visitor';
 import { NextResponse } from 'next/server';
 
@@ -29,18 +28,17 @@ export async function GET(req) {
     const companies = await Visitor.aggregate([
       {
         $group: {
-          _id: "$company", // Company ke naam par group karo
+          _id: "$company",
           company: { $first: "$company" },
-          count: { $sum: 1 }, // Total visits
-          lastVisit: { $max: "$createdAt" }, // Last visit ka time
-          pages: { $addToSet: "$page" }, // Unique pages
-          locations: { $addToSet: { $concat: ["$city", ", ", "$country"] } } // Location
+          count: { $sum: 1 },
+          lastVisit: { $max: "$createdAt" },
+          pages: { $addToSet: "$page" },
+          locations: { $addToSet: { $concat: ["$city", ", ", "$country"] } }
         }
       },
-      { $sort: { lastVisit: -1 } } // Latest visit wali company upar
+      { $sort: { lastVisit: -1 } }
     ]);
 
-    // Frontend ke interface ke mutabiq data format karo
     const formattedData = companies.map(c => ({
       _id: c._id || "Unknown",
       count: c.count,
@@ -63,8 +61,9 @@ export async function GET(req) {
 // ✅ POST Function - Visitor ko database mein save karne ke liye
 export async function POST(req) {
   try {
+    await connectDB(); // 👈 YEH LINE SABSE PEHLE MOVE KAR DI HAI
+    
     const body = await req.json();
-    await connectDB();
 
     const newVisit = new Visitor({
       ip: body.ip,
@@ -85,7 +84,6 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
-
 // import { connectDB } from '@/lib/dbConnect';
 // import Visitor from '@/models/Visitor';
 // import { NextResponse } from 'next/server';

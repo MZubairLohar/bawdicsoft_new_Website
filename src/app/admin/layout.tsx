@@ -109,11 +109,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-slate-50 via-sky-50/40 to-indigo-50/50">
-      <aside className="w-64 bg-[#0a0a0a] text-white flex flex-col fixed h-full justify-between z-10">
+      <aside className="w-64 bg-gradient-to-b from-sky-950 via-sky-900 to-sky-950 text-white flex flex-col fixed h-full justify-between z-10 border-r border-sky-900/50">
         <div className="p-6 border-b border-gray-800">
           <h1 className="text-xl font-bold flex items-center gap-2">
             {role === 'super_admin' && <Crown className="h-5 w-5 text-yellow-400" />}
-            Bawdic<span className="text-blue-400">Soft</span> Admin
+            Bawdic<span className="text-sky-400">Soft</span> Admin
           </h1>
         </div>
 
@@ -126,7 +126,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 href={link.href}
                 className={`group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
                   isActive
-                    ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg"
+                    ? "bg-gradient-to-r from-sky-600 to-sky-500 shadow-lg shadow-sky-900/50"
                     : "text-gray-400 hover:bg-gray-800 hover:text-white"
                 }`}
               >
