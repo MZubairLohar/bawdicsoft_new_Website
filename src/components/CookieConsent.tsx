@@ -122,7 +122,8 @@ export default function CookieConsent() {
                 <div>
                   <h3 className="text-lg font-semibold text-white mb-1">We value your privacy</h3>
                   <p className="text-sm text-sky-100/90 leading-relaxed">
-                    We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. 
+                    
+                     to enhance your browsing experience, serve personalized content, and analyze our traffic. 
                     By clicking "Accept All", you consent to our use of cookies.
                   </p>
                 </div>
