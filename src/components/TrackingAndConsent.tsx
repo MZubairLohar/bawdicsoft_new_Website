@@ -26,7 +26,6 @@ export default function TrackingAndConsent() {
     }
   }, []);
 
-  // Cookie Banner + Tracking Logic
   useEffect(() => {
     if (isAdmin) return;
 
@@ -41,7 +40,7 @@ export default function TrackingAndConsent() {
         }
         return;
       } catch (e) {
-        // invalid JSON, show banner
+        // invalid JSON
       }
     }
 
@@ -55,88 +54,99 @@ export default function TrackingAndConsent() {
       banner.id = 'cookie-consent-banner';
       banner.style.cssText = `
         position: fixed;
-        bottom: 28px;
-        left: 28px;
-        background: rgba(255, 255, 255, 0.92);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        color: #1e293b;
-        padding: 24px 32px;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.06);
-        border: 1px solid rgba(255,255,255,0.5);
+        bottom: 20px;
+        left: 20px;
+        background: linear-gradient(135deg, #0c1f33 0%, #0f3b5c 60%, #0e5580 100%);
+        color: #ffffff;
+        padding: 16px 18px;
+        border-radius: 14px;
+        box-shadow: 0 16px 40px rgba(2,30,60,0.35), 0 4px 12px rgba(0,0,0,0.18);
+        border: 1px solid rgba(125,211,252,0.18);
         z-index: 999999;
-        max-width: 440px;
-        width: 100%;
+        max-width: 380px;
+        width: calc(100vw - 40px);
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: all 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
         box-sizing: border-box;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
       `;
 
       banner.innerHTML = `
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <div>
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-              <span style="font-size: 28px; line-height: 1;">🍪</span>
-              <span style="font-weight: 700; font-size: 18px; color: #0f172a; letter-spacing: -0.3px;">We use cookies</span>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="flex:1;min-width:0;">
+              <p style="margin:0 0 4px 0;font-size:13.5px;font-weight:600;letter-spacing:-0.1px;color:#ffffff;line-height:1.3;">
+                We use cookies
+              </p>
+              <p style="margin:0;font-size:11.5px;line-height:1.5;color:rgba(224,242,254,0.82);font-weight:400;">
+                To enhance your experience and analyze traffic. Read our <a href="/privacy" style="color:#7dd3fc;text-decoration:underline;text-underline-offset:2px;">privacy policy</a>.
+              </p>
             </div>
-            <p style="font-size: 14px; color: #475569; line-height: 1.6; margin: 0; font-weight: 400;">
-              We use cookies to enhance your experience, analyze site traffic, and personalize content. 
-              By clicking <strong style="color: #0f172a;">Accept</strong>, you agree to our use of cookies.
-            </p>
           </div>
-          <div style="display: flex; gap: 10px; margin-top: 4px; flex-wrap: wrap;">
-            <button id="cookie-settings" style="flex:1; min-width:100px; background: #f1f5f9; color: #1e293b; border: 1px solid #e2e8f0; padding: 10px 18px; border-radius: 12px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.2px;">Cookie Settings</button>
-            <button id="cookie-accept" style="flex:1.5; min-width:100px; background: #0f172a; color: white; border: none; padding: 10px 24px; border-radius: 12px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.2px; box-shadow: 0 4px 12px rgba(15,23,42,0.15);">Accept</button>
-            <button id="cookie-reject" style="flex:1; min-width:80px; background: transparent; color: #64748b; border: 1px solid #e2e8f0; padding: 10px 16px; border-radius: 12px; font-weight: 500; font-size: 13px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.2px;">Reject All</button>
-          </div>
-          <div style="font-size: 11px; color: #94a3b8; text-align: center; border-top: 1px solid #f1f5f9; padding-top: 12px; margin-top: 2px; letter-spacing: 0.2px;">
-            You can change your preferences anytime.
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button id="cookie-accept" style="flex:1;padding:8px 12px;font-size:12px;font-weight:600;color:#0c1f33;background:#ffffff;border:none;border-radius:9px;cursor:pointer;transition:all 0.2s;letter-spacing:0.1px;">Accept</button>
+            <button id="cookie-reject" style="padding:8px 12px;font-size:12px;font-weight:500;color:rgba(224,242,254,0.85);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:9px;cursor:pointer;transition:all 0.2s;letter-spacing:0.1px;">Reject</button>
+            <button id="cookie-settings" aria-label="Cookie settings" style="padding:8px 10px;font-size:12px;font-weight:500;color:rgba(224,242,254,0.75);background:transparent;border:none;border-radius:9px;cursor:pointer;transition:all 0.2s;letter-spacing:0.1px;">Settings</button>
           </div>
         </div>
       `;
 
       document.body.appendChild(banner);
 
-      document.getElementById('cookie-accept')?.addEventListener('click', function() {
+      // hover polish
+      const hoverIn = (el: HTMLElement, bg: string) => { el.style.background = bg; };
+      const accept = document.getElementById('cookie-accept') as HTMLElement | null;
+      const reject = document.getElementById('cookie-reject') as HTMLElement | null;
+      const settings = document.getElementById('cookie-settings') as HTMLElement | null;
+
+      accept?.addEventListener('mouseenter', () => hoverIn(accept, '#e0f2fe'));
+      accept?.addEventListener('mouseleave', () => hoverIn(accept, '#ffffff'));
+      reject?.addEventListener('mouseenter', () => hoverIn(reject, 'rgba(255,255,255,0.16)'));
+      reject?.addEventListener('mouseleave', () => hoverIn(reject, 'rgba(255,255,255,0.08)'));
+      settings?.addEventListener('mouseenter', () => hoverIn(settings, 'rgba(255,255,255,0.08)'));
+      settings?.addEventListener('mouseleave', () => hoverIn(settings, 'transparent'));
+
+      const hide = () => {
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(16px) scale(0.96)';
+        setTimeout(() => { if (banner.parentNode) banner.remove(); }, 350);
+      };
+
+      document.getElementById('cookie-accept')?.addEventListener('click', function () {
         const prefs: Preferences = { necessary: true, functional: true, analytics: true, targeting: true };
         localStorage.setItem('bawdic_cookie_consent', JSON.stringify(prefs));
         setPreferences(prefs);
-        banner.style.opacity = '0';
-        banner.style.transform = 'translateX(-30px) scale(0.96)';
-        setTimeout(() => { if (banner.parentNode) banner.remove(); }, 400);
+        hide();
         startTracking();
       });
 
-      document.getElementById('cookie-reject')?.addEventListener('click', function() {
+      document.getElementById('cookie-reject')?.addEventListener('click', function () {
         const prefs: Preferences = { necessary: true, functional: false, analytics: false, targeting: false };
         localStorage.setItem('bawdic_cookie_consent', JSON.stringify(prefs));
         setPreferences(prefs);
-        banner.style.opacity = '0';
-        banner.style.transform = 'translateX(-30px) scale(0.96)';
-        setTimeout(() => { if (banner.parentNode) banner.remove(); }, 400);
+        hide();
       });
 
-      document.getElementById('cookie-settings')?.addEventListener('click', function() {
+      document.getElementById('cookie-settings')?.addEventListener('click', function () {
         setShowModal(true);
       });
     }
 
-    // 🔥 Tracking Function (Toast removed)
     function startTracking() {
       console.log('✅ Tracking Active (Public Page)');
 
       function getCookie(name: string): string | null {
-        const value = "; " + document.cookie;
-        const parts = value.split("; " + name + "=");
-        if (parts.length === 2) return parts.pop()?.split(";").shift() || null;
+        const value = '; ' + document.cookie;
+        const parts = value.split('; ' + name + '=');
+        if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
         return null;
       }
 
       function setCookie(name: string, value: string, days: number) {
         const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        document.cookie = name + "=" + value + "; path=/; expires=" + date.toUTCString();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        document.cookie = name + '=' + value + '; path=/; expires=' + date.toUTCString();
       }
 
       let sessionId = getCookie('bawdic_session_id');
@@ -146,7 +156,7 @@ export default function TrackingAndConsent() {
       }
 
       fetch('/api/ip')
-        .then(res => res.json())
+        .then((res) => res.json())
         .then((data: any) => {
           fetch('/api/track', {
             method: 'POST',
@@ -159,17 +169,14 @@ export default function TrackingAndConsent() {
               device: navigator.userAgent,
               sessionId: sessionId,
               page: window.location.href,
-              referrer: document.referrer || 'Direct'
-            })
+              referrer: document.referrer || 'Direct',
+            }),
           }).catch((err: any) => console.log('Track error:', err));
-
-          // ❌ TOAST REMOVED — sirf tracking data save ho raha hai, koi notification nahi
         })
         .catch((err: any) => console.log('IP fetch error:', err));
     }
   }, [isAdmin]);
 
-  // Admin par kuch mat dikhao
   if (isAdmin) return null;
 
   const savePreferences = (prefs: Preferences) => {
@@ -179,8 +186,8 @@ export default function TrackingAndConsent() {
     const banner = document.getElementById('cookie-consent-banner');
     if (banner) {
       banner.style.opacity = '0';
-      banner.style.transform = 'translateX(-30px) scale(0.96)';
-      setTimeout(() => { if (banner.parentNode) banner.remove(); }, 400);
+      banner.style.transform = 'translateY(16px) scale(0.96)';
+      setTimeout(() => { if (banner.parentNode) banner.remove(); }, 350);
     }
   };
 
@@ -188,137 +195,122 @@ export default function TrackingAndConsent() {
     <>
       {showModal && (
         <div
-          className="fixed inset-0 z-[999999] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-[999999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setShowModal(false)}
         >
           <div
-            className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
-            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-sky-950 via-sky-800 to-sky-700 text-white px-5 py-4 flex items-center justify-between shrink-0">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Privacy Preference Center</h2>
-                <p className="text-sm text-gray-500">Manage your cookie preferences</p>
+                <h2 className="text-[15px] font-semibold tracking-tight">Privacy Preference Center</h2>
+                <p className="text-[11.5px] text-sky-200/85 mt-0.5">Manage your cookie preferences</p>
               </div>
               <button
                 onClick={() => setShowModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+                aria-label="Close"
               >
-                <svg className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            {/* Modal Body */}
-            <div className="p-6 space-y-6">
-              <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-4">
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  When you visit any website, it may store or retrieve information on your browser,
-                  mostly in the form of cookies. This information might be about you, your preferences,
-                  or your device, and is mostly used to make the site work as you expect.
-                </p>
-              </div>
+            {/* Body */}
+            <div className="p-5 space-y-3 flex-1 overflow-y-auto">
+              <p className="text-[12px] text-gray-600 leading-relaxed">
+                We use cookies to make the site work and to improve your experience. You can
+                choose which categories to allow.
+              </p>
 
-              <div className="space-y-3">
-                {/* Strictly Necessary */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden">
-                  <div className="flex items-center justify-between p-4 bg-gray-50/50">
-                    <div>
-                      <p className="font-semibold text-gray-800">Strictly Necessary Cookies</p>
-                      <p className="text-xs text-gray-400">Required for basic site functionality</p>
-                    </div>
-                    <span className="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">Always On</span>
+              <div className="space-y-2">
+                {/* Necessary */}
+                <div className="border border-gray-200 rounded-lg px-3.5 py-3 flex items-center justify-between gap-3 bg-gray-50/60">
+                  <div className="min-w-0">
+                    <p className="font-medium text-[12.5px] text-gray-800">Strictly Necessary</p>
+                    <p className="text-[11px] text-gray-500">Required for basic functionality</p>
                   </div>
+                  <span className="px-2 py-0.5 text-[10px] font-medium bg-gray-100 text-gray-600 rounded-full border border-gray-200 shrink-0">
+                    Always On
+                  </span>
                 </div>
 
                 {/* Functional */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden">
-                  <div className="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors">
-                    <div>
-                      <p className="font-semibold text-gray-800">Functional Cookies</p>
-                      <p className="text-xs text-gray-400">Enhance your browsing experience</p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={preferences.functional}
-                        onChange={() => setPreferences(prev => ({ ...prev, functional: !prev.functional }))}
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
+                <div className="border border-gray-200 rounded-lg px-3.5 py-3 flex items-center justify-between gap-3 hover:border-gray-300 transition-colors">
+                  <div className="min-w-0">
+                    <p className="font-medium text-[12.5px] text-gray-800">Functional</p>
+                    <p className="text-[11px] text-gray-500">Enhanced features & personalization</p>
                   </div>
+                  <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input
+                      type="checkbox"
+                      checked={preferences.functional}
+                      onChange={() => setPreferences((p) => ({ ...p, functional: !p.functional }))}
+                      className="sr-only peer"
+                    />
+                    <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:bg-sky-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4 peer-focus:ring-2 peer-focus:ring-sky-300" />
+                  </label>
                 </div>
 
                 {/* Analytics */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden">
-                  <div className="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors">
-                    <div>
-                      <p className="font-semibold text-gray-800">Analytics Cookies</p>
-                      <p className="text-xs text-gray-400">Help us understand how visitors interact</p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={preferences.analytics}
-                        onChange={() => setPreferences(prev => ({ ...prev, analytics: !prev.analytics }))}
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
+                <div className="border border-gray-200 rounded-lg px-3.5 py-3 flex items-center justify-between gap-3 hover:border-gray-300 transition-colors">
+                  <div className="min-w-0">
+                    <p className="font-medium text-[12.5px] text-gray-800">Analytics</p>
+                    <p className="text-[11px] text-gray-500">Anonymous usage statistics</p>
                   </div>
+                  <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input
+                      type="checkbox"
+                      checked={preferences.analytics}
+                      onChange={() => setPreferences((p) => ({ ...p, analytics: !p.analytics }))}
+                      className="sr-only peer"
+                    />
+                    <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:bg-sky-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4 peer-focus:ring-2 peer-focus:ring-sky-300" />
+                  </label>
                 </div>
 
                 {/* Targeting */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden">
-                  <div className="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors">
-                    <div>
-                      <p className="font-semibold text-gray-800">Targeting Cookies</p>
-                      <p className="text-xs text-gray-400">Used for advertising and personalization</p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={preferences.targeting}
-                        onChange={() => setPreferences(prev => ({ ...prev, targeting: !prev.targeting }))}
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
+                <div className="border border-gray-200 rounded-lg px-3.5 py-3 flex items-center justify-between gap-3 hover:border-gray-300 transition-colors">
+                  <div className="min-w-0">
+                    <p className="font-medium text-[12.5px] text-gray-800">Targeting</p>
+                    <p className="text-[11px] text-gray-500">Advertising & remarketing</p>
                   </div>
+                  <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input
+                      type="checkbox"
+                      checked={preferences.targeting}
+                      onChange={() => setPreferences((p) => ({ ...p, targeting: !p.targeting }))}
+                      className="sr-only peer"
+                    />
+                    <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:bg-sky-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4 peer-focus:ring-2 peer-focus:ring-sky-300" />
+                  </label>
                 </div>
               </div>
             </div>
 
-            {/* Modal Footer */}
-            <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 p-4 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-xs text-gray-400">Powered by <span className="font-medium">BawdicSoft</span></p>
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  onClick={() => {
-                    const prefs: Preferences = { necessary: true, functional: false, analytics: false, targeting: false };
-                    savePreferences(prefs);
-                  }}
-                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg transition-colors"
-                >
-                  Reject All
-                </button>
+            {/* Footer */}
+            <div className="shrink-0 bg-gray-50 border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-2">
+              <button
+                onClick={() => savePreferences({ necessary: true, functional: false, analytics: false, targeting: false })}
+                className="px-3 py-1.5 text-[12px] font-medium text-gray-600 hover:bg-gray-200 rounded-md transition-colors"
+              >
+                Reject All
+              </button>
+              <div className="flex items-center gap-2">
                 <button
                   onClick={() => savePreferences(preferences)}
-                  className="px-5 py-2 text-sm font-medium text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+                  className="px-3 py-1.5 text-[12px] font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-100 rounded-md transition-colors"
                 >
-                  Confirm My Choices
+                  Confirm
                 </button>
                 <button
-                  onClick={() => {
-                    const prefs: Preferences = { necessary: true, functional: true, analytics: true, targeting: true };
-                    savePreferences(prefs);
-                  }}
-                  className="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-lg shadow-md hover:shadow-lg transition-all"
+                  onClick={() => savePreferences({ necessary: true, functional: true, analytics: true, targeting: true })}
+                  className="px-4 py-1.5 text-[12px] font-semibold text-white bg-gradient-to-r from-sky-800 to-sky-600 hover:from-sky-900 hover:to-sky-700 rounded-md shadow-sm hover:shadow transition-all"
                 >
-                  ACCEPT ALL
+                  Accept All
                 </button>
               </div>
             </div>

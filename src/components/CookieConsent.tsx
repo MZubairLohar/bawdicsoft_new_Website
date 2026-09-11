@@ -120,7 +120,7 @@ export default function CookieConsent() {
                   <Shield className="h-6 w-6 text-sky-200" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-1">We value your privacy</h3>
+                  <h3 className="text-lg font-semibold text-red-900 mb-1">We value your privacy</h3>
                   <p className="text-sm text-sky-100/90 leading-relaxed">
                     
                      to enhance your browsing experience, serve personalized content, and analyze our traffic. 
