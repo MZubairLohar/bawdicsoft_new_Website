@@ -49,8 +49,8 @@ interface contactUsProps {}
 const ContactUs :FC<contactUsProps> = () => {
 return (<div>
   <HeroSection />
-  <MapSection />
   <FormSection />
+  <MapSection />
   <GetInTouchWithUs />
 </div>)
 }

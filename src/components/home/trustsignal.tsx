@@ -377,7 +377,7 @@ const TrustSignalsSection: FC = () => {
               <div className="text-3xl md:text-4xl font-bold text-white">
                 250+
               </div>
-              <div className="text-blue-100"></div>
+              <div className="text-blue-100">Project Deliverd</div>
             </div>
             <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-white">
