@@ -138,22 +138,13 @@
 //   );
 // };
 // export default FormSection;
-
 "use client";
 import { FC, useRef, useState } from "react";
 import { FaWhatsapp, FaLinkedin } from "react-icons/fa6";
 import { MdFacebook } from "react-icons/md";
 import { GrTwitter } from "react-icons/gr";
 import Link from "next/link";
-import HerSectionimg from "../../../public/images/contactus/softwareBgImage.jpg";
-import { StaticImageData } from "next/image";
 import axios from "axios";
-
-type heroImg = {
-  img: StaticImageData;
-};
-
-const data: heroImg = { img: HerSectionimg };
 
 const FormSection: FC = () => {
   const firstNameRef = useRef<HTMLInputElement>(null);
@@ -163,7 +154,6 @@ const FormSection: FC = () => {
   const subjectRef = useRef<HTMLInputElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
 
-  //
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -192,7 +182,6 @@ const FormSection: FC = () => {
 
         if (response.data.success) {
           alert("Message sent successfully! We'll get back to you soon.");
-          // Clear the form
           firstNameRef.current.value = "";
           lastNameRef.current.value = "";
           emailRef.current.value = "";
@@ -215,11 +204,8 @@ const FormSection: FC = () => {
   };
 
   return (
-    <section
-      className="relative bg-center bg-cover bg-no-repeat flex justify-center h-[1200px] md:h-[750px] items-center bg-gray-400 bg-blend-multiply md:mb-80"
-      style={{ backgroundImage: `url(${data.img.src})` }}
-    >
-      <div className="absolute md:-bottom-60 p-5 md:p-8 lg:p-10 grid grid-cols-1 md:grid-cols-2 mx-6 rounded-3xl gap-8 bg-white shadow-2xl max-w-6xl">
+    <section className="w-full flex justify-center items-center py-12 px-6">
+      <div className="p-5 md:p-8 lg:p-10 grid grid-cols-1 md:grid-cols-2 rounded-3xl gap-8 bg-white shadow-2xl max-w-6xl w-full">
         {/* FORM */}
         <div>
           <p className="text-sky-700 py-3">FORM CONTACT</p>
@@ -264,12 +250,6 @@ const FormSection: FC = () => {
               className="bg-sky-100 rounded-xl p-3"
             />
 
-            {/* <button
-              type="submit"
-              className="bg-sky-950 hover:bg-sky-700 text-white font-semibold py-3 rounded-3xl"
-            >
-              Submit
-            </button> */}
             <button
               type="submit"
               disabled={isSubmitting}
@@ -281,7 +261,7 @@ const FormSection: FC = () => {
         </div>
 
         {/* SOCIAL */}
-        <div className="md:px-10 lg:px-16 ">
+        <div className="md:px-10 lg:px-16">
           <p className="text-sm md:text-md text-sky-700 py-3">SOCIAL MEDIA</p>
           <h4 className="text-2xl md:text-3xl lg:text-4xl font-bold">
             Connect With Us
@@ -293,43 +273,41 @@ const FormSection: FC = () => {
           <p>
             Stay connected with Bawdicsoft for the latest updates, insights, and
             innovations in technology. Follow us on social media to join our
-            community and see how we’re shaping the future with cutting-edge
+            community and see how we're shaping the future with cutting-edge
             solutions in AI, Blockchain, and more.
           </p>
-          <div className="flex  flex-wrap gap-2 pt-10">
+          <div className="flex flex-wrap gap-2 pt-10">
             <Link
               href="https://wa.me/+923178866631"
               target="_blank"
-              className="flex rounded-full bg-sky-900 justify-center items-center p-2 cursor-pointer "
+              className="flex rounded-full bg-sky-900 justify-center items-center p-2 cursor-pointer"
             >
               <FaWhatsapp className="text-white text-2xl" />
             </Link>
             <Link
               href="https://www.linkedin.com/company/77098544/admin/feed/posts/"
               target="_blank"
-              className="flex rounded-full bg-sky-900 justify-center items-center p-2 cursor-pointer "
+              className="flex rounded-full bg-sky-900 justify-center items-center p-2 cursor-pointer"
             >
               <FaLinkedin className="text-white text-2xl" />
             </Link>
             <Link
               href="https://twitter.com/BawdicSoft"
               target="_blank"
-              className="flex rounded-full bg-sky-900 justify-center items-center p-2 cursor-pointer "
+              className="flex rounded-full bg-sky-900 justify-center items-center p-2 cursor-pointer"
             >
               <GrTwitter className="text-white text-2xl" />
             </Link>
             <Link
               href="https://www.facebook.com/BawdicSoftPvtLtd"
               target="_blank"
-              className="flex rounded-full bg-sky-900 justify-center items-center p-2 cursor-pointer "
+              className="flex rounded-full bg-sky-900 justify-center items-center p-2 cursor-pointer"
             >
               <MdFacebook className="text-white text-2xl" />
             </Link>
           </div>
         </div>
       </div>
-
-      {/* </div> */}
     </section>
   );
 };
