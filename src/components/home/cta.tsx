@@ -164,7 +164,7 @@ const Cta = () => {
                       Schedule Your Free Call
                     </h2>
                     <p className="text-center text-sm text-gray-500 mt-2 leading-relaxed max-w-sm mx-auto">
-                      Just 30 minutes with our CEO. No sales pitch — pure clarity on your next step.
+                      Just a quick real talk. No sales pitch — pure clarity on your next step.
                     </p>
 
                     <form onSubmit={handleCalendlySubmit} className="mt-6 space-y-3">
@@ -221,7 +221,7 @@ const Cta = () => {
 
                     <div className="mt-5 pt-4 border-t border-gray-100 text-center">
                       <p className="text-[11px] text-gray-400">
-                        🔒 Your details are safe. No spam, ever.
+                         Your details are safe. No spam, ever.
                       </p>
                     </div>
                   </>
