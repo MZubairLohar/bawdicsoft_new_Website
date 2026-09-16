@@ -14,6 +14,8 @@ import {
   TrendingUp,
   ArrowUpRight,
   ChevronDown,
+  Flame,
+  Globe,
 } from "lucide-react";
 
 interface Lead {
@@ -26,6 +28,12 @@ interface Lead {
   source: string;
   status: "New" | "Contacted" | "Closed";
   createdAt: string;
+  // 🆕 AI Agent fields (optional — purane leads bhi kaam karenge)
+  intentScore?: number;
+  intentLabel?: "Hot" | "Warm" | "Cold";
+  pageCapturedFrom?: string;
+  wantsToBuild?: string;
+  visitorId?: string;
 }
 
 const statusStyles: Record<string, string> = {
@@ -33,6 +41,30 @@ const statusStyles: Record<string, string> = {
   Contacted: "bg-amber-50 text-amber-700 ring-amber-200",
   Closed: "bg-emerald-50 text-emerald-700 ring-emerald-200",
 };
+
+// 🆕 Intent badge colors
+const intentStyles: Record<string, string> = {
+  Hot: "bg-red-50 text-red-700 border-red-200",
+  Warm: "bg-amber-50 text-amber-700 border-amber-200",
+  Cold: "bg-slate-50 text-slate-600 border-slate-200",
+};
+
+const intentDotColors: Record<string, string> = {
+  Hot: "bg-red-500",
+  Warm: "bg-amber-500",
+  Cold: "bg-slate-400",
+};
+
+// 🆕 Derive intent label from score if not provided
+function getIntentLabel(lead: Lead): "Hot" | "Warm" | "Cold" | null {
+  if (lead.intentLabel) return lead.intentLabel;
+  if (typeof lead.intentScore === "number") {
+    if (lead.intentScore >= 7) return "Hot";
+    if (lead.intentScore >= 4) return "Warm";
+    return "Cold";
+  }
+  return null;
+}
 
 const filterThemes: Record<string, { active: string; dot: string }> = {
   All: {
@@ -382,6 +414,14 @@ export default function CRMPage() {
                 <th className="px-6 py-3 font-semibold text-xs uppercase tracking-wider">
                   Lead
                 </th>
+                {/* 🆕 Intent column */}
+                <th className="px-6 py-3 font-semibold text-xs uppercase tracking-wider">
+                  Intent
+                </th>
+                {/* 🆕 Page column */}
+                <th className="px-6 py-3 font-semibold text-xs uppercase tracking-wider">
+                  Page
+                </th>
                 <th className="px-6 py-3 font-semibold text-xs uppercase tracking-wider">
                   Source
                 </th>
@@ -399,65 +439,111 @@ export default function CRMPage() {
             <tbody className="divide-y divide-gray-100">
               {filteredLeads.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
                     <Users className="h-10 w-10 mx-auto text-gray-200 mb-3" />
                     <p className="text-sm font-medium text-gray-600">No leads found.</p>
                   </td>
                 </tr>
               ) : (
                 <AnimatePresence initial={false}>
-                  {filteredLeads.map((lead, index) => (
-                    <motion.tr
-                      key={lead._id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.03 }}
-                      className="hover:bg-sky-50/50 transition-colors group"
-                    >
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
-                            {lead.name.charAt(0).toUpperCase()}
+                  {filteredLeads.map((lead, index) => {
+                    const intentLabel = getIntentLabel(lead);
+                    return (
+                      <motion.tr
+                        key={lead._id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.03 }}
+                        className="hover:bg-sky-50/50 transition-colors group"
+                      >
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+                              {lead.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="font-semibold text-gray-900 truncate max-w-[180px]">
+                                {lead.name}
+                              </p>
+                              <p className="text-gray-500 text-xs truncate max-w-[180px]">
+                                {lead.email}
+                                {lead.phone ? ` • ${lead.phone}` : ""}
+                              </p>
+                            </div>
                           </div>
-                          <div className="min-w-0">
-                            <p className="font-semibold text-gray-900 truncate max-w-[180px]">
-                              {lead.name}
-                            </p>
-                            <p className="text-gray-500 text-xs truncate max-w-[180px]">
-                              {lead.email}
-                              {lead.phone ? ` • ${lead.phone}` : ""}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex max-w-[160px] items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-sky-50 text-sky-700 border border-sky-100 whitespace-nowrap overflow-hidden text-ellipsis">
-                          <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
-                          {lead.source || "Unknown"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-gray-500 text-xs">
-                        {formatDate(lead.createdAt)}
-                      </td>
-                      <td className="px-6 py-4">
-                        <StatusDropdown
-                          currentStatus={lead.status}
-                          onChange={(newStatus) =>
-                            handleStatusChange(lead._id, newStatus)
-                          }
-                        />
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <button
-                          onClick={() => setSelectedLead(lead)}
-                          className="inline-flex items-center gap-1.5 text-sky-600 hover:text-sky-800 font-semibold text-xs transition-colors duration-150 whitespace-nowrap"
-                        >
-                          View Details
-                          <ArrowUpRight className="h-4 w-4" />
-                        </button>
-                      </td>
-                    </motion.tr>
-                  ))}
+                        </td>
+
+                        {/* 🆕 Intent cell */}
+                        <td className="px-6 py-4">
+                          {intentLabel ? (
+                            <div className="flex flex-col gap-1">
+                              <span
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full border ${
+                                  intentStyles[intentLabel] || intentStyles.Cold
+                                }`}
+                              >
+                                <span
+                                  className={`w-1.5 h-1.5 rounded-full ${
+                                    intentDotColors[intentLabel] || intentDotColors.Cold
+                                  }`}
+                                />
+                                {intentLabel === "Hot" && (
+                                  <Flame className="h-3 w-3" />
+                                )}
+                                {intentLabel}
+                              </span>
+                              {typeof lead.intentScore === "number" && (
+                                <span className="text-[10px] font-medium text-gray-400 pl-1">
+                                  Score: {lead.intentScore}/10
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-gray-300 text-xs">—</span>
+                          )}
+                        </td>
+
+                        {/* 🆕 Page cell */}
+                        <td className="px-6 py-4">
+                          {lead.pageCapturedFrom ? (
+                            <span className="inline-flex items-center gap-1.5 text-xs font-mono text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                              <Globe className="h-3 w-3 text-gray-400" />
+                              {lead.pageCapturedFrom}
+                            </span>
+                          ) : (
+                            <span className="text-gray-300 text-xs">—</span>
+                          )}
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <span className="inline-flex max-w-[160px] items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-sky-50 text-sky-700 border border-sky-100 whitespace-nowrap overflow-hidden text-ellipsis">
+                            <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
+                            {lead.source || "Unknown"}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-gray-500 text-xs">
+                          {formatDate(lead.createdAt)}
+                        </td>
+                        <td className="px-6 py-4">
+                          <StatusDropdown
+                            currentStatus={lead.status}
+                            onChange={(newStatus) =>
+                              handleStatusChange(lead._id, newStatus)
+                            }
+                          />
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <button
+                            onClick={() => setSelectedLead(lead)}
+                            className="inline-flex items-center gap-1.5 text-sky-600 hover:text-sky-800 font-semibold text-xs transition-colors duration-150 whitespace-nowrap"
+                          >
+                            View Details
+                            <ArrowUpRight className="h-4 w-4" />
+                          </button>
+                        </td>
+                      </motion.tr>
+                    );
+                  })}
                 </AnimatePresence>
               )}
             </tbody>
@@ -483,7 +569,7 @@ export default function CRMPage() {
               className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Gradient Header — Sky theme */}
+              {/* Gradient Header */}
               <div className="relative overflow-hidden bg-gradient-to-r from-sky-900 via-sky-700 to-sky-600 text-white p-6 md:p-8">
                 <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
                 <div className="absolute -bottom-10 -left-6 w-28 h-28 rounded-full bg-cyan-300/10 blur-xl" />
@@ -498,11 +584,22 @@ export default function CRMPage() {
                       {selectedLead.source}
                     </p>
                   </div>
-                  <span
-                    className={`px-3 py-1 text-xs font-semibold rounded-full ring-1 ring-white/30 bg-white/15 backdrop-blur-sm text-white`}
-                  >
-                    {selectedLead.status}
-                  </span>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="px-3 py-1 text-xs font-semibold rounded-full ring-1 ring-white/30 bg-white/15 backdrop-blur-sm text-white">
+                      {selectedLead.status}
+                    </span>
+                    {/* 🆕 Intent badge in header */}
+                    {getIntentLabel(selectedLead) && (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-white/15 backdrop-blur-sm ring-1 ring-white/30 text-white">
+                        {getIntentLabel(selectedLead) === "Hot" && (
+                          <Flame className="h-3 w-3" />
+                        )}
+                        {getIntentLabel(selectedLead)}
+                        {typeof selectedLead.intentScore === "number" &&
+                          ` · ${selectedLead.intentScore}/10`}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -564,6 +661,36 @@ export default function CRMPage() {
                       </p>
                     </div>
                   </div>
+
+                  {/* 🆕 Page captured from */}
+                  {selectedLead.pageCapturedFrom && (
+                    <div className="md:col-span-2 flex items-start gap-3 p-4 rounded-xl bg-indigo-50 border border-indigo-100">
+                      <Globe className="h-5 w-5 text-indigo-600 shrink-0 mt-0.5" />
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+                          Page Captured From
+                        </p>
+                        <p className="text-gray-900 font-mono text-sm">
+                          {selectedLead.pageCapturedFrom}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 🆕 Wants to build */}
+                  {selectedLead.wantsToBuild && (
+                    <div className="md:col-span-2 flex items-start gap-3 p-4 rounded-xl bg-purple-50 border border-purple-100">
+                      <Sparkles className="h-5 w-5 text-purple-600 shrink-0 mt-0.5" />
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
+                          Wants to Build
+                        </p>
+                        <p className="text-gray-900 font-medium text-sm">
+                          {selectedLead.wantsToBuild}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Message Box */}

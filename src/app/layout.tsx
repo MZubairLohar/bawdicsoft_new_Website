@@ -334,6 +334,7 @@ import "./globals.css";
 import Script from "next/script";
 import SiteChrome from "@/components/SiteChrome";
 import TrackingAndConsent from "@/components/TrackingAndConsent";
+import ConditionalAgent from "@/components/ConditionalAgent";
 // import PopupCapture from "@/components/PopupCapture";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -349,7 +350,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body className={inter.className}>
         {/* Google Analytics */}
         <Script
@@ -374,6 +375,9 @@ export default function RootLayout({
         {/* Sirf public visitors ke liye */}
         <TrackingAndConsent />
         {/* <PopupCapture /> */}
+
+        {/* 🆕 AI Sales Agent — sirf public site pe (admin pe auto-hide) */}
+        <ConditionalAgent />
       </body>
     </html>
   );

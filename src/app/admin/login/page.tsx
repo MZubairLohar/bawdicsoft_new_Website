@@ -32,7 +32,7 @@ export default function LoginPage() {
         setError(data.error || "Ghalat email ya password");
       }
     } catch (err) {
-      setError("Login mein error aaya");
+      setError("Login error");
     } finally {
       setIsLoading(false);
     }
