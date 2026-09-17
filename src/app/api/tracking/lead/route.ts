@@ -1,108 +1,139 @@
 // src/app/api/tracking/lead/route.ts
-// Main orchestration: capture lead → MongoDB + Airtable + WhatsApp + Mailchimp
+// Lead capture: Airtable + Gmail (nodemailer) emails
 
 import { NextResponse } from 'next/server';
-import { connectDB } from '@/lib/dbConnect'; // ✅ Named import
-import Lead from '@/models/lead';
-import { saveLeadToAirtable } from '@/lib/integrations/airtable';
-import { notifyBilalOnWhatsApp } from '@/lib/integrations/whatsapp';
-import { addLeadToMailchimp } from '@/lib/integrations/mailchimp';
+import nodemailer from 'nodemailer';
 
 export const runtime = 'nodejs';
 
-type LeadRequestBody = {
-  name?: string;
-  email: string;
-  wantsToBuild?: string;
-  page?: string;
-  intentScore?: number;
-  intentLabel?: 'Hot' | 'Warm' | 'Cold';
-  source?: string;
-  visitorId?: string;
-};
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY || '';
+const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID || '';
+const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME || 'Leads';
 
-function deriveIntentLabel(score: number | undefined): 'Hot' | 'Warm' | 'Cold' | null {
-  if (typeof score !== 'number') return null;
-  if (score >= 7) return 'Hot';
-  if (score >= 4) return 'Warm';
-  return 'Cold';
-}
+const EMAIL_USER = process.env.EMAIL_USER || '';
+const EMAIL_PASS = process.env.EMAIL_PASS || '';
+const SALES_EMAIL = process.env.SALES_EMAIL || EMAIL_USER;
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: { user: EMAIL_USER, pass: EMAIL_PASS },
+});
+
+type LeadBody = {
+  visitorId: string;
+  email: string;
+  name?: string;
+  interest?: string;
+  ip?: string;
+  page?: string;
+  source?: string;
+  createdAt?: number;
+};
 
 export async function POST(req: Request) {
   try {
-    const body = (await req.json()) as LeadRequestBody;
+    const body = (await req.json()) as LeadBody;
 
-    if (!body?.email || typeof body.email !== 'string') {
+    if (!body?.email || !body?.visitorId) {
       return NextResponse.json(
-        { ok: false, error: 'email is required' },
+        { ok: false, error: 'email and visitorId required' },
         { status: 400 }
       );
     }
 
-    const lead = {
-      name: (body.name || 'Website Visitor').trim(),
-      email: body.email.trim().toLowerCase(),
-      wantsToBuild: (body.wantsToBuild || 'Not specified').trim(),
-      page: body.page || '/',
-      intentScore: typeof body.intentScore === 'number' ? body.intentScore : null,
-      intentLabel: body.intentLabel || deriveIntentLabel(body.intentScore) || null,
-      source: body.source || 'direct',
-      visitorId: body.visitorId || null,
-      timestamp: new Date().toISOString(),
+    const record = {
+      Name: body.name || '',
+      Email: body.email,
+      IP: body.ip || '',
+      Interest: body.interest || '',
+      Page: body.page || '',
+      VisitorID: body.visitorId,
+      CreatedAt: new Date().toISOString(),
     };
 
-    // 1. Save to MongoDB
-    let mongoResult: { ok: boolean; id?: string; error?: string } = { ok: false };
-    try {
-      await connectDB(); // ✅ Naam badla
-      const doc = await Lead.create({
-        name: lead.name,
-        email: lead.email,
-        service: 'AI Agent Capture',
-        message: `Wants to build: ${lead.wantsToBuild}`,
-        source: lead.source,
-        status: 'New',
-        intentScore: lead.intentScore,
-        intentLabel: lead.intentLabel,
-        pageCapturedFrom: lead.page,
-        wantsToBuild: lead.wantsToBuild,
-        visitorId: lead.visitorId,
-      });
-      mongoResult = { ok: true, id: String(doc._id) };
-      console.log('[lead] Saved to MongoDB:', doc._id);
-    } catch (err) {
-      console.error('[lead] MongoDB save failed:', err);
-      mongoResult = { ok: false, error: 'MongoDB save failed' };
+    // 1. Airtable
+    let airtableOk = false;
+    if (AIRTABLE_API_KEY && AIRTABLE_BASE_ID) {
+      try {
+        const atRes = await fetch(
+          `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ fields: record }),
+          }
+        );
+        airtableOk = atRes.ok;
+        if (atRes.ok) console.log(`[AIRTABLE] Saved: ${body.email}`);
+        else console.error(`[AIRTABLE FAILED] ${atRes.status}`);
+      } catch (err) {
+        console.error('[AIRTABLE ERROR]', err);
+      }
     }
 
-    // 2. Fire Airtable + WhatsApp + Mailchimp in parallel
-   const [airtableRes, whatsappRes, mailchimpRes] = await Promise.all([
-  saveLeadToAirtable({
-    ...lead,
-    intentScore: lead.intentScore ?? 0, // ✅ null → 0
-  }),
-  notifyBilalOnWhatsApp({
-    ...lead,
-    intentScore: lead.intentScore ?? 0, // ✅ null → 0
-  }),
-  addLeadToMailchimp({ email: lead.email, name: lead.name }),
-]);
+    // 2. Email to visitor
+    let emailOk = false;
+    if (EMAIL_USER && EMAIL_PASS) {
+      try {
+        await transporter.sendMail({
+          from: `"BawdicSoft" <${EMAIL_USER}>`,
+          to: body.email,
+          subject: 'Thanks for reaching out to BawdicSoft',
+          html: `
+            <div style="font-family: system-ui; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h2 style="color: #1E3A5F;">Hi ${body.name || 'there'},</h2>
+              <p>Thanks for getting in touch with BawdicSoft. We received your inquiry${
+                body.interest ? ` about <strong>${body.interest}</strong>` : ''
+              }.</p>
+              <p>Our team lead <strong>IMRAN KHAN</strong> will reach out within the next 24 hours.</p>
+              <p>In the meantime, check our portfolio: <a href="https://www.bawdicsoft.com/portfolio">bawdicsoft.com/portfolio</a></p>
+              <br>
+              <p>Best regards,<br><strong>BawdicSoft Team</strong></p>
+            </div>
+          `,
+        });
+        emailOk = true;
+        console.log(`[EMAIL SENT] ${body.email}`);
+      } catch (err) {
+        console.error('[EMAIL ERROR]', err);
+      }
+    }
 
-    if (!airtableRes.ok) console.warn('[lead] Airtable failed:', airtableRes.error);
-    if (!whatsappRes.ok) console.warn('[lead] WhatsApp failed:', whatsappRes.error);
-    if (!mailchimpRes.ok) console.warn('[lead] Mailchimp failed:', mailchimpRes.error);
+    // 3. Internal email to Bilal
+    if (EMAIL_USER && EMAIL_PASS && SALES_EMAIL) {
+      try {
+        await transporter.sendMail({
+          from: `"BawdicSoft Bot" <${EMAIL_USER}>`,
+          to: SALES_EMAIL,
+          subject: `New Lead: ${body.name || body.email}`,
+          html: `
+            <h3 style="color: #1E3A5F;">New Lead Captured</h3>
+            <table style="border-collapse: collapse; width: 100%;">
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Name</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${body.name || '-'}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Email</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${body.email}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Interest</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${body.interest || '-'}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>IP</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${body.ip || '-'}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Page</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${body.page || '-'}</td></tr>
+            </table>
+          `,
+        });
+        console.log(`[INTERNAL EMAIL] Sent`);
+      } catch (err) {
+        console.error('[INTERNAL EMAIL ERROR]', err);
+      }
+    }
 
     return NextResponse.json({
       ok: true,
-      mongo: mongoResult,
-      airtable: airtableRes,
-      whatsapp: whatsappRes,
-      mailchimp: mailchimpRes,
+      saved: { airtable: airtableOk, email: emailOk },
     });
-  } catch (err) {
-    console.error('[api/tracking/lead] Error:', err);
+  } catch (err: any) {
+    console.error('[lead/route] Error:', err);
     return NextResponse.json(
-      { ok: false, error: 'Internal server error' },
+      { ok: false, error: err.message || 'Server error' },
       { status: 500 }
     );
   }
