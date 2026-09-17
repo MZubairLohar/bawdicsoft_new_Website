@@ -377,7 +377,7 @@ export default function RootLayout({
         {/* <PopupCapture /> */}
 
         {/* 🆕 AI Sales Agent — sirf public site pe (admin pe auto-hide) */}
-        <ConditionalAgent />
+        {/* <ConditionalAgent /> */}
       </body>
     </html>
   );
