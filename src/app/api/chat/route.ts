@@ -45,22 +45,27 @@ export async function POST(req: Request) {
 
     const data = await resp.json();
 
-    // ─── LEAD FORWARD (YEH ADD KARO) ───
+    // ─── LEAD FORWARD (AWAIT KARO — warna Vercel kill kar dega) ───
     const lead = data.lead || {};
     if (lead.email && lead.name) {
       const origin = new URL(req.url).origin;
-      fetch(`${origin}/api/tracking/lead`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          visitorId: body.visitorId || 'default',
-          email: lead.email,
-          name: lead.name,
-          interest: lead.project || '',
-          page: body.page || '/',
-          source: 'chat-widget',
-        }),
-      }).catch((err) => console.error('[lead forward]', err));
+      try {
+        await fetch(`${origin}/api/tracking/lead`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            visitorId: body.visitorId || 'default',
+            email: lead.email,
+            name: lead.name,
+            interest: lead.project || '',
+            page: body.page || '/',
+            source: 'chat-widget',
+          }),
+        });
+        console.log('[lead forward] OK');
+      } catch (err) {
+        console.error('[lead forward]', err);
+      }
     }
 
     return NextResponse.json({
@@ -74,7 +79,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
   }
 }
-
 
 
 
