@@ -1,6 +1,4 @@
 // src/app/api/chat/route.ts
-// POST /api/chat — BawdicSoft fine-tuned model on Render backend
-
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
@@ -19,25 +17,18 @@ export async function POST(req: Request) {
     const body = (await req.json()) as ChatRequestBody;
 
     if (!body?.messages || !Array.isArray(body.messages) || body.messages.length === 0) {
-      return NextResponse.json(
-        { ok: false, error: 'messages array is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: 'messages required' }, { status: 400 });
     }
 
-    // Last user message nikaalo
     const lastUserMsg = [...body.messages]
       .reverse()
       .find((m) => m.role === 'user' && m.content?.trim());
 
     if (!lastUserMsg) {
-      return NextResponse.json(
-        { ok: false, error: 'No valid user message' },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: 'No user message' }, { status: 400 });
     }
 
-    // Backend ko bhejo
+    // Render backend se reply lo
     const resp = await fetch(`${BACKEND_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -49,15 +40,29 @@ export async function POST(req: Request) {
     });
 
     if (!resp.ok) {
-      return NextResponse.json(
-        { ok: false, error: `Backend error: ${resp.status}` },
-        { status: resp.status }
-      );
+      return NextResponse.json({ ok: false, error: `Backend: ${resp.status}` }, { status: resp.status });
     }
 
     const data = await resp.json();
 
-    // Frontend ko wahi format mein wapas bhejo
+    // ─── LEAD FORWARD (YEH ADD KARO) ───
+    const lead = data.lead || {};
+    if (lead.email && lead.name) {
+      const origin = new URL(req.url).origin;
+      fetch(`${origin}/api/tracking/lead`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          visitorId: body.visitorId || 'default',
+          email: lead.email,
+          name: lead.name,
+          interest: lead.project || '',
+          page: body.page || '/',
+          source: 'chat-widget',
+        }),
+      }).catch((err) => console.error('[lead forward]', err));
+    }
+
     return NextResponse.json({
       ok: true,
       reply: data.reply,
@@ -66,10 +71,7 @@ export async function POST(req: Request) {
     });
   } catch (err: any) {
     console.error('[api/chat] Error:', err);
-    return NextResponse.json(
-      { ok: false, error: err.message || 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
   }
 }
 
