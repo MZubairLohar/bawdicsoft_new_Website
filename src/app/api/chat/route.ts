@@ -28,7 +28,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: 'No user message' }, { status: 400 });
     }
 
-    // Render backend se reply lo
     const resp = await fetch(`${BACKEND_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -44,13 +43,14 @@ export async function POST(req: Request) {
     }
 
     const data = await resp.json();
+    console.log('[lead check]', data.lead, 'origin:', new URL(req.url).origin);
 
-    // ─── LEAD FORWARD (AWAIT KARO — warna Vercel kill kar dega) ───
+    // ─── LEAD FORWARD ───
     const lead = data.lead || {};
     if (lead.email && lead.name) {
       const origin = new URL(req.url).origin;
       try {
-        await fetch(`${origin}/api/tracking/lead`, {
+        const leadResp = await fetch(`${origin}/api/tracking/lead`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -62,9 +62,10 @@ export async function POST(req: Request) {
             source: 'chat-widget',
           }),
         });
-        console.log('[lead forward] OK');
+        const leadData = await leadResp.json();
+        console.log('[lead forward] status:', leadResp.status, 'body:', leadData);
       } catch (err) {
-        console.error('[lead forward]', err);
+        console.error('[lead forward error]', err);
       }
     }
 
@@ -79,7 +80,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
   }
 }
-
 
 
 
