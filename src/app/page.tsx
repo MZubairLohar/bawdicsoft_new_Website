@@ -85,7 +85,7 @@ export default function Home() {
       {/* <StickyHeader /> */}
       <HeroSection />
       <TrustSignalsSection />
-      <AIProducts />
+      {/* <AIProducts /> */}
       {/* <LeadMagnet /> */}
       <EnterprisePainPointsSection />
       <WhyBawdicSoftSection />
