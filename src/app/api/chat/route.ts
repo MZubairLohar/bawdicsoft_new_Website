@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 
-const BACKEND_URL = 'https://bawdicsoft-agent.onrender.com';
+const BACKEND_URL = 'https://syedabdulmoizshah-bawdicsoft-agent.hf.space';
 
 type ChatRequestBody = {
   messages: { role: 'user' | 'assistant'; content: string }[];
@@ -28,25 +28,85 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: 'No user message' }, { status: 400 });
     }
 
-    const resp = await fetch(`${BACKEND_URL}/chat`, {
+    // ─── Step 1: Trigger the API call → get event_id ───
+    const callResp = await fetch(`${BACKEND_URL}/gradio_api/call/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        session_id: body.visitorId || 'default',
-        message: lastUserMsg.content.trim(),
-        page: body.page || '/',
+        data: [
+          body.visitorId || 'default',
+          lastUserMsg.content.trim(),
+          body.page || '/',
+        ],
       }),
     });
 
-    if (!resp.ok) {
-      return NextResponse.json({ ok: false, error: `Backend: ${resp.status}` }, { status: resp.status });
+    if (!callResp.ok) {
+      const errText = await callResp.text();
+      console.error('[HF call] failed:', callResp.status, errText);
+      return NextResponse.json(
+        { ok: false, error: `HF call: ${callResp.status} ${errText.slice(0, 100)}` },
+        { status: callResp.status }
+      );
     }
 
-    const data = await resp.json();
-    console.log('[lead check]', data.lead, 'origin:', new URL(req.url).origin);
+    const callData = await callResp.json();
+    const eventId = callData.event_id;
+    console.log('[HF call] event_id:', eventId);
 
-    // ─── LEAD FORWARD ───
-    const lead = data.lead || {};
+    if (!eventId) {
+      return NextResponse.json({ ok: false, error: 'No event_id returned' }, { status: 500 });
+    }
+
+    // ─── Step 2: Fetch the result via SSE ───
+    const resultResp = await fetch(
+      `${BACKEND_URL}/gradio_api/call/chat/${eventId}`,
+      { method: 'GET' }
+    );
+
+    if (!resultResp.ok) {
+      return NextResponse.json(
+        { ok: false, error: `HF result: ${resultResp.status}` },
+        { status: resultResp.status }
+      );
+    }
+
+    const sseText = await resultResp.text();
+    console.log('[HF SSE raw]:', sseText.slice(0, 500));
+
+    // ─── Parse SSE: lines like "event: complete\ndata: [...]" ───
+    let replyArr: any[] = [];
+    const lines = sseText.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.startsWith('data:')) {
+        const jsonStr = line.slice(5).trim();
+        if (jsonStr && jsonStr !== '[DONE]') {
+          try {
+            const parsed = JSON.parse(jsonStr);
+            // Gradio sends final data as an array of returns
+            if (Array.isArray(parsed)) {
+              replyArr = parsed;
+            }
+          } catch {
+            // ignore partial chunks
+          }
+        }
+      }
+    }
+
+    const reply = replyArr[0] || 'Sorry, no reply.';
+    const userType = replyArr[1] || 'unknown';
+    let lead: any = {};
+    try {
+      lead = replyArr[2] ? JSON.parse(replyArr[2]) : {};
+    } catch {
+      lead = {};
+    }
+
+    console.log('[chat] reply:', reply, '| user_type:', userType, '| lead:', lead);
+
+    // ─── Lead Forward ───
     if (lead.email && lead.name) {
       const origin = new URL(req.url).origin;
       try {
@@ -71,9 +131,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       ok: true,
-      reply: data.reply,
-      lead: data.lead || {},
-      user_type: data.user_type || 'unknown',
+      reply,
+      lead,
+      user_type: userType,
     });
   } catch (err: any) {
     console.error('[api/chat] Error:', err);
@@ -83,16 +143,22 @@ export async function POST(req: Request) {
 
 
 
+
+
+
+
+
+
+
 // // src/app/api/chat/route.ts
-// // POST /api/chat — accepts conversation history, returns Claude's next reply.
-
 // import { NextResponse } from 'next/server';
-// import { getClaudeReply, ClaudeMessage } from '@/lib/ai/claude';
 
-// export const runtime = 'nodejs'; // Claude API needs Node runtime (not Edge)
+// export const runtime = 'nodejs';
+
+// const BACKEND_URL = 'https://bawdicsoft-agent.onrender.com';
 
 // type ChatRequestBody = {
-//   messages: ClaudeMessage[];
+//   messages: { role: 'user' | 'assistant'; content: string }[];
 //   visitorId?: string;
 //   intentScore?: number;
 //   page?: string;
@@ -103,53 +169,66 @@ export async function POST(req: Request) {
 //     const body = (await req.json()) as ChatRequestBody;
 
 //     if (!body?.messages || !Array.isArray(body.messages) || body.messages.length === 0) {
-//       return NextResponse.json(
-//         { ok: false, error: 'messages array is required' },
-//         { status: 400 }
-//       );
+//       return NextResponse.json({ ok: false, error: 'messages required' }, { status: 400 });
 //     }
 
-//     // Basic shape validation
-//     const sanitized: ClaudeMessage[] = body.messages
-//       .filter(
-//         (m) =>
-//           m &&
-//           (m.role === 'user' || m.role === 'assistant') &&
-//           typeof m.content === 'string' &&
-//           m.content.trim().length > 0
-//       )
-//       .map((m) => ({ role: m.role, content: m.content.trim() }));
+//     const lastUserMsg = [...body.messages]
+//       .reverse()
+//       .find((m) => m.role === 'user' && m.content?.trim());
 
-//     if (!sanitized.length) {
-//       return NextResponse.json(
-//         { ok: false, error: 'No valid messages in history' },
-//         { status: 400 }
-//       );
+//     if (!lastUserMsg) {
+//       return NextResponse.json({ ok: false, error: 'No user message' }, { status: 400 });
 //     }
 
-//     // Optional: log context for later use (intent score, page)
-//     // Ye later Airtable/analytics mein bhi use ho sakta hai
-//     if (body.visitorId) {
-//       console.log(
-//         `[chat] visitor=${body.visitorId} page=${body.page ?? '-'} intent=${body.intentScore ?? '-'}`
-//       );
+//     const resp = await fetch(`${BACKEND_URL}/chat`, {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({
+//         session_id: body.visitorId || 'default',
+//         message: lastUserMsg.content.trim(),
+//         page: body.page || '/',
+//       }),
+//     });
+
+//     if (!resp.ok) {
+//       return NextResponse.json({ ok: false, error: `Backend: ${resp.status}` }, { status: resp.status });
 //     }
 
-//     const result = await getClaudeReply(sanitized);
+//     const data = await resp.json();
+//     console.log('[lead check]', data.lead, 'origin:', new URL(req.url).origin);
 
-//     if (!result.ok) {
-//       return NextResponse.json(
-//         { ok: false, error: result.error },
-//         { status: 500 }
-//       );
+//     // ─── LEAD FORWARD ───
+//     const lead = data.lead || {};
+//     if (lead.email && lead.name) {
+//       const origin = new URL(req.url).origin;
+//       try {
+//         const leadResp = await fetch(`${origin}/api/tracking/lead`, {
+//           method: 'POST',
+//           headers: { 'Content-Type': 'application/json' },
+//           body: JSON.stringify({
+//             visitorId: body.visitorId || 'default',
+//             email: lead.email,
+//             name: lead.name,
+//             interest: lead.project || '',
+//             page: body.page || '/',
+//             source: 'chat-widget',
+//           }),
+//         });
+//         const leadData = await leadResp.json();
+//         console.log('[lead forward] status:', leadResp.status, 'body:', leadData);
+//       } catch (err) {
+//         console.error('[lead forward error]', err);
+//       }
 //     }
 
-//     return NextResponse.json({ ok: true, reply: result.reply });
-//   } catch (err) {
+//     return NextResponse.json({
+//       ok: true,
+//       reply: data.reply,
+//       lead: data.lead || {},
+//       user_type: data.user_type || 'unknown',
+//     });
+//   } catch (err: any) {
 //     console.error('[api/chat] Error:', err);
-//     return NextResponse.json(
-//       { ok: false, error: 'Internal server error' },
-//       { status: 500 }
-//     );
+//     return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
 //   }
 // }
