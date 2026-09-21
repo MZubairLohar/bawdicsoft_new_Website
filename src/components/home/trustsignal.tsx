@@ -219,7 +219,7 @@ const TrustSignalsSection: FC = () => {
       avatar: "",
     },
     {
-      name: "Vincent Esposito / Nick Zaryaki",
+      name: "Vincent Esposito",
       detail: "Stock analyst",
       linkedin: "https://www.linkedin.com/in/vincent-esposito-aif%C2%AE-2213734/",
       avatar: "",
@@ -230,6 +230,12 @@ const TrustSignalsSection: FC = () => {
       linkedin: "", // link missing, yeh neeche show nahi hoga
       avatar: "",
     },
+    {
+  name: "Nick Zaryaki",
+  detail: "Stock analyst",
+  linkedin: "", // ← agar LinkedIn profile hai to URL yahan daal den
+  avatar: "",
+},
   ];
 
   // Trust indicators (bilkul same, kuch nahi badla)
