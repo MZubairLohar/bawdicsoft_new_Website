@@ -80,7 +80,7 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
     <>
       <Navbar />
       <main>{children}</main>
-      <WhatsAppButton />
+      {/* <WhatsAppButton /> */}
       <Footer />
     </>
   );

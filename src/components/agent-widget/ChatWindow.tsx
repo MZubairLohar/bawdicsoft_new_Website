@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import MessageBubble, { ChatMessage } from './MessageBubble';
 import ChatInput from './ChatInput';
+import AgentLoader, { AGENT_NAME } from './AgentLoader';
 
 type Props = {
   messages: ChatMessage[];
@@ -10,6 +11,7 @@ type Props = {
   onSend: (text: string) => void;
   onClose: () => void;
   isMobile: boolean;
+  isInitializing?: boolean;
 };
 
 export default function ChatWindow({
@@ -18,6 +20,7 @@ export default function ChatWindow({
   onSend,
   onClose,
   isMobile,
+  isInitializing = false,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -25,7 +28,7 @@ export default function ChatWindow({
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, isTyping]);
+  }, [messages, isTyping, isInitializing]);
 
   const containerStyle: React.CSSProperties = isMobile
     ? {
@@ -53,12 +56,14 @@ export default function ChatWindow({
         zIndex: 9999,
       };
 
+  const showInitialLoader = isInitializing && messages.length === 0;
+
   return (
     <div style={containerStyle} role="dialog" aria-label="BawdicSoft AI Chat">
       {/* Header */}
       <div
         style={{
-          background: '#1E3A5F',
+          background: 'linear-gradient(135deg, #1E3A5F 0%, #2A4A75 100%)',
           color: '#FFFFFF',
           padding: '14px 16px',
           display: 'flex',
@@ -69,16 +74,56 @@ export default function ChatWindow({
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div
             style={{
-              width: 10,
-              height: 10,
+              position: 'relative',
+              width: 36,
+              height: 36,
               borderRadius: '50%',
-              background: '#22C55E',
-              boxShadow: '0 0 0 3px rgba(34,197,94,0.25)',
+              background: 'linear-gradient(135deg, #2A4A75 0%, #1E3A5F 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#FFFFFF',
+              fontSize: 15,
+              fontWeight: 700,
+              border: '2px solid rgba(255,255,255,0.15)',
             }}
-          />
+          >
+            A
+            <span
+              style={{
+                position: 'absolute',
+                bottom: -1,
+                right: -1,
+                width: 11,
+                height: 11,
+                borderRadius: '50%',
+                background: '#22C55E',
+                border: '2px solid #1E3A5F',
+              }}
+            />
+          </div>
           <div>
-            <div style={{ fontSize: 15, fontWeight: 600 }}>BawdicSoft AI</div>
-            <div style={{ fontSize: 11, opacity: 0.75 }}>Typically replies instantly</div>
+            <div style={{ fontSize: 15, fontWeight: 600 }}>{AGENT_NAME}</div>
+            <div
+              style={{
+                fontSize: 11,
+                opacity: 0.8,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+              }}
+            >
+              <span
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: '50%',
+                  background: '#22C55E',
+                  boxShadow: '0 0 6px rgba(34,197,94,0.7)',
+                }}
+              />
+              Online · BawdicSoft
+            </div>
           </div>
         </div>
         <button
@@ -92,6 +137,7 @@ export default function ChatWindow({
             padding: 4,
             display: 'flex',
             alignItems: 'center',
+            opacity: 0.85,
           }}
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -113,32 +159,21 @@ export default function ChatWindow({
           overflowY: 'auto',
           padding: '16px 14px',
           background: '#FAFBFC',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
+        {showInitialLoader && <AgentLoader />}
+
         {messages.map((m) => (
           <MessageBubble key={m.id} message={m} />
         ))}
 
-        {isTyping && (
-          <div style={{ display: 'flex', marginBottom: 10 }}>
-            <div
-              style={{
-                background: '#F1F3F6',
-                padding: '10px 14px',
-                borderRadius: 16,
-                borderTopLeftRadius: 4,
-                fontSize: 14,
-                color: '#6B7280',
-              }}
-            >
-              typing…
-            </div>
-          </div>
-        )}
+        {isTyping && !showInitialLoader && <AgentLoader />}
       </div>
 
       {/* Input */}
-      <ChatInput onSend={onSend} disabled={isTyping} />
+      <ChatInput onSend={onSend} disabled={isTyping || isInitializing} />
     </div>
   );
 }
