@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { VisitorTrackingProvider } from "@/lib/tracking/useVisitorTracking";
-import ChatWidget from "@/components/agent-widget/ChatWidget";
+// import ChatWidget from "@/components/agent-widget/ChatWidget";
 
 export default function ConditionalAgent() {
   const pathname = usePathname();
@@ -10,8 +10,9 @@ export default function ConditionalAgent() {
   if (isAdmin) return null;
 
   return (
-    <VisitorTrackingProvider>
-      <ChatWidget />
-    </VisitorTrackingProvider>
+    <></>
+    // <VisitorTrackingProvider>
+    //   {/* <ChatWidget /> */}
+    // </VisitorTrackingProvider>
   );
 }
