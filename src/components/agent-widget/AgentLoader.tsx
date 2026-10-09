@@ -3,6 +3,7 @@
 import React from 'react';
 
 export const AGENT_NAME = 'Aria';
+export const AGENT_PHOTO = '/aria.jpg';
 
 type Props = {
   label?: string;
@@ -23,7 +24,7 @@ export default function AgentLoader({ label, compact = false }: Props) {
         }
         @keyframes bawdicAvatarRing {
           0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
+          50% { transform: scale(1.06); }
         }
         @keyframes bawdicOnlinePulse {
           0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
@@ -51,23 +52,25 @@ export default function AgentLoader({ label, compact = false }: Props) {
       >
         <div
           style={{
+            position: 'relative',
             width: 34,
             height: 34,
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #1E3A5F 0%, #2A4A75 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#FFFFFF',
-            fontSize: 14,
-            fontWeight: 700,
             flexShrink: 0,
-            boxShadow: '0 2px 8px rgba(30,58,95,0.25)',
-            position: 'relative',
             animation: 'bawdicAvatarRing 1.6s ease-in-out infinite',
           }}
         >
-          A
+          <img
+            src={AGENT_PHOTO}
+            alt={AGENT_NAME}
+            style={{
+              width: '100%',
+              height: '100%',
+              borderRadius: '50%',
+              objectFit: 'cover',
+              display: 'block',
+              boxShadow: '0 2px 8px rgba(30,58,95,0.2)',
+            }}
+          />
           <span
             style={{
               position: 'absolute',

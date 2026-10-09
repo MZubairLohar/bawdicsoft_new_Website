@@ -16,6 +16,7 @@ import {
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
 import { TiArrowSortedDown } from "react-icons/ti";
+import { usePathname } from "next/navigation";
 
 import logo from "../../public/images/logo.png";
 import blockChainLogo from "../../public/images/blockChain/blockchainicon.png";
@@ -25,6 +26,7 @@ import aiIconLogo from "../../public/images/blockChain/aiIcon.jpeg";
 import Image, { StaticImageData } from "next/image";
 import DropDown from "./home/dropDown";
 import Link from "next/link";
+
 
 type data = {
   image: StaticImageData;
@@ -110,7 +112,12 @@ function classNames(
 const Navbar: FC<NavbarProps> = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [checkClick, setCheckClick] = useState<boolean>(false);
+  const [scrolled, setScrolled] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  // ✅ Home page check
+  const isHome = pathname === "/";
 
   const servicesHandler = () => {
     setCheckClick(!checkClick);
@@ -133,8 +140,35 @@ const Navbar: FC<NavbarProps> = () => {
     };
   }, [checkClick]);
 
+  // ✅ Scroll listener — sirf home page par scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!isHome) {
+        setScrolled(true); // Non-home pages: hamesha scrolled (white)
+      } else {
+        setScrolled(window.scrollY > 60);
+      }
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isHome]);
+
+  // ✅ Gradient link class
+  const linkClass = `text-sm font-bold leading-6 text-[17px] transition-all duration-300 focus:outline-none ${
+    scrolled
+      ? "bg-[linear-gradient(135deg,#0c1f33_0%,#0f3b5c_60%,#0e5580_100%)] bg-clip-text text-transparent"
+      : "text-white hover:text-gray-300 focus:text-white active:text-white"
+  }`;
+
   return (
-    <header className="bg-black sticky top-0 z-40">
+    <header
+      className={`sticky top-0 z-40 transition-all duration-300 ${
+        scrolled ? "bg-white shadow-md" : "bg-transparent"
+      }`}
+    >
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-3 lg:px-8"
         aria-label="Global"
@@ -152,7 +186,11 @@ const Navbar: FC<NavbarProps> = () => {
           </div>
           <Link
             href="/"
-            className="text-white text-[23px] -ml-2 md:m-0 md:text-[30px] font-semibold md:font-bold"
+            className={`text-[23px] -ml-2 md:m-0 md:text-[30px] font-semibold md:font-bold transition-all duration-300 ${
+              scrolled
+                ? "bg-[linear-gradient(135deg,#0c1f33_0%,#0f3b5c_60%,#0e5580_100%)] bg-clip-text text-transparent"
+                : "text-white"
+            }`}
           >
             BawdicSoft
           </Link>
@@ -164,20 +202,22 @@ const Navbar: FC<NavbarProps> = () => {
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            <Bars3Icon
+              className={`h-6 w-6 transition-colors duration-300 ${
+                scrolled ? "text-gray-900" : "text-white"
+              }`}
+              aria-hidden="true"
+            />
           </button>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
-          <Link
-            href="/"
-            className="text-sm font-bold leading-6 text-white text-[17px] hover:text-gray-300 focus:text-white focus:outline-none active:text-white"
-          >
+          <Link href="/" className={linkClass}>
             Home
           </Link>
           <div className="flex">
           <Link
             href="/services"
-           className="text-sm font-bold leading-6 text-white text-[17px] hover:text-gray-300 focus:text-white focus:outline-none active:text-white"
+            className={linkClass}
           >
             Services
           </Link>
@@ -186,11 +226,15 @@ const Navbar: FC<NavbarProps> = () => {
             onClick={servicesHandler}
             id="mega-menu-dropdown-button"
             data-dropdown-toggle="mega-menu-dropdown"
-            className="flex items-center justify-between  w-full py-2 px-3  md:w-auto  text-sm font-bold leading-6 text-white hover:text-black text-[17px]  border-none lg:p-0   focus:border-none    "
+            className={`flex items-center justify-between w-full py-2 px-3 md:w-auto text-sm font-bold leading-6 text-[17px] border-none lg:p-0 focus:border-none transition-all duration-300 ${
+              scrolled
+                ? "bg-[linear-gradient(135deg,#0c1f33_0%,#0f3b5c_60%,#0e5580_100%)] bg-clip-text text-transparent"
+                : "text-white hover:text-gray-300"
+            }`}
           >
             {" "}
             <svg
-              className="w-2.5 h-2.5 ms-3"
+              className={`w-2.5 h-2.5 ms-3 ${scrolled ? "text-[#0e5580]" : ""}`}
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -796,279 +840,6 @@ const Navbar: FC<NavbarProps> = () => {
                 </div>
               </div>
 
-              {/* WordPress Section */}
-              {/* <div className="pt-4  pl-4 text-gray-900 md:pb-4 ">
-                <div
-                  className="space-y-4"
-                  aria-labelledby="mega-menu-dropdown-button"
-                >
-                  <div className="flex-wrap flex flex-col gap-2 items-center">
-                    <div className="relative px-2 flex-wrap flex-col flex">
-                      <div className="px-2 font-bold leading-6 text-sky-700 py-4">
-                        <h3>Word Press</h3>
-                      </div>
-                      <div className="ml-6 relative">
-                        <div className="flex  items-start font-semibold text-sky-700">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 48 48"
-                            width="25px"
-                            height="25px"
-                          >
-                            <circle cx="28" cy="28" r="18" fill="#90caf9" />
-                            <path
-                              fill="none"
-                              stroke="#18193f"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeMiterlimit="10"
-                              strokeWidth="3"
-                              d="M20.468,42.163C11.94,40.515,5.5,33.009,5.5,24c0-6.57,3.425-12.34,8.586-15.622"
-                            />
-                            <path
-                              fill="none"
-                              stroke="#18193f"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeMiterlimit="10"
-                              strokeWidth="3"
-                              d="M19.577,6.032C20.994,5.684,22.476,5.5,24,5.5c10.217,0,18.5,8.283,18.5,18.5 c0,8.659-5.948,15.928-13.981,17.944"
-                            />
-                            <path
-                              fill="#18193f"
-                              d="M34.668,10.685c-0.904,0.603-1.537,1.808-1.537,2.948c0,1.507,0.848,2.826,1.79,4.334 c0.754,1.225,1.507,2.826,1.507,5.088c0,1.602-0.471,3.58-1.413,6.03l-1.884,6.218l-6.689-19.974 c1.131-0.094,2.167-0.188,2.167-0.188c0.942-0.094,0.848-1.507-0.094-1.507c0,0,0,0-0.094,0c0,0-3.015,0.283-4.993,0.283 c-1.79,0-4.899-0.283-4.899-0.283s0,0-0.094,0c-0.942,0-1.036,1.507-0.094,1.507c0,0,0.942,0.094,1.979,0.188l2.921,7.914 L19.19,35.397l-6.784-20.162c1.131-0.094,2.167-0.188,2.167-0.188c0.942-0.094,0.848-1.507-0.094-1.507c0,0,0,0-0.094,0 c0,0-2.261,0.227-4.089,0.293c-1.234,1.602-2.031,3.148-2.625,5.136L14.753,38.3c1.3,0.857,2.713,1.526,4.23,1.997l5.012-14.698 l5.351,14.566c1.564-0.509,3.034-1.222,4.353-2.164l4.993-14.474c0.744-1.884,1.238-3.806,1.407-5.276 C39.358,15.747,37.01,12.312,34.668,10.685z"
-                            />
-                          </svg>
-                          <Link
-                            href={"/word-press/custom-development"}
-                            onClick={servicesHandler}
-                            className="ml-1 flex flex-wrap xl:flex-nowrap flex-col hover:text-black"
-                          >
-                            <h3>Custom Development</h3>
-                          </Link>
-                        </div>
-
-                        <div className="my-6 flex items-start font-semibold text-sky-700">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 128 128"
-                            width="20px"
-                            height="20px"
-                          >
-                            <path
-                              fill="#90caf9"
-                              d="M114,124H14c-5.5,0-10-4.5-10-10V14C4,8.5,8.5,4,14,4h100c5.5,0,10,4.5,10,10v100 C124,119.5,119.5,124,114,124z"
-                            />
-                            <path
-                              fill="#000"
-                              d="M104,55H77c-1.7,0-3,1.3-3,3v30c0,1.7,1.3,3,3,3h27c1.7,0,3-1.3,3-3V58C107,56.3,105.7,55,104,55z"
-                            />
-                            <path
-                              fill="#000"
-                              d="M114,127H14c-7.2,0-13-5.8-13-13V41c0-1.7,1.3-3,3-3s3,1.3,3,3v73c0,3.9,3.1,7,7,7h100c3.9,0,7-3.1,7-7V14 c0-3.9-3.1-7-7-7H14c-3.9,0-7,3.1-7,7v11h104c1.7,0,3,1.3,3,3s-1.3,3-3,3H4c-1.7,0-3-1.3-3-3V14C1,6.8,6.8,1,14,1h100 c7.2,0,13,5.8,13,13v100C127,121.2,121.2,127,114,127z"
-                            />
-                            <circle cx="16" cy="16" r="3" fill="#000" />
-                            <circle cx="26" cy="16" r="3" fill="#000" />
-                            <circle cx="36" cy="16" r="3" fill="#000" />
-                            <path
-                              fill="#000"
-                              d="M61,61H24c-1.7,0-3-1.3-3-3s1.3-3,3-3h37c1.7,0,3,1.3,3,3S62.7,61,61,61z"
-                            />
-                            <path
-                              fill="#000"
-                              d="M61,76H24c-1.7,0-3-1.3-3-3s1.3-3,3-3h37c1.7,0,3,1.3,3,3S62.7,76,61,76z"
-                            />
-                            <path
-                              fill="#000"
-                              d="M51,91H24c-1.7,0-3-1.3-3-3s1.3-3,3-3h27c1.7,0,3,1.3,3,3S52.7,91,51,91z"
-                            />
-                            <path
-                              fill="#000"
-                              d="M61,91c-0.2,0-0.4,0-0.6-0.1c-0.2,0-0.4-0.1-0.6-0.2c-0.2-0.1-0.3-0.2-0.5-0.3c-0.2-0.1-0.3-0.2-0.5-0.4 C58.3,89.6,58,88.8,58,88c0-0.2,0-0.4,0.1-0.6c0-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.3,0.3-0.5c0.1-0.2,0.2-0.3,0.4-0.5 c1.1-1.1,3.1-1.1,4.2,0c0.1,0.1,0.3,0.3,0.4,0.5c0.1,0.2,0.2,0.3,0.3,0.5c0.1,0.2,0.1,0.4,0.2,0.6c0,0.2,0.1,0.4,0.1,0.6 c0,0.8-0.3,1.6-0.9,2.1C62.6,90.7,61.8,91,61,91z"
-                            />
-                          </svg>
-                          <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
-                            <Link
-                              href="/word-press/responsive-design"
-                              className="leading-4 font-semibold text-sky-700  hover:text-black flex items-center"
-                              onClick={servicesHandler}
-                            >
-                              <h3>Responsive Design</h3>
-                            </Link>
-                          </div>
-                        </div>
-
-                        <div className=" flex items-start font-semibold text-sky-700">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 48 48"
-                            width="26px"
-                            height="26px"
-                          >
-                            <path
-                              fill="#90caf9"
-                              d="M43.098,38H12.902C11.299,38,10,36.701,10,35.098V15.902C10,14.299,11.299,13,12.902,13h30.197 C44.701,13,46,14.299,46,15.902v19.197C46,36.701,44.701,38,43.098,38z"
-                            />
-                            <line
-                              x1="18.5"
-                              x2="18.5"
-                              y1="34.5"
-                              y2="42.5"
-                              fill="none"
-                              stroke="#18193f"
-                              strokeMiterlimit="10"
-                              strokeWidth="3"
-                            />
-                            <line
-                              x1="29.5"
-                              x2="29.5"
-                              y1="34.5"
-                              y2="42.5"
-                              fill="none"
-                              stroke="#18193f"
-                              strokeMiterlimit="10"
-                              strokeWidth="3"
-                            />
-                            <line
-                              x1="13.5"
-                              x2="34.5"
-                              y1="42.5"
-                              y2="42.5"
-                              fill="none"
-                              stroke="#18193f"
-                              strokeLinecap="round"
-                              strokeMiterlimit="10"
-                              strokeWidth="3"
-                            />
-                            <line
-                              x1="11.5"
-                              x2="36.5"
-                              y1="24.5"
-                              y2="24.5"
-                              fill="none"
-                              stroke="#18193f"
-                              strokeLinecap="round"
-                              strokeMiterlimit="10"
-                              strokeWidth="3"
-                            />
-                            <path
-                              fill="none"
-                              stroke="#18193f"
-                              strokeLinecap="round"
-                              strokeMiterlimit="10"
-                              strokeWidth="3"
-                              d="M13.052,19.53 C12.693,18.418,12.5,17.232,12.5,16c0-6.351,5.149-11.5,11.5-11.5S35.5,9.649,35.5,16c0,1.398-0.249,2.738-0.706,3.977"
-                            />
-                            <path
-                              fill="#18193f"
-                              d="M24.812,22h-1.774c-1.504,0-2.813-0.783-3.328-1.557c-0.383-0.574-0.228-1.351,0.347-1.733 c0.568-0.379,1.336-0.23,1.723,0.331c0.113,0.128,0.603,0.459,1.259,0.459h1.774c0.655,0,1.188-0.505,1.188-1.125 s-0.532-1.125-1.188-1.125h-1.375c-2.033,0-3.687-1.626-3.687-3.625S21.404,10,23.437,10h1.313c2.01,0,2.958,1.425,3.06,1.587 c0.366,0.585,0.188,1.357-0.397,1.723c-0.584,0.368-1.356,0.189-1.722-0.397c-0.015-0.018-0.313-0.413-0.94-0.413h-1.313 c-0.655,0-1.187,0.505-1.187,1.125s0.532,1.125,1.187,1.125h1.375c2.033,0,3.688,1.626,3.688,3.625S26.846,22,24.812,22z"
-                            />
-                            <line
-                              x1="24"
-                              x2="24"
-                              y1="9.3"
-                              y2="11"
-                              fill="none"
-                              stroke="#18193f"
-                              strokeLinecap="round"
-                              strokeMiterlimit="10"
-                              strokeWidth="2.5"
-                            />
-                            <line
-                              x1="24"
-                              x2="24"
-                              y1="22.7"
-                              y2="21"
-                              fill="none"
-                              stroke="#18193f"
-                              strokeLinecap="round"
-                              strokeMiterlimit="10"
-                              strokeWidth="2.5"
-                            />
-                            <path
-                              fill="none"
-                              stroke="#18193f"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeMiterlimit="10"
-                              strokeWidth="3"
-                              d="M22.915,34.5H8.5c-1.657,0-3-1.343-3-3v-20c0-1.657,1.343-3,3-3h1.819"
-                            />
-                            <path
-                              fill="none"
-                              stroke="#18193f"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeMiterlimit="10"
-                              strokeWidth="3"
-                              d="M37.702,8.5H39.5c1.657,0,3,1.343,3,3v20c0,1.657-1.343,3-3,3h-10"
-                            />
-                          </svg>
-                          <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
-                            <Link
-                              href="/word-press/woocommerce-solution"
-                              className="leading-4  font-semibold text-sky-700 hover:text-black "
-                              onClick={servicesHandler}
-                            >
-                              <h3>WooCommerce Solution</h3>
-                            </Link>
-                          </div>
-                        </div>
-                        <div className="my-6 flex items-start font-semibold text-sky-700">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 128 128"
-                            width="19px"
-                            height="20px"
-                          >
-                            <path
-                              fill="#fff"
-                              d="M104,124c11.05,0,20-8.95,20-20V24c0-11.05-8.95-20-20-20H24C12.95,4,4,12.95,4,24v80c0,11.05,8.95,20,20,20 L104,124z"
-                            />
-                            <path
-                              fill="#71c2ff"
-                              d="M125.12,107.5l-28.87-50C93.91,53.43,89.7,51,85,51s-8.91,2.43-11.26,6.5l-28.87,50 c-2.35,4.07-2.35,8.93,0,13s6.56,6.5,11.26,6.5h57.73c4.7,0,8.91-2.43,11.26-6.5S127.48,111.57,125.12,107.5z"
-                            />
-                            <path
-                              fill="#000"
-                              d="M85,115c-1.66,0-3-1.34-3-3v-3c0-1.66,1.34-3,3-3s3,1.34,3,3v3C88,113.66,86.66,115,85,115z"
-                            />
-                            <path
-                              fill="#000"
-                              d="M85,97c-1.66,0-3-1.34-3-3V72c0-1.66,1.34-3,3-3s3,1.34,3,3v22C88,95.66,86.66,97,85,97z"
-                            />
-                            <path
-                              fill="#90caf9"
-                              d="M36,22H26c-1.66,0-3-1.34-3-3s1.34-3,3-3h10c1.66,0,3,1.34,3,3S37.66,22,36,22z"
-                            />
-                            <g>
-                              <path
-                                fill="#444b54"
-                                d="M102,22H64c-1.66,0-3-1.34-3-3s1.34-3,3-3h38c1.66,0,3,1.34,3,3S103.66,22,102,22z"
-                              />
-                            </g>
-                            <path
-                              fill="#000"
-                              d="M104,1H24C11.32,1,1,11.32,1,24v80c0,12.68,10.32,23,23,23h10c1.66,0,3-1.34,3-3s-1.34-3-3-3H24 c-9.37,0-17-7.63-17-17V37h114v37c0,1.66,1.34,3,3,3s3-1.34,3-3V24C127,11.32,116.68,1,104,1z M7,31v-7c0-9.37,7.63-17,17-17h80 c9.37,0,17,7.63,17,17v7H7z"
-                            />
-                          </svg>
-                          <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
-                            <Link
-                              href="/word-press/support-maintenance"
-                              className="leading-4  font-semibold text-sky-700 hover:text-black"
-                              onClick={servicesHandler}
-                            >
-                              <h3>Support and Maintenance</h3>
-                            </Link>
-                          </div>
-                        </div>
-                        <div className="absolute right-0 top-0 hidden lg:left-48 xl:left-60  h-[200px] min-h-[1em] w-px self-stretch border-t-0 bg-gradient-to-tr from-transparent via-neutral-800 to-transparent  opacity-40  lg:block"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-
               {/* AI Section */}
               <div className="pt-4 pl-4 text-gray-900 md:pb-4 ">
                 <div
@@ -1129,7 +900,7 @@ const Navbar: FC<NavbarProps> = () => {
                             />
                             <path
                               fill="#0284c7"
-                              d="M47 29c-5.5 0-10-4.5-10-10S41.5 9 47 9s10 4.5 10 10S52.5 29 47 29zM47 15c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4S49.2 15 47 15zM52 76H37c-.8 0-1.6.3-2.1.9l-9.3 9.3c-1.4-.7-3-1.1-4.6-1.1-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10c0-1.7-.4-3.2-1.1-4.6l8.4-8.4H52c1.7 0 3-1.3 3-3S53.7 76 52 76zM21 99c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4S23.2 99 21 99zM52 61H21.5c-1.3-4.1-5.1-7-9.5-7C6.5 54 2 58.5 2 64s4.5 10 10 10c4.5 0 8.3-2.9 9.5-7H52c1.7 0 3-1.3 3-3S53.7 61 52 61zM12 68c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4S14.2 68 12 68zM21 43c1.7 0 3.2-.4 4.6-1.1l9.3 9.3c.6.6 1.3.9 2.1.9h15c1.7 0 3-1.3 3-3s-1.3-3-3-3H38.2l-8.4-8.4c.7-1.4 1.1-3 1.1-4.6 0-5.5-4.5-10-10-10s-10 4.5-10 10S15.5 43 21 43zM21 29c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4S18.8 29 21 29z"
+                              d="M47 29c-5.5 0-10-4.5-10-10S41.5 9 47 9s10 4.5 10 10S52.5 29 47 29zM47 15c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4S49.2 15 47 15zM52 76H37c-.8 0-1.6.3-2.1.9l-9.3 9.3c-1.4-.7-3-1.1-4.6-1.1-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10c0-1.7-.4-3.2-1.1-4.6l8.4-8.4H52c1.7 0 3-1.3 3-3S53.7 76 52 76zM21 99c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4S23.2 99 21 99zM52 61H21.5c-1.3-4.1-5.1-7-9.5-7C6.5 54 2 58.5 2 64s4.5 10 10 10c4.5 0 8.3-2.9 9.5-7H52c1.7 0 3-1.3 3-3S53.7 61 52 61zM12 68c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4S14.2 68 12 68zM21 43c1.7 0 3.2-.4 4.6-1.1l9.3 9.3c.6.6,1.3.9,2.1.9h15c1.7 0 3-1.3 3-3s-1.3-3-3-3H38.2l-8.4-8.4c.7-1.4,1.1-3,1.1-4.6 0-5.5-4.5-10-10-10s-10 4.5-10 10S15.5 43 21 43zM21 29c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4S18.8 29 21 29z"
                             />
                             <g>
                               <path
@@ -1272,38 +1043,38 @@ const Navbar: FC<NavbarProps> = () => {
           </div>
            <Link
             href="/casestudies"
-            className="text-sm font-bold leading-6 text-white text-[17px] hover:text-gray-300 focus:text-white focus:outline-none active:text-white"
+            className={linkClass}
           >
             Case Studies
           </Link>
           <Link
             href="/portfolio"
-            className="text-sm font-bold leading-6 text-white hover:text-gray-300 text-[17px] focus:text-white focus:outline-none active:text-white"
+            className={linkClass}
           >
             Portfolio
           </Link>
           <Link
             href="/about-us"
-            className="text-sm font-bold leading-6 text-white hover:text-gray-300 text-[17px] focus:text-white focus:outline-none active:text-white"
+            className={linkClass}
           >
             About Us
           </Link>
 <Link
   href="/blogs"
-  className="text-sm font-bold leading-6 text-white hover:text-gray-300 text-[17px] focus:text-white focus:outline-none active:text-white"
+  className={linkClass}
 >
   Blog
 </Link>
 
           <Link
             href="/careers"
-            className="text-sm font-bold leading-6 text-white hover:text-gray-300 text-[17px] focus:text-white focus:outline-none active:text-white"
+            className={linkClass}
           >
             Careers
           </Link>
           <Link
             href="/contact-us"
-           className="text-sm font-bold leading-6 text-white text-[17px] hover:text-gray-300 focus:text-white focus:outline-none active:text-white"
+            className={linkClass}
           >
             Contact Us
           </Link>
@@ -1341,252 +1112,6 @@ const Navbar: FC<NavbarProps> = () => {
                 >
                   Home
                 </Link>
-                {/* <Disclosure as="div" className="-mx-3">
-                  {({ open }) => (
-                    <>
-                      <Disclosure.Button className="flex w-[120px] items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                        Services
-                        <TiArrowSortedDown
-                          className={classNames(
-                            open ? "rotate-180" : "",
-                            "h-5 w-5 font-black text-blue-500 flex-none"
-                          )}
-                          aria-hidden="true"
-                        />
-                      </Disclosure.Button>
-                      <Disclosure.Panel className="ml-5">
-                        
-
-
-                        <Disclosure as="div" className="-ml-2">
-                          {({ open }) => (
-                            <>
-                              <Disclosure.Button className="flex w-[120px] items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                                Blockchain
-                                <TiArrowSortedDown
-                                  className={classNames(
-                                    open ? "rotate-180" : "",
-                                    "h-5 w-5 font-black text-blue-500 flex-none"
-                                  )}
-                                  aria-hidden="true"
-                                />
-                              </Disclosure.Button>
-                              <Disclosure.Panel className="ml-5">
-                               
-
-
-
-                                <Disclosure as="div" className="-ml-1">
-                                  {({ open }) => (
-                                    <>
-                                      <Disclosure.Button className="flex w-[80px] items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                                        NFT
-                                        <TiArrowSortedDown
-                                          className={classNames(
-                                            open ? "rotate-180" : "",
-                                            "h-5 w-5 font-black text-blue-500 flex-none"
-                                          )}
-                                          aria-hidden="true"
-                                        />
-                                      </Disclosure.Button>
-                                      <Disclosure.Panel className="ml-5">
-                                        {[...nftList].map((item) => (
-                                          <Link
-                                            key={item.name}
-                                            href={item.href}
-                                            onClick={() =>
-                                              setMobileMenuOpen(false)
-                                            }
-                                            className="block rounded-lg py-2 pl-2 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                          >
-                                            {item.name}
-                                          </Link>
-                                        ))}
-                                      </Disclosure.Panel>
-                                    </>
-                                  )}
-                                </Disclosure>
-                                {[...blockChaninList].map((item) => (
-                                  <Link
-                                    key={item.name}
-                                    href={item.href}
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className="block rounded-lg py-2 pl-2 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                  >
-                                    {item.name}
-                                  </Link>
-                                ))}
-                              </Disclosure.Panel>
-                            </>
-                          )}
-                        </Disclosure>
-
-                        {[...servicesList].map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="block rounded-lg py-2 p-1 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
-                      </Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure> */}
-                {/* <DropDown /> */}
-
-                {/* services */}
-                {/* <button
-                  onClick={servicesHandler}
-                  id="mega-menu-dropdown-button"
-                  data-dropdown-toggle="mega-menu-dropdown"
-                  className="flex items-center -ml-3 justify-between w-full py-2 px-3 font-bold text-gray-900  md:w-auto   md:border-0     "
-                >
-                  Services{" "}
-                  <svg
-                    className="w-2.5 h-2.5 ms-3 "
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 4 4 4-4"
-                    />
-                  </svg>
-                </button>
-                {checkClick && (
-                  <div
-                    id="mega-menu-dropdown"
-                    className=" grid -ml-4 w-auto grid-cols-2 text-sm bg-white  rounded-lg   md:grid-cols-3    "
-                  >
-                    <div className="p-4 pb-0 text-gray-900 md:pb-4 ">
-                      <ul
-                        className="space-y-4"
-                        aria-labelledby="mega-menu-dropdown-button"
-                      >
-                        <li>
-                          <Link
-                            href="/defi"
-                            className="text-gray-500  underline  hover:text-blue-600 
-                    "
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Blockchain
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="/nft-development"
-                            className="text-gray-500  hover:text-blue-600 
-                    "
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            NFT
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="/defi"
-                            className="text-gray-500  hover:text-blue-600 
-                    "
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            DeFI
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="/cryptocurrency-exchange"
-                            className="text-gray-500  hover:text-blue-600 
-                    "
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Cryptocurrency Exchange
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="/nft-development"
-                            className="text-gray-500  hover:text-blue-600 
-                    "
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            NFT Development
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="/nft-marketplace-development"
-                            className="text-gray-500  hover:text-blue-600 
-                    "
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            NFT Marketplace Development
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="/token-development"
-                            className="text-gray-500  hover:text-blue-600 
-                    "
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Token Development
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="p-4 pb-0 text-gray-900 md:pb-4 ">
-                      <ul className="space-y-4">
-                        <li>
-                          <Link
-                            href="/web-application"
-                            className="text-gray-500  underline  hover:text-blue-600 
-                    "
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Web Application
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="p-4">
-                      <ul className="space-y-4">
-                        <li>
-                          <Link
-                            href="/e-commerce-solution"
-                            className="text-gray-500  underline hover:text-blue-600 
-                    "
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            e-commerce
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="p-4">
-                      <ul className="space-y-4">
-                        <li>
-                          <Link
-                            href="/artificial-intelligence"
-                            className="text-gray-500  underline  hover:text-blue-600 
-                    "
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Artificial Intelligence
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                )} */}
 
                 <button
                   onClick={servicesHandler}
@@ -2214,283 +1739,6 @@ const Navbar: FC<NavbarProps> = () => {
                       </div>
                     </div>
 
-                    {/* WordPress Section */}
-                    {/* <div className="   text-gray-900 md:pb-4 ">
-                      <div
-                        className="space-y-4"
-                        aria-labelledby="mega-menu-dropdown-button"
-                      >
-                        <div className="flex-wrap flex flex-col gap-2 items-start">
-                          <div className="relative  flex-wrap flex-col flex">
-                            <div className=" font-bold leading-6 text-sky-700 py-4">
-                              <h3>Word Press</h3>
-                            </div>
-                            <div className=" relative">
-                              <div className="flex mb-5  items-start font-semibold text-sky-700">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 48 48"
-                                  width="24px"
-                                  height="24px"
-                                >
-                                  <circle
-                                    cx="28"
-                                    cy="28"
-                                    r="18"
-                                    fill="#90caf9"
-                                  />
-                                  <path
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="3"
-                                    d="M20.468,42.163C11.94,40.515,5.5,33.009,5.5,24c0-6.57,3.425-12.34,8.586-15.622"
-                                  />
-                                  <path
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="3"
-                                    d="M19.577,6.032C20.994,5.684,22.476,5.5,24,5.5c10.217,0,18.5,8.283,18.5,18.5 c0,8.659-5.948,15.928-13.981,17.944"
-                                  />
-                                  <path
-                                    fill="#18193f"
-                                    d="M34.668,10.685c-0.904,0.603-1.537,1.808-1.537,2.948c0,1.507,0.848,2.826,1.79,4.334 c0.754,1.225,1.507,2.826,1.507,5.088c0,1.602-0.471,3.58-1.413,6.03l-1.884,6.218l-6.689-19.974 c1.131-0.094,2.167-0.188,2.167-0.188c0.942-0.094,0.848-1.507-0.094-1.507c0,0,0,0-0.094,0c0,0-3.015,0.283-4.993,0.283 c-1.79,0-4.899-0.283-4.899-0.283s0,0-0.094,0c-0.942,0-1.036,1.507-0.094,1.507c0,0,0.942,0.094,1.979,0.188l2.921,7.914 L19.19,35.397l-6.784-20.162c1.131-0.094,2.167-0.188,2.167-0.188c0.942-0.094,0.848-1.507-0.094-1.507c0,0,0,0-0.094,0 c0,0-2.261,0.227-4.089,0.293c-1.234,1.602-2.031,3.148-2.625,5.136L14.753,38.3c1.3,0.857,2.713,1.526,4.23,1.997l5.012-14.698 l5.351,14.566c1.564-0.509,3.034-1.222,4.353-2.164l4.993-14.474c0.744-1.884,1.238-3.806,1.407-5.276 C39.358,15.747,37.01,12.312,34.668,10.685z"
-                                  />
-                                </svg>
-                                <Link
-                                  href={"/word-press/custom-development"}
-                                  onClick={servicesHandler}
-                                  className="ml-1 flex flex-wrap xl:flex-nowrap flex-col hover:text-black"
-                                >
-                                  <h3>Custom Development</h3>
-                                </Link>
-                              </div>
-
-                              <div className="flex items-start font-semibold text-sky-700">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 128 128"
-                                  width="20px"
-                                  height="20px"
-                                >
-                                  <path
-                                    fill="#90caf9"
-                                    d="M114,124H14c-5.5,0-10-4.5-10-10V14C4,8.5,8.5,4,14,4h100c5.5,0,10,4.5,10,10v100 C124,119.5,119.5,124,114,124z"
-                                  />
-                                  <path
-                                    fill="#000"
-                                    d="M104,55H77c-1.7,0-3,1.3-3,3v30c0,1.7,1.3,3,3,3h27c1.7,0,3-1.3,3-3V58C107,56.3,105.7,55,104,55z"
-                                  />
-                                  <path
-                                    fill="#000"
-                                    d="M114,127H14c-7.2,0-13-5.8-13-13V41c0-1.7,1.3-3,3-3s3,1.3,3,3v73c0,3.9,3.1,7,7,7h100c3.9,0,7-3.1,7-7V14 c0-3.9-3.1-7-7-7H14c-3.9,0-7,3.1-7,7v11h104c1.7,0,3,1.3,3,3s-1.3,3-3,3H4c-1.7,0-3-1.3-3-3V14C1,6.8,6.8,1,14,1h100 c7.2,0,13,5.8,13,13v100C127,121.2,121.2,127,114,127z"
-                                  />
-                                  <circle cx="16" cy="16" r="3" fill="#000" />
-                                  <circle cx="26" cy="16" r="3" fill="#000" />
-                                  <circle cx="36" cy="16" r="3" fill="#000" />
-                                  <path
-                                    fill="#000"
-                                    d="M61,61H24c-1.7,0-3-1.3-3-3s1.3-3,3-3h37c1.7,0,3,1.3,3,3S62.7,61,61,61z"
-                                  />
-                                  <path
-                                    fill="#000"
-                                    d="M61,76H24c-1.7,0-3-1.3-3-3s1.3-3,3-3h37c1.7,0,3,1.3,3,3S62.7,76,61,76z"
-                                  />
-                                  <path
-                                    fill="#000"
-                                    d="M51,91H24c-1.7,0-3-1.3-3-3s1.3-3,3-3h27c1.7,0,3,1.3,3,3S52.7,91,51,91z"
-                                  />
-                                  <path
-                                    fill="#000"
-                                    d="M61,91c-0.2,0-0.4,0-0.6-0.1c-0.2,0-0.4-0.1-0.6-0.2c-0.2-0.1-0.3-0.2-0.5-0.3c-0.2-0.1-0.3-0.2-0.5-0.4 C58.3,89.6,58,88.8,58,88c0-0.2,0-0.4,0.1-0.6c0-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.2-0.3,0.3-0.5c0.1-0.2,0.2-0.3,0.4-0.5 c1.1-1.1,3.1-1.1,4.2,0c0.1,0.1,0.3,0.3,0.4,0.5c0.1,0.2,0.2,0.3,0.3,0.5c0.1,0.2,0.1,0.4,0.2,0.6c0,0.2,0.1,0.4,0.1,0.6 c0,0.8-0.3,1.6-0.9,2.1C62.6,90.7,61.8,91,61,91z"
-                                  />
-                                </svg>
-                                <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
-                                  <Link
-                                    href="/word-press/responsive-design"
-                                    className="leading-4 font-semibold text-sky-700  hover:text-black flex items-center"
-                                    onClick={servicesHandler}
-                                  >
-                                    <h3>Responsive Design</h3>
-                                  </Link>
-                                </div>
-                              </div>
-
-                              <div className="my-6 flex items-start font-semibold text-sky-700">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 48 48"
-                                  width="26px"
-                                  height="26px"
-                                >
-                                  <path
-                                    fill="#90caf9"
-                                    d="M43.098,38H12.902C11.299,38,10,36.701,10,35.098V15.902C10,14.299,11.299,13,12.902,13h30.197 C44.701,13,46,14.299,46,15.902v19.197C46,36.701,44.701,38,43.098,38z"
-                                  />
-                                  <line
-                                    x1="18.5"
-                                    x2="18.5"
-                                    y1="34.5"
-                                    y2="42.5"
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="3"
-                                  />
-                                  <line
-                                    x1="29.5"
-                                    x2="29.5"
-                                    y1="34.5"
-                                    y2="42.5"
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="3"
-                                  />
-                                  <line
-                                    x1="13.5"
-                                    x2="34.5"
-                                    y1="42.5"
-                                    y2="42.5"
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeLinecap="round"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="3"
-                                  />
-                                  <line
-                                    x1="11.5"
-                                    x2="36.5"
-                                    y1="24.5"
-                                    y2="24.5"
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeLinecap="round"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="3"
-                                  />
-                                  <path
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeLinecap="round"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="3"
-                                    d="M13.052,19.53 C12.693,18.418,12.5,17.232,12.5,16c0-6.351,5.149-11.5,11.5-11.5S35.5,9.649,35.5,16c0,1.398-0.249,2.738-0.706,3.977"
-                                  />
-                                  <path
-                                    fill="#18193f"
-                                    d="M24.812,22h-1.774c-1.504,0-2.813-0.783-3.328-1.557c-0.383-0.574-0.228-1.351,0.347-1.733 c0.568-0.379,1.336-0.23,1.723,0.331c0.113,0.128,0.603,0.459,1.259,0.459h1.774c0.655,0,1.188-0.505,1.188-1.125 s-0.532-1.125-1.188-1.125h-1.375c-2.033,0-3.687-1.626-3.687-3.625S21.404,10,23.437,10h1.313c2.01,0,2.958,1.425,3.06,1.587 c0.366,0.585,0.188,1.357-0.397,1.723c-0.584,0.368-1.356,0.189-1.722-0.397c-0.015-0.018-0.313-0.413-0.94-0.413h-1.313 c-0.655,0-1.187,0.505-1.187,1.125s0.532,1.125,1.187,1.125h1.375c2.033,0,3.688,1.626,3.688,3.625S26.846,22,24.812,22z"
-                                  />
-                                  <line
-                                    x1="24"
-                                    x2="24"
-                                    y1="9.3"
-                                    y2="11"
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeLinecap="round"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="2.5"
-                                  />
-                                  <line
-                                    x1="24"
-                                    x2="24"
-                                    y1="22.7"
-                                    y2="21"
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeLinecap="round"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="2.5"
-                                  />
-                                  <path
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="3"
-                                    d="M22.915,34.5H8.5c-1.657,0-3-1.343-3-3v-20c0-1.657,1.343-3,3-3h1.819"
-                                  />
-                                  <path
-                                    fill="none"
-                                    stroke="#18193f"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeMiterlimit="10"
-                                    strokeWidth="3"
-                                    d="M37.702,8.5H39.5c1.657,0,3,1.343,3,3v20c0,1.657-1.343,3-3,3h-10"
-                                  />
-                                </svg>
-                                <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
-                                  <Link
-                                    href="/word-press/woocommerce-solution"
-                                    className="leading-4  font-semibold text-sky-700 hover:text-black "
-                                    onClick={servicesHandler}
-                                  >
-                                    <h3>WooCommerce Solution</h3>
-                                  </Link>
-                                </div>
-                              </div>
-                              <div className=" flex items-start font-semibold text-sky-700">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 128 128"
-                                  width="19px"
-                                  height="20px"
-                                >
-                                  <path
-                                    fill="#fff"
-                                    d="M104,124c11.05,0,20-8.95,20-20V24c0-11.05-8.95-20-20-20H24C12.95,4,4,12.95,4,24v80c0,11.05,8.95,20,20,20 L104,124z"
-                                  />
-                                  <path
-                                    fill="#71c2ff"
-                                    d="M125.12,107.5l-28.87-50C93.91,53.43,89.7,51,85,51s-8.91,2.43-11.26,6.5l-28.87,50 c-2.35,4.07-2.35,8.93,0,13s6.56,6.5,11.26,6.5h57.73c4.7,0,8.91-2.43,11.26-6.5S127.48,111.57,125.12,107.5z"
-                                  />
-                                  <path
-                                    fill="#000"
-                                    d="M85,115c-1.66,0-3-1.34-3-3v-3c0-1.66,1.34-3,3-3s3,1.34,3,3v3C88,113.66,86.66,115,85,115z"
-                                  />
-                                  <path
-                                    fill="#000"
-                                    d="M85,97c-1.66,0-3-1.34-3-3V72c0-1.66,1.34-3,3-3s3,1.34,3,3v22C88,95.66,86.66,97,85,97z"
-                                  />
-                                  <path
-                                    fill="#90caf9"
-                                    d="M36,22H26c-1.66,0-3-1.34-3-3s1.34-3,3-3h10c1.66,0,3,1.34,3,3S37.66,22,36,22z"
-                                  />
-                                  <g>
-                                    <path
-                                      fill="#444b54"
-                                      d="M102,22H64c-1.66,0-3-1.34-3-3s1.34-3,3-3h38c1.66,0,3,1.34,3,3S103.66,22,102,22z"
-                                    />
-                                  </g>
-                                  <path
-                                    fill="#000"
-                                    d="M104,1H24C11.32,1,1,11.32,1,24v80c0,12.68,10.32,23,23,23h10c1.66,0,3-1.34,3-3s-1.34-3-3-3H24 c-9.37,0-17-7.63-17-17V37h114v37c0,1.66,1.34,3,3,3s3-1.34,3-3V24C127,11.32,116.68,1,104,1z M7,31v-7c0-9.37,7.63-17,17-17h80 c9.37,0,17,7.63,17,17v7H7z"
-                                  />
-                                </svg>
-                                <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
-                                  <Link
-                                    href="/word-press/support-maintenance"
-                                    className="leading-4  font-semibold text-sky-700 hover:text-black"
-                                    onClick={servicesHandler}
-                                  >
-                                    <h3>Support and Maintenance</h3>
-                                  </Link>
-                                </div>
-                              </div>
-                              <hr className="my-10 h-px  border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-800 to-transparent opacity-25 " />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
                     {/* AI Section */}
                     <div className="  text-gray-900 md:pb-4 ">
                       <div
@@ -2551,7 +1799,7 @@ const Navbar: FC<NavbarProps> = () => {
                                   />
                                   <path
                                     fill="#0284c7"
-                                    d="M47 29c-5.5 0-10-4.5-10-10S41.5 9 47 9s10 4.5 10 10S52.5 29 47 29zM47 15c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4S49.2 15 47 15zM52 76H37c-.8 0-1.6.3-2.1.9l-9.3 9.3c-1.4-.7-3-1.1-4.6-1.1-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10c0-1.7-.4-3.2-1.1-4.6l8.4-8.4H52c1.7 0 3-1.3 3-3S53.7 76 52 76zM21 99c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4S23.2 99 21 99zM52 61H21.5c-1.3-4.1-5.1-7-9.5-7C6.5 54 2 58.5 2 64s4.5 10 10 10c4.5 0 8.3-2.9 9.5-7H52c1.7 0 3-1.3 3-3S53.7 61 52 61zM12 68c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4S14.2 68 12 68zM21 43c1.7 0 3.2-.4 4.6-1.1l9.3 9.3c.6.6 1.3.9 2.1.9h15c1.7 0 3-1.3 3-3s-1.3-3-3-3H38.2l-8.4-8.4c.7-1.4 1.1-3 1.1-4.6 0-5.5-4.5-10-10-10s-10 4.5-10 10S15.5 43 21 43zM21 29c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4S18.8 29 21 29z"
+                                    d="M47 29c-5.5 0-10-4.5-10-10S41.5 9 47 9s10 4.5 10 10S52.5 29 47 29zM47 15c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4S49.2 15 47 15zM52 76H37c-.8 0-1.6.3-2.1.9l-9.3 9.3c-1.4-.7-3-1.1-4.6-1.1-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10c0-1.7-.4-3.2-1.1-4.6l8.4-8.4H52c1.7 0 3-1.3 3-3S53.7 76 52 76zM21 99c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4S23.2 99 21 99zM52 61H21.5c-1.3-4.1-5.1-7-9.5-7C6.5 54 2 58.5 2 64s4.5 10 10 10c4.5 0 8.3-2.9 9.5-7H52c1.7 0 3-1.3 3-3S53.7 61 52 61zM12 68c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4S14.2 68 12 68zM21 43c1.7 0 3.2-.4 4.6-1.1l9.3 9.3c.6.6,1.3.9,2.1.9h15c1.7 0 3-1.3 3-3s-1.3-3-3-3H38.2l-8.4-8.4c.7-1.4,1.1-3,1.1-4.6 0-5.5-4.5-10-10-10s-10 4.5-10 10S15.5 43 21 43zM21 29c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4S18.8 29 21 29z"
                                   />
                                   <g>
                                     <path
@@ -2597,7 +1845,7 @@ const Navbar: FC<NavbarProps> = () => {
                                     />
                                     <path
                                       fill="#0284c7"
-                                      d="M97 93c-.8 0-1.5-.3-2.1-.9L84.8 82H71c-1.7 0-3-1.3-3-3s1.3-3 3-3h15c.8 0 1.6.3 2.1.9l11 11c1.2 1.2 1.2 3.1 0 4.2C98.5 92.7 97.8 93 97 93zM86 52H71c-1.7 0-3-1.3-3-3s1.3-3 3-3h13.8l10.1-10.1c1.2-1.2 3.1-1.2 4.2 0 1.2 1.2 1.2 3.1 0 4.2l-11 11C87.6 51.7 86.8 52 86 52zM104 67H71c-1.7 0-3-1.3-3-3s1.3-3 3-3h33c1.7 0 3 1.3 3 3S105.7 67 104 67z"
+                                      d="M97 93c-.8 0-1.5-.3-2.1-.9L84.8 82H71c-1.7 0-3-1.3-3-3s1.3-3 3-3h15c.8 0,1.6.3,2.1.9l11 11c1.2,1.2,1.2,3.1,0,4.2C98.5 92.7 97.8 93 97 93zM86 52H71c-1.7 0-3-1.3-3-3s1.3-3 3-3h13.8l10.1-10.1c1.2-1.2,3.1-1.2,4.2,0 1.2,1.2 1.2,3.1 0,4.2l-11 11C87.6 51.7 86.8 52 86 52zM104 67H71c-1.7 0-3-1.3-3-3s1.3-3 3-3h33c1.7 0 3 1.3 3 3S105.7 67 104 67z"
                                     />
                                     <path
                                       fill="#0284c7"

@@ -25,7 +25,7 @@ const HeroSection: FC<HeroSectionProps> = () => {
 
   return (
     <>
-      <section className="relative min-h-[calc(100vh-48px)] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[calc(110vh-48px)] flex items-center justify-center overflow-hidden -mt-20">
         {/* 🎥 Background Video */}
         {/* <video
           autoPlay
@@ -37,7 +37,8 @@ const HeroSection: FC<HeroSectionProps> = () => {
           <source src="/assets/bawdicsoft-bg-video.mp4" type="video/mp4" />
         </video> */}
         <img
-          src="/bawdicsoft.jpeg"
+          // src="/bawdicsoft.jpeg"
+          src="/bg-image.png"
           alt="BawdicSoft Background"
           className="absolute inset-0 w-full h-full opacity-90 object-cover"
         />

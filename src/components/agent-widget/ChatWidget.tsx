@@ -13,7 +13,6 @@ import { INTENT_THRESHOLD_FIRE, isMaxIntent } from '@/lib/tracking/intentEngine'
 
 const AUTO_OPEN_DELAY_MS = 1500;
 const CARD_SHOW_DELAY_MS = 4000;
-const INIT_LOADER_MS = 900;
 
 function makeId() {
   return `m_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
@@ -30,12 +29,10 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isInitializing, setIsInitializing] = useState(false);
 
   const autoOpenFiredRef = useRef(false);
   const cardShownRef = useRef(false);
   const backendTriggerFiredRef = useRef(false);
-  const initStartedRef = useRef(false);
 
   // Detect mobile
   useEffect(() => {
@@ -61,31 +58,25 @@ export default function ChatWidget() {
       if (!message) return;
 
       backendTriggerFiredRef.current = true;
-      initStartedRef.current = true;
       setShowCard(false);
 
       setIsOpen(true);
       setHasAutoOpened(true);
-      setIsInitializing(true);
-
-      setTimeout(() => {
-        setMessages([
-          {
-            id: makeId(),
-            role: 'agent',
-            text: message,
-            timestamp: Date.now(),
-          },
-        ]);
-        setIsInitializing(false);
-      }, INIT_LOADER_MS);
+      setMessages([
+        {
+          id: makeId(),
+          role: 'agent',
+          text: message,
+          timestamp: Date.now(),
+        },
+      ]);
     };
 
     window.addEventListener('bawdic:proactive-trigger', handler);
     return () => window.removeEventListener('bawdic:proactive-trigger', handler);
   }, []);
 
-  // Show proactive card after delay
+  // Show proactive card after delay (based on page)
   useEffect(() => {
     if (cardDismissed || isOpen || cardShownRef.current) return;
     if (isMobile) return;
@@ -100,30 +91,17 @@ export default function ChatWidget() {
     return () => clearTimeout(timer);
   }, [pathname, cardDismissed, isOpen, isMobile]);
 
-  // Seed opener with loader — FIXED (no infinite loop)
+  // Seed contextual opener on open
   useEffect(() => {
-    if (
-      isOpen &&
-      messages.length === 0 &&
-      !backendTriggerFiredRef.current &&
-      !initStartedRef.current
-    ) {
-      initStartedRef.current = true;
-      setIsInitializing(true);
-
-      const timer = setTimeout(() => {
-        setMessages([
-          {
-            id: makeId(),
-            role: 'agent',
-            text: getOpenerForPage(pathname),
-            timestamp: Date.now(),
-          },
-        ]);
-        setIsInitializing(false);
-      }, INIT_LOADER_MS);
-
-      return () => clearTimeout(timer);
+    if (isOpen && messages.length === 0) {
+      setMessages([
+        {
+          id: makeId(),
+          role: 'agent',
+          text: getOpenerForPage(pathname),
+          timestamp: Date.now(),
+        },
+      ]);
     }
   }, [isOpen, messages.length, pathname]);
 
@@ -141,24 +119,15 @@ export default function ChatWidget() {
     }
   }, [intent.score]);
 
-  // Toggle launcher
+  // User clicks launcher
   const handleToggle = () => {
     setShowCard(false);
-    setIsOpen((v) => {
-      if (v) {
-        // Closing — reset init flag
-        initStartedRef.current = false;
-        setIsInitializing(false);
-      }
-      return !v;
-    });
+    setIsOpen((v) => !v);
   };
 
-  // Card: View More → open chat with loader
+  // Card actions
   const handleCardViewMore = () => {
     setShowCard(false);
-    initStartedRef.current = false;
-    setIsInitializing(false);
     setIsOpen(true);
   };
 
@@ -238,6 +207,7 @@ export default function ChatWidget() {
 
   return (
     <>
+      {/* Proactive Card */}
       <AnimatePresence>
         {showCard && !isOpen && (
           <ProactiveCard
@@ -248,21 +218,18 @@ export default function ChatWidget() {
         )}
       </AnimatePresence>
 
+      {/* Chat Window */}
       {isOpen && (
         <ChatWindow
           messages={messages}
           isTyping={isTyping}
           onSend={handleSend}
-          onClose={() => {
-            initStartedRef.current = false;
-            setIsInitializing(false);
-            setIsOpen(false);
-          }}
+          onClose={() => setIsOpen(false)}
           isMobile={isMobile}
-          isInitializing={isInitializing}
         />
       )}
 
+      {/* Launcher Button */}
       {!isOpen && (
         <button
           onClick={handleToggle}
@@ -298,9 +265,23 @@ export default function ChatWidget() {
               fill="none"
             />
           </svg>
+
+          {!hasAutoOpened && (
+            <span
+              style={{
+                position: 'absolute',
+                inset: 0,
+                borderRadius: '50%',
+                border: '2px solid #1E3A5F',
+                animation: 'bawdic-pulse 2s ease-out infinite',
+                pointerEvents: 'none',
+              }}
+            />
+          )}
         </button>
       )}
 
+      {/* Debug meta */}
       <span style={{ display: 'none' }} data-visitor-id={visitorId}>
         intent:{intent.score}
       </span>

@@ -198,44 +198,56 @@ interface TrustSignalItem {
 }
 
 const TrustSignalsSection: FC = () => {
-  // Client data – apni images yahan URLs daal den
+  // Client data – images public folder se utha rahe hain
   const clients = [
     {
       name: "Martin Mobarak",
       detail: "Agua",
       linkedin: "https://www.linkedin.com/in/martin-mobarak-b8b41033/",
-      avatar: "", // ← apni image URL yahan daalein
+      avatar: "/Martin.png", // ✅ image available
+      initials: "",
+      color: "",
     },
     {
       name: "Jaedin Falcone",
       detail: "AI stock analyst",
       linkedin: "https://www.linkedin.com/in/jaedin-falcone-528606152/",
-      avatar: "",
+      avatar: "/Jaedin.png", // ✅ image available
+      initials: "",
+      color: "",
     },
     {
       name: "Robert Douglas Scott",
       detail: "Holovox",
       linkedin: "https://www.linkedin.com/in/robert-douglas-scott-a0919134/",
-      avatar: "",
+      avatar: "/Robert.png", // ✅ image available
+      initials: "",
+      color: "",
     },
     {
       name: "Vincent Esposito",
       detail: "Stock analyst",
       linkedin: "https://www.linkedin.com/in/vincent-esposito-aif%C2%AE-2213734/",
-      avatar: "",
+      avatar: "/Vincent.png", // ✅ image available
+      initials: "",
+      color: "",
+    },
+    {
+      name: "Nick Zaryaki",
+      detail: "Stock analyst",
+      linkedin: "",
+      avatar: "", // ❌ no image → alphabet avatar
+      initials: "NZ",
+      color: "from-purple-500 to-indigo-600",
     },
     {
       name: "Elvis de Oleo",
       detail: "Smart Contract infrastructure",
-      linkedin: "", // link missing, yeh neeche show nahi hoga
-      avatar: "",
+      linkedin: "",
+      avatar: "", // ❌ no image → alphabet avatar
+      initials: "EO",
+      color: "from-rose-500 to-pink-600",
     },
-    {
-  name: "Nick Zaryaki",
-  detail: "Stock analyst",
-  linkedin: "", // ← agar LinkedIn profile hai to URL yahan daal den
-  avatar: "",
-},
   ];
 
   // Trust indicators (bilkul same, kuch nahi badla)
@@ -300,7 +312,7 @@ const TrustSignalsSection: FC = () => {
                 key={index}
                 className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center flex flex-col items-center"
               >
-                {/* Bigger Avatar */}
+                {/* Avatar: Image if available, else Alphabet Avatar */}
                 {client.avatar ? (
                   <img
                     src={client.avatar}
@@ -308,14 +320,10 @@ const TrustSignalsSection: FC = () => {
                     className="w-20 h-20 rounded-full object-cover border-2 border-gray-100 shadow-md"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 shadow-md">
-                    <svg
-                      className="w-10 h-10"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                    </svg>
+                  <div
+                    className={`w-20 h-20 rounded-full bg-gradient-to-br ${client.color} flex items-center justify-center text-white text-2xl font-bold shadow-md border-2 border-white`}
+                  >
+                    {client.initials}
                   </div>
                 )}
 
@@ -352,7 +360,7 @@ const TrustSignalsSection: FC = () => {
           </div>
         </div>
 
-        {/* Trust Indicators Grid (Bilkul same, kuch nahi badla) */}
+        {/* Trust Indicators Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {trustIndicators.map((item, index) => (
             <div
@@ -376,7 +384,7 @@ const TrustSignalsSection: FC = () => {
           ))}
         </div>
 
-        {/* Stats Section (Bilkul same) */}
+        {/* Stats Section */}
         <div className="mt-16 md:mt-20 pt-12 border-t border-gray-200 bg-gradient-to-r from-sky-950 via-sky-700 to-sky-600 text-white rounded-xl p-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="space-y-2">
