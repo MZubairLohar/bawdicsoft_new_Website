@@ -20,7 +20,7 @@
 
 // export default function ChatWidget() {
 //   const pathname = usePathname();
-//   const { intent, signals, visitorId } = useVisitorTracking();
+//   const { intent, visitorId } = useVisitorTracking();
 
 //   const [isOpen, setIsOpen] = useState(false);
 //   const [showCard, setShowCard] = useState(false);
@@ -53,15 +53,20 @@
 //   useEffect(() => {
 //     const handler = (e: Event) => {
 //       if (backendTriggerFiredRef.current) return;
-//       const customEvent = e as CustomEvent<{ message: string; page: string }>;
+
+//       const customEvent = e as CustomEvent<{
+//         message: string;
+//         page: string;
+//       }>;
+
 //       const { message } = customEvent.detail || {};
 //       if (!message) return;
 
 //       backendTriggerFiredRef.current = true;
 //       setShowCard(false);
-
 //       setIsOpen(true);
 //       setHasAutoOpened(true);
+
 //       setMessages([
 //         {
 //           id: makeId(),
@@ -76,7 +81,7 @@
 //     return () => window.removeEventListener('bawdic:proactive-trigger', handler);
 //   }, []);
 
-//   // Show proactive card after delay (based on page)
+//   // Show proactive card after delay
 //   useEffect(() => {
 //     if (cardDismissed || isOpen || cardShownRef.current) return;
 //     if (isMobile) return;
@@ -109,9 +114,11 @@
 //   useEffect(() => {
 //     if (autoOpenFiredRef.current) return;
 //     if (backendTriggerFiredRef.current) return;
+
 //     if (intent.score >= INTENT_THRESHOLD_FIRE) {
 //       autoOpenFiredRef.current = true;
 //       setShowCard(false);
+
 //       setTimeout(() => {
 //         setIsOpen(true);
 //         setHasAutoOpened(true);
@@ -183,6 +190,7 @@
 //       ]);
 //     } catch (err) {
 //       console.error('Chat error:', err);
+
 //       const errMsg = err instanceof Error ? err.message : '';
 //       const isConfigIssue =
 //         errMsg.includes('API key') || errMsg.includes('401');
@@ -207,6 +215,23 @@
 
 //   return (
 //     <>
+//       {/* Floating and pulse animations */}
+//       <style>{`
+//         @keyframes bawdic-float {
+//           0%, 100% { transform: translateY(0); }
+//           50%      { transform: translateY(-22px); }
+//         }
+//         @keyframes bawdic-pulse {
+//           0%   { transform: scale(1);   opacity: 0.7; }
+//           100% { transform: scale(1.5); opacity: 0; }
+//         }
+//         .bawdic-launcher { animation: bawdic-float 3s ease-in-out infinite; }
+//         .bawdic-launcher:hover { animation-play-state: paused; }
+//         @media (prefers-reduced-motion: reduce) {
+//           .bawdic-launcher { animation: none; }
+//         }
+//       `}</style>
+
 //       {/* Proactive Card */}
 //       <AnimatePresence>
 //         {showCard && !isOpen && (
@@ -229,56 +254,101 @@
 //         />
 //       )}
 
-//       {/* Launcher Button */}
+//       {/* Launcher: label + avatar, floats together */}
 //       {!isOpen && (
-//         <button
-//           onClick={handleToggle}
-//           aria-label="Chat with us"
+//         <div
+//           className="bawdic-launcher"
 //           style={{
 //             position: 'fixed',
-//             bottom: 26,
+//             bottom: 90,
 //             right: 24,
-//             width: 56,
-//             height: 56,
-//             borderRadius: '50%',
-//             background: '#1E3A5F',
-//             border: 'none',
-//             cursor: 'pointer',
 //             display: 'flex',
 //             alignItems: 'center',
-//             justifyContent: 'center',
-//             boxShadow: '0 8px 24px rgba(30,58,95,0.35)',
+//             gap: 10,
 //             zIndex: 9998,
-//             transition: 'transform 0.15s',
 //           }}
-//           onMouseEnter={(e) =>
-//             (e.currentTarget.style.transform = 'scale(1.06)')
-//           }
-//           onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
 //         >
-//           <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-//             <path
-//               d="M21 12C21 16.4183 16.9706 20 12 20C10.8029 20 9.66361 19.7768 8.62479 19.3679L3 21L4.52297 15.6572C4.18557 14.8577 4 13.9663 4 12C4 7.58172 8.02944 4 12 4C16.9706 4 21 7.58172 21 12Z"
-//               stroke="#FFFFFF"
-//               strokeWidth="1.8"
-//               strokeLinejoin="round"
-//               fill="none"
-//             />
-//           </svg>
+//           {/* "Chat with Sophia" label (desktop only, hides when proactive card shows) */}
+//           {!isMobile && !showCard && (
+//             <span
+//               onClick={handleToggle}
+//               style={{
+//                 background: '#FFFFFF',
+//                 color: '#1E3A8A',
+//                 fontSize: 13,
+//                 fontWeight: 600,
+//                 padding: '8px 14px',
+//                 borderRadius: 999,
+//                 boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
+//                 cursor: 'pointer',
+//                 whiteSpace: 'nowrap',
+//               }}
+//             >
+//               Chat with Sophia 👋
+//             </span>
+//           )}
 
-//           {!hasAutoOpened && (
+//           <button
+//             onClick={handleToggle}
+//             aria-label="Chat with Sophia"
+//             style={{
+//               position: 'relative',
+//               width: 64,
+//               height: 64,
+//               padding: 0,
+//               borderRadius: '50%',
+//               border: '3px solid #FFFFFF',
+//               background: '#DBEAFE',
+//               cursor: 'pointer',
+//               boxShadow: '0 10px 28px rgba(30,58,138,0.45)',
+//               transition: 'scale 0.2s ease',
+//             }}
+//             onMouseEnter={(e) => (e.currentTarget.style.scale = '1.08')}
+//             onMouseLeave={(e) => (e.currentTarget.style.scale = '1')}
+//           >
+//             {/* Sophia Avatar */}
+//             <img
+//               src="/sophia.jpg"
+//               alt="Sophia"
+//               style={{
+//                 width: '100%',
+//                 height: '100%',
+//                 objectFit: 'cover',
+//                 objectPosition: '35% 20%',
+//                 borderRadius: '50%',
+//                 display: 'block',
+//               }}
+//             />
+
+//             {/* Online dot */}
 //             <span
 //               style={{
 //                 position: 'absolute',
-//                 inset: 0,
+//                 bottom: 2,
+//                 right: 2,
+//                 width: 14,
+//                 height: 14,
 //                 borderRadius: '50%',
-//                 border: '2px solid #1E3A5F',
-//                 animation: 'bawdic-pulse 2s ease-out infinite',
-//                 pointerEvents: 'none',
+//                 background: '#22C55E',
+//                 border: '2.5px solid #FFFFFF',
 //               }}
 //             />
-//           )}
-//         </button>
+
+//             {/* Pulse Ring */}
+//             {!hasAutoOpened && (
+//               <span
+//                 style={{
+//                   position: 'absolute',
+//                   inset: -3,
+//                   borderRadius: '50%',
+//                   border: '2px solid rgba(59,130,246,0.8)',
+//                   animation: 'bawdic-pulse 2s ease-out infinite',
+//                   pointerEvents: 'none',
+//                 }}
+//               />
+//             )}
+//           </button>
+//         </div>
 //       )}
 
 //       {/* Debug meta */}
