@@ -9,15 +9,15 @@ export const metadata = {
   robots: "index, follow",
   openGraph: {
     title: "Bawdicsoft LLC Pvt. Ltd.",
-    description: "Learn everything about  with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
+    description: "BawdicSoft delivers enterprise-grade AI, blockchain, and web development solutions.",
     url: "https://www.bawdicsoft.com/",
     siteName: "Bawdicsoft",
     images: [
       {
-        url: "https://www.bawdicsoft.com/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Bawdicsoft LLC Pvt. Ltd."
+        url: "https://www.bawdicsoft.com/images/logo.png",
+        width: 316,
+        height: 316,
+        alt: "BawdicSoft logo"
       }
     ],
     type: "website"
@@ -25,8 +25,8 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Bawdicsoft LLC Pvt. Ltd.",
-    description: "Learn everything about  with our complete guide. Get expert tips, best practices, and step-by-step instructions from Bawdicsoft.",
-    images: ["https://www.bawdicsoft.com/twitter-image.jpg"]
+    description: "BawdicSoft delivers enterprise-grade AI, blockchain, and web development solutions.",
+    images: ["https://www.bawdicsoft.com/images/logo.png"]
   }
 };
 
