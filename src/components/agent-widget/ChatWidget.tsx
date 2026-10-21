@@ -308,7 +308,7 @@ export default function ChatWidget() {
           >
             {/* Sophia Avatar */}
             <img
-              src="/sophia.jpg"
+              src="/Sophia.jpg"
               alt="Sophia"
               style={{
                 width: '100%',

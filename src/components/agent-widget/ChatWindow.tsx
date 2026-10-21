@@ -14,7 +14,7 @@ type Props = {
 
 // 👇 Yahan naam aur picture change kar sakti hain
 const AGENT_NAME = 'Sophia Carter';
-const AGENT_AVATAR = '/sophia.jpg'; // apni photo public/sophia.jpg mein rakhein (optional)
+const AGENT_AVATAR = '/Sophia.jpg'; // apni photo public/Sophia.jpg mein rakhein (optional)
 const BODY_BG = '#F8FAFF';
 
 // 👇 Quick reply buttons (text badal sakti hain)
