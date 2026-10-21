@@ -315,7 +315,7 @@ export default function ChatWindow({
                   animation: 'bs-blink 1.8s infinite',
                 }}
               />
-              Online now · Replies instantly
+              Online now
             </div>
           </div>
         </div>
@@ -503,9 +503,9 @@ export default function ChatWindow({
         }}
       >
         Powered by <strong style={{ color: '#2563EB' }}>BawdicSoft AI</strong>
-        <div style={{ fontSize: 9, color: '#CBD5E1', marginTop: 2 }}>
+        {/* <div style={{ fontSize: 9, color: '#CBD5E1', marginTop: 2 }}>
           Photo by Grigory Alekhin on Vecteezy
-        </div>
+        </div> */}
       </div>
     </div>
   );
