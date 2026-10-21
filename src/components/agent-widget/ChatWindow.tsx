@@ -19,7 +19,7 @@ const BODY_BG = '#F8FAFF';
 
 // 👇 Quick reply buttons (text badal sakti hain)
 const QUICK_REPLIES = [
-  '💼 Get a Free Quote',
+//   '💼 Get a Free Quote',
   '🤖 AI Solutions',
   '⛓️ Blockchain Development',
   '📞 Book a Strategy Call',
