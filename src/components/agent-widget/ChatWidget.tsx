@@ -36,6 +36,7 @@ export default function ChatWidget() {
   // The assistant this visitor is paired with (assigned once, remembered in the browser)
   const [agent, setAgent] = useState<Agent | null>(null);
   const agentRef = useRef<Agent | null>(null);
+  const chatRequestIdRef = useRef(0);
 
   const autoOpenFiredRef = useRef(false);
   const cardShownRef = useRef(false);
@@ -159,6 +160,7 @@ export default function ChatWidget() {
 
   // Send handler
   const handleSend = async (text: string) => {
+    const requestId = chatRequestIdRef.current;
     const userMsg: ChatMessage = {
       id: makeId(),
       role: 'user',
@@ -194,17 +196,21 @@ export default function ChatWidget() {
         throw new Error(data.error || 'Agent reply failed');
       }
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: makeId(),
-          role: 'agent',
-          text: data.reply,
-          timestamp: Date.now(),
-        },
-      ]);
+      if (requestId === chatRequestIdRef.current) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: makeId(),
+            role: 'agent',
+            text: data.reply,
+            timestamp: Date.now(),
+          },
+        ]);
+      }
     } catch (err) {
       console.error('Chat error:', err);
+
+      if (requestId !== chatRequestIdRef.current) return;
 
       const errMsg = err instanceof Error ? err.message : '';
       const isConfigIssue =
@@ -222,8 +228,14 @@ export default function ChatWidget() {
         },
       ]);
     } finally {
-      setIsTyping(false);
+      if (requestId === chatRequestIdRef.current) setIsTyping(false);
     }
+  };
+
+  const handleClear = () => {
+    chatRequestIdRef.current += 1;
+    setMessages([]);
+    setIsTyping(false);
   };
 
   // const cardData = getCardForPage(pathname);
@@ -265,6 +277,7 @@ export default function ChatWidget() {
           messages={messages}
           isTyping={isTyping}
           onSend={handleSend}
+          onClear={handleClear}
           onClose={() => setIsOpen(false)}
           isMobile={isMobile}
         />

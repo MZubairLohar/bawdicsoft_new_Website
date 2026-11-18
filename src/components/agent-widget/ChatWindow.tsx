@@ -525,18 +525,19 @@ type Props = {
   messages: ChatMessage[];
   isTyping: boolean;
   onSend: (text: string) => void;
+  onClear: () => void;
   onClose: () => void;
   isMobile: boolean;
 };
 
-const BODY_BG = '#F8FAFF';
+const BODY_BG = '#F6F8FF';
 
 // 👇 Quick reply buttons (text badal sakti hain)
 const QUICK_REPLIES = [
 //   '💼 Get a Free Quote',
   '🤖 AI Solutions',
-  '⛓️ Blockchain Development',
-  '📞 Book a Strategy Call',
+  '⛓️ Blockchain',
+  '📞 Book a Call',
 ];
 
 export default function ChatWindow({
@@ -544,6 +545,7 @@ export default function ChatWindow({
   messages,
   isTyping,
   onSend,
+  onClear,
   onClose,
   isMobile,
 }: Props) {
@@ -556,7 +558,7 @@ export default function ChatWindow({
   }, [messages, isTyping]);
 
   // Quick replies sirf shuru mein dikhengi (jab sirf welcome message ho)
-  const showQuickReplies = messages.length === 1 && !isTyping;
+  const showQuickReplies = messages.length <= 1 && !isTyping;
 
   const containerStyle: React.CSSProperties = isMobile
     ? {
@@ -571,15 +573,15 @@ export default function ChatWindow({
       }
     : {
         position: 'fixed',
-        bottom: 110,
+        bottom: 24,
         right: 24,
-        width: 380,
-        height: 540,
-        maxHeight: 'calc(100vh - 130px)',
-        background: '#FFFFFF',
-        borderRadius: 22,
-        boxShadow:
-          '0 20px 60px rgba(15, 40, 100, 0.32), 0 2px 8px rgba(0,0,0,0.08), 0 0 0 1px rgba(59,130,246,0.18), 0 0 28px rgba(59,130,246,0.18)',
+        width: 370,
+        height: 620,
+        maxHeight: 'calc(100vh - 48px)',
+        background: BODY_BG,
+        border: '1px solid rgba(148, 178, 255, 0.55)',
+        borderRadius: 24,
+        boxShadow: '0 24px 70px rgba(17, 47, 111, 0.25), 0 4px 14px rgba(37, 99, 235, 0.12)',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -615,148 +617,152 @@ export default function ChatWindow({
         .bs-close-btn { transition: background 0.2s ease, transform 0.2s ease; }
         .bs-close-btn:hover { background: rgba(255,255,255,0.3) !important; transform: rotate(90deg); }
 
+        .bs-clear-btn { transition: background 0.2s ease, border-color 0.2s ease; }
+        .bs-clear-btn:hover { background: rgba(255,255,255,0.24) !important; border-color: rgba(255,255,255,0.65) !important; }
+
         .bs-chip {
-          background: #FFFFFF;
-          color: #1D4ED8;
-          border: 1.5px solid #BFDBFE;
+          background: rgba(255,255,255,0.92);
+          color: #1747A6;
+          border: 1px solid #C9D8FA;
           border-radius: 999px;
-          padding: 8px 14px;
-          font-size: 13px;
+          padding: 7px 12px;
+          font-size: 11.5px;
           font-weight: 600;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
           animation: bs-msg-in 0.4s ease-out both;
         }
         .bs-chip:hover {
-          background: linear-gradient(135deg, #1D4ED8, #3B82F6);
-          color: #FFFFFF;
-          border-color: transparent;
-          transform: translateY(-2px);
-          box-shadow: 0 6px 14px rgba(37,99,235,0.35);
+          border-color: #80A5F5;
+          transform: translateY(-1px);
+          box-shadow: 0 5px 12px rgba(37,99,235,0.12);
         }
+        .bs-chip { white-space: nowrap; }
+        .bs-quick-replies::-webkit-scrollbar { display: none; }
 
-        .bs-scroll::-webkit-scrollbar { width: 6px; }
+        .bs-scroll::-webkit-scrollbar { width: 5px; }
         .bs-scroll::-webkit-scrollbar-track { background: transparent; }
-        .bs-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 999px; }
-        .bs-scroll::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+        .bs-scroll::-webkit-scrollbar-thumb { background: #C6D2EA; border-radius: 999px; }
+        .bs-scroll::-webkit-scrollbar-thumb:hover { background: #9BAFD4; }
+
+        @media (max-width: 360px) {
+          .bs-header { padding-left: 10px !important; padding-right: 10px !important; }
+          .bs-header-main { gap: 8px !important; }
+          .bs-header-avatar, .bs-header-avatar-inner { width: 40px !important; height: 40px !important; }
+          .bs-header-avatar-inner > img, .bs-header-avatar-inner > div { width: 36px !important; height: 36px !important; }
+          .bs-clear-btn { padding: 6px !important; }
+          .bs-clear-label { display: none; }
+        }
       `}</style>
 
       {/* Header */}
       <div
+        className="bs-header"
         style={{
           position: 'relative',
-          background: 'linear-gradient(135deg, #172554 0%, #1D4ED8 55%, #3B82F6 100%)',
+          background: 'linear-gradient(118deg, #082D79 0%, #104CB8 56%, #2871EF 100%)',
           color: '#FFFFFF',
-          padding: '20px 18px 40px',
+          padding: '14px 14px 29px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          gap: 8,
           flexShrink: 0,
           overflow: 'hidden',
         }}
       >
-        {/* decorative glass circles */}
         <span
           style={{
             position: 'absolute',
-            top: -40,
-            right: -30,
-            width: 140,
-            height: 140,
+            top: -60,
+            right: 12,
+            width: 170,
+            height: 120,
             borderRadius: '50%',
-            background: 'rgba(255,255,255,0.08)',
-          }}
-        />
-        <span
-          style={{
-            position: 'absolute',
-            bottom: -30,
-            left: 60,
-            width: 90,
-            height: 90,
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.06)',
+            background: 'rgba(120,174,255,0.12)',
+            filter: 'blur(8px)',
           }}
         />
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14, position: 'relative' }}>
-          {/* Avatar */}
-          <div style={{ position: 'relative', width: 58, height: 58, flexShrink: 0 }}>
-            {/* pulse ring */}
+        <div className="bs-header-main" style={{ display: 'flex', alignItems: 'center', gap: 10, position: 'relative', minWidth: 0 }}>
+          <div className="bs-header-avatar" style={{ position: 'relative', width: 46, height: 46, flexShrink: 0 }}>
             <span
               style={{
                 position: 'absolute',
                 inset: 0,
                 borderRadius: '50%',
-                border: '2px solid rgba(255,255,255,0.7)',
-                animation: 'bs-pulse-ring 2s ease-out infinite',
+                border: '1px solid rgba(255,255,255,0.5)',
+                animation: 'bs-pulse-ring 2.4s ease-out infinite',
               }}
             />
             <div
+              className="bs-header-avatar-inner"
               style={{
-                width: 58,
-                height: 58,
+                width: 46,
+                height: 46,
                 borderRadius: '50%',
                 overflow: 'hidden',
-                border: '3px solid #FFFFFF',
-                boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
+                border: '2px solid rgba(255,255,255,0.92)',
+                boxShadow: '0 3px 12px rgba(0,0,0,0.22)',
                 background: '#DBEAFE',
                 position: 'relative',
               }}
             >
-              <AgentAvatar agent={agent} size={52} />
+              <AgentAvatar agent={agent} size={42} />
             </div>
-            {/* Online dot */}
             <span
               style={{
                 position: 'absolute',
-                bottom: 2,
-                right: 2,
-                width: 14,
-                height: 14,
+                bottom: 0,
+                right: 0,
+                width: 11,
+                height: 11,
                 borderRadius: '50%',
                 background: '#22C55E',
-                border: '2.5px solid #FFFFFF',
+                border: '2px solid #0D419F',
               }}
             />
           </div>
 
-          {/* Name + status */}
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                fontSize: 12,
-                opacity: 0.95,
-                lineHeight: 1.2,
-                letterSpacing: 0.3,
-              }}
-            >
-              <span style={{ opacity: 0.85 }}>Chat with</span>
-              <span
+          <div style={{ minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+              <div
                 style={{
-                  background: 'rgba(255,255,255,0.18)',
-                  border: '1px solid rgba(255,255,255,0.3)',
-                  borderRadius: 999,
-                  padding: '1px 8px',
-                  fontSize: 10,
-                  fontWeight: 600,
+                  fontSize: 14,
+                  fontWeight: 700,
+                  lineHeight: 1.2,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
                 }}
               >
-                ✦ AI Assistant
-              </span>
+                {agent.name}
+              </div>
+              {/* <span
+                style={{
+                  flexShrink: 0,
+                  background: 'rgba(151,190,255,0.2)',
+                  border: '1px solid rgba(208,225,255,0.24)',
+                  borderRadius: 999,
+                  padding: '3px 6px',
+                  fontSize: 8.5,
+                  fontWeight: 600,
+                  lineHeight: 1,
+                  color: '#E4EEFF',
+                }}
+              >
+                AI Assistant
+              </span> */}
             </div>
-            <div style={{ fontSize: 21, fontWeight: 700, lineHeight: 1.25 }}>{agent.name}</div>
             <div
               style={{
-                fontSize: 11.5,
-                opacity: 0.9,
-                marginTop: 3,
                 display: 'flex',
                 alignItems: 'center',
-                gap: 6,
+                gap: 5,
+                marginTop: 4,
+                color: 'rgba(239,245,255,0.9)',
+                fontSize: 10,
+                lineHeight: 1,
               }}
             >
               <span
@@ -766,7 +772,7 @@ export default function ChatWindow({
                   borderRadius: '50%',
                   background: '#4ADE80',
                   display: 'inline-block',
-                  animation: 'bs-blink 1.8s infinite',
+                  boxShadow: '0 0 8px rgba(74,222,128,0.65)',
                 }}
               />
               Online now
@@ -774,33 +780,58 @@ export default function ChatWindow({
           </div>
         </div>
 
-        <button
-          className="bs-close-btn"
-          onClick={onClose}
-          aria-label="Close chat"
-          style={{
-            position: 'relative',
-            background: 'rgba(255,255,255,0.16)',
-            border: 'none',
-            borderRadius: '50%',
-            width: 34,
-            height: 34,
-            color: '#FFFFFF',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            alignSelf: 'flex-start',
-          }}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </button>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+          <button
+            className="bs-clear-btn"
+            onClick={onClear}
+            aria-label="Clear chat"
+            title="Clear chat"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 4,
+              minHeight: 30,
+              padding: '0 9px',
+              color: '#FFFFFF',
+              fontSize: 10,
+              fontWeight: 600,
+              background: 'rgba(255,255,255,0.13)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: 999,
+              cursor: 'pointer',
+            }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m5 4v6m4-6v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className="bs-clear-label">Clear</span>
+          </button>
+          <button
+            className="bs-close-btn"
+            onClick={onClose}
+            aria-label="Close chat"
+            style={{
+              background: 'rgba(255,255,255,0.13)',
+              border: '1px solid rgba(255,255,255,0.18)',
+              borderRadius: '50%',
+              width: 30,
+              height: 30,
+              color: '#FFFFFF',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
 
-        {/* Wave */}
         <svg
-          viewBox="0 0 360 24"
+          viewBox="0 0 360 20"
           preserveAspectRatio="none"
           style={{
             position: 'absolute',
@@ -808,14 +839,11 @@ export default function ChatWindow({
             right: 0,
             bottom: -1,
             width: '100%',
-            height: 24,
+            height: 20,
             display: 'block',
           }}
         >
-          <path
-            d="M0 24 L0 12 C70 30 130 -6 210 8 C280 20 330 4 360 12 L360 24 Z"
-            fill={BODY_BG}
-          />
+          <path d="M0 20 L0 8 C72 28 135 0 208 5 C274 9 320 -1 360 8 L360 20 Z" fill={BODY_BG} />
         </svg>
       </div>
 
@@ -825,60 +853,20 @@ export default function ChatWindow({
         className="bs-scroll"
         style={{
           flex: 1,
+          minHeight: 0,
           overflowY: 'auto',
-          padding: '6px 14px 16px',
+          padding: '8px 12px 12px',
           backgroundColor: BODY_BG,
-          backgroundImage: 'radial-gradient(rgba(37,99,235,0.07) 1px, transparent 1px)',
-          backgroundSize: '16px 16px',
+          backgroundImage: 'radial-gradient(rgba(47,93,174,0.055) 0.8px, transparent 0.8px)',
+          backgroundSize: '17px 17px',
           scrollBehavior: 'smooth',
         }}
       >
-        {/* Today divider */}
-        <div style={{ textAlign: 'center', margin: '4px 0 12px' }}>
-          <span
-            style={{
-              background: '#E8EEFB',
-              color: '#64748B',
-              fontSize: 10.5,
-              fontWeight: 600,
-              padding: '3px 12px',
-              borderRadius: 999,
-              letterSpacing: 0.4,
-            }}
-          >
-            Today
-          </span>
-        </div>
-
         {messages.map((m) => (
           <div key={m.id} className="bs-msg-in">
-            <MessageBubble message={m} />
+            <MessageBubble message={m} agent={agent} />
           </div>
         ))}
-
-        {/* Quick replies */}
-        {showQuickReplies && (
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 8,
-              marginTop: 6,
-              marginBottom: 10,
-            }}
-          >
-            {QUICK_REPLIES.map((q, i) => (
-              <button
-                key={q}
-                className="bs-chip"
-                style={{ animationDelay: `${0.15 + i * 0.08}s` }}
-                onClick={() => onSend(q)}
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-        )}
 
         {isTyping && (
           <div
@@ -927,6 +915,33 @@ export default function ChatWindow({
         )}
       </div>
 
+      {showQuickReplies && (
+        <div
+          className="bs-quick-replies"
+          style={{
+            display: 'flex',
+            flexWrap: 'nowrap',
+            justifyContent: 'flex-start',
+            gap: 7,
+            overflowX: 'auto',
+            padding: '7px 12px 8px',
+            background: BODY_BG,
+            flexShrink: 0,
+          }}
+        >
+          {QUICK_REPLIES.map((q, i) => (
+            <button
+              key={q}
+              className="bs-chip"
+              style={{ animationDelay: `${0.15 + i * 0.08}s` }}
+              onClick={() => onSend(q)}
+            >
+              {q}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Input */}
       <ChatInput onSend={onSend} disabled={isTyping} />
 
@@ -934,15 +949,20 @@ export default function ChatWindow({
       <div
         style={{
           textAlign: 'center',
-          fontSize: 10.5,
-          color: '#94A3B8',
-          padding: '6px 0 8px',
-          background: '#FFFFFF',
-          borderTop: '1px solid #F1F5F9',
+          fontSize: 9.5,
+          color: '#687A9C',
+          padding: '7px 0 9px',
+          background: BODY_BG,
+          borderTop: '1px solid #E8EDF7',
           flexShrink: 0,
         }}
       >
-        Powered by <strong style={{ color: '#2563EB' }}>BawdicSoft AI</strong>
+        {/* <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 5 }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z" fill="#2563EB" />
+          </svg>
+          Powered by <strong style={{ color: '#1747A6' }}>BawdicSoft AI</strong>
+        </span> */}
         {/* <div style={{ fontSize: 9, color: '#CBD5E1', marginTop: 2 }}>
           Photo by Grigory Alekhin on Vecteezy
         </div> */}
