@@ -42,6 +42,8 @@ import dns from "node:dns";
 // Force Node.js DNS resolver to use reliable public DNS.
 // MongoDB Atlas mongodb+srv requires SRV/TXT DNS lookups.
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
+console.log("[db.ts] cwd:", process.cwd());
+console.log("[db.ts] MONGODB_URI:", process.env.MONGODB_URI ? `defined (${process.env.MONGODB_URI.length} chars)` : "UNDEFINED");
 
 interface MongooseCache {
   conn: typeof mongoose | null;

@@ -9,6 +9,8 @@ import WhatsAppButton from '@/components/WhatsAppButton';
 // Records a site "open" once per session (deduped via cookie server-side)
 // and counts meaningful clicks (WhatsApp, contact, links) as interactions.
 // No personal data or IP addresses are stored.
+
+
 function useTracking(pathname: string) {
   useEffect(() => {
     if (!pathname) return;
@@ -85,3 +87,4 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
     </>
   );
 }
+
