@@ -49,11 +49,11 @@ const HeroSection: FC<HeroSectionProps> = () => {
         {/* Content */}
         <div className="relative z-10 px-4 mx-auto max-w-5x2 text-center pt-32 md:pt-44 lg:pt-20">
           <h1 className="mb-6 text-3xl font-extrabold tracking-tight leading-tight text-white md:text-4xl lg:text-5xl xl:text-5xl px-2 md:px-8">
-            We Build AI-Powered Systems, Blockchain Platforms <br />& Web Applications That Scale
+            We Build AI Solutions, Blockchain Platforms <br />& Scalable Software Products.
           </h1>
 
           <p className="mb-10 text-lg font-normal text-gray-200 lg:text-xl xl:text-xl max-w-4x1 mx-auto px-4 md:px-8 leading-relaxed">
-            BawdicSoft is a global software agency trusted by enterprise clients across 15+ countries.<br /> From AI automation to DeFi infrastructure,<br /> we turn complex ideas into production-ready products.
+            From intelligent automation and Web3 ecosystems to SaaS <br /> platforms and MVPs, we turn ambitious business ideas into <br /> production-ready technology.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 px-4 md:px-0">
@@ -61,15 +61,15 @@ const HeroSection: FC<HeroSectionProps> = () => {
               onClick={handlePrimaryCTA}
               className="w-full sm:w-auto px-8 py-4 text-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500/50 shadow-lg"
             >
-              Book your 15-Min Strategy Call
+              Book a Free Call
             </button>
 
-            <button
+            {/* <button
               onClick={handleSecondaryCTA}
               className="w-full sm:w-auto px-8 py-4 text-lg font-semibold text-white border-2 border-white hover:bg-white/10 rounded-lg transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-white/50 backdrop-blur-sm"
             >
-              See Our Work
-            </button>
+             Explore Our Work
+            </button> */}
           </div>
         </div>
       </section>

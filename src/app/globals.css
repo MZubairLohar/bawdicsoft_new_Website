@@ -93,6 +93,27 @@ html {
   animation: slowSpin 14s linear infinite;
 }
 
+@keyframes client-card-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.client-marquee-track {
+  animation: client-card-marquee 32s linear infinite;
+}
+
+.client-marquee:hover .client-marquee-track,
+.client-marquee:focus-within .client-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .client-marquee-track {
+    animation: none;
+  }
+}
+
 /* 3D perspective helper for tilt cards */
 .perspective-1000 {
   perspective: 1000px;

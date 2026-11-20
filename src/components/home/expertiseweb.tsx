@@ -18,20 +18,15 @@ const Expertise: FC<expserTisePropse> = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 pt-10  md:gap-20 ">
           <div className="flex flex-col self-center ">
             <p className="mb-4  text-xl text-start font-extrabold tracking-tight leading-none text-white md:text-2xl lg:text-4xl">
-              Web Application Development
+              SAAS (MVP)
             </p>
             <p className="mb-4 text-start  leading-7 tracking-tight  text-white ">
               {" "}
-              We specialize in creating responsive UI and UX design using React,
-              Vue, and Next JS. By integrating database such as Mongo DB, AWS,
-              or Firebase we provide end to end web application development
-              solutions.
+              We build custom SaaS applications that turn your business ideas into scalable digital products. From modern UI/UX design and frontend development to backend systems, user authentication, payment integration, and admin dashboards, we deliver everything you need to launch your MVP faster and validate your business idea.
             </p>
             <p className="mb-4  text-start  leading-7 tracking-tight  text-white ">
               {" "}
-              Be it your website, web application or E-Store, we cover it all
-              for you. We secure the frontend results with structured backend
-              code that completely fulfills customer requirements.
+              We develop powerful, secure, and scalable Software-as-a-Service (SaaS) platforms tailored to your business needs. Our services include custom software development, subscription management, third-party API integrations, cloud deployment, and ongoing maintenance to help your business grow.
             </p>
           </div>
           <AnimatedComponentRight>

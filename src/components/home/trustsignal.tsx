@@ -253,8 +253,8 @@ const TrustSignalsSection: FC = () => {
   // Trust indicators (bilkul same, kuch nahi badla)
   const trustIndicators: TrustSignalItem[] = [
     {
-      title: "Secure Delivery",
-      description: "Enterprise-grade security protocols and compliance standards",
+      title: "ISO 27001 certified",
+      description: "with an NDA on every project.",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -262,7 +262,7 @@ const TrustSignalsSection: FC = () => {
       ),
     },
     {
-      title: "Senior Teams",
+      title: "Senior  who have shipped AI",
       description: "10+ years average experience with certified architects",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -271,8 +271,8 @@ const TrustSignalsSection: FC = () => {
       ),
     },
     {
-      title: "Enterprise Workflows",
-      description: "Proven processes for large-scale development projects",
+      title: "A fixed plan",
+      description: "a fixed quote and weekly updates until launch.",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -280,8 +280,8 @@ const TrustSignalsSection: FC = () => {
       ),
     },
     {
-      title: "Global Clients",
-      description: "Serving startups to Fortune 500 across 15+ countries",
+      title: "Founders and teams worldwides",
+      description: "with working hours that overlap with the US.",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -296,7 +296,7 @@ const TrustSignalsSection: FC = () => {
         {/* Section Title */}
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            Trusted by growing and established companies worldwide
+           Trusted by teams who build with us
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Join hundreds of satisfied clients who trust us with their critical
@@ -304,19 +304,29 @@ const TrustSignalsSection: FC = () => {
           </p>
         </div>
 
-        {/* Client Cards - Vertical Layout with Bigger Pic */}
-        <div className="mb-16 md:mb-20">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {clients.map((client, index) => (
+        {/* Client Cards */}
+        <div
+          className="client-marquee mb-16 md:mb-20 overflow-hidden"
+          role="region"
+          aria-label="Client stories"
+        >
+          <div className="client-marquee-track flex w-max">
+            {[false, true].map((isDuplicate) => (
+              <div
+                key={String(isDuplicate)}
+                className="flex flex-shrink-0 gap-6 pr-6"
+                aria-hidden={isDuplicate || undefined}
+              >
+                {clients.map((client, index) => (
               <div
                 key={index}
-                className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center flex flex-col items-center"
+                className="w-72 sm:w-80 flex-shrink-0 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center flex flex-col items-center"
               >
                 {/* Avatar: Image if available, else Alphabet Avatar */}
                 {client.avatar ? (
                   <img
                     src={client.avatar}
-                    alt={client.name}
+                    alt={isDuplicate ? "" : client.name}
                     className="w-20 h-20 rounded-full object-cover border-2 border-gray-100 shadow-md"
                   />
                 ) : (
@@ -343,6 +353,7 @@ const TrustSignalsSection: FC = () => {
                     href={client.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
+                    tabIndex={isDuplicate ? -1 : undefined}
                     className="mt-3 inline-flex items-center gap-1.5 text-sm text-blue-600 font-medium hover:text-blue-800 hover:underline transition-colors"
                   >
                     <svg
@@ -355,6 +366,8 @@ const TrustSignalsSection: FC = () => {
                     LinkedIn
                   </a>
                 )}
+              </div>
+                ))}
               </div>
             ))}
           </div>
@@ -385,13 +398,13 @@ const TrustSignalsSection: FC = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-16 md:mt-20 pt-12 border-t border-gray-200 bg-gradient-to-r from-sky-950 via-sky-700 to-sky-600 text-white rounded-xl p-8">
+        {/* <div className="mt-16 md:mt-20 pt-12 border-t border-gray-200 bg-gradient-to-r from-sky-950 via-sky-700 to-sky-600 text-white rounded-xl p-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-white">
-                250+
+                100+
               </div>
-              <div className="text-blue-100">Project Deliverd</div>
+              <div className="text-blue-100">Clients Served</div>
             </div>
             <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-white">
@@ -407,12 +420,12 @@ const TrustSignalsSection: FC = () => {
             </div>
             <div className="space-y-2">
               <div className="text-3xl md:text-4xl font-bold text-white">
-                99%
+                85%
               </div>
               <div className="text-blue-100">Client Satisfaction</div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
