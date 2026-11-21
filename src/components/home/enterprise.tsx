@@ -70,7 +70,7 @@
 //         {/* Title and Introduction */}
 //         <div className="text-center mb-16 md:mb-20">
 //           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-//             Built for Founders Who Need to Move Faster 
+//             Built for Founders Who Need to Move Faster
 //             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
 //               Safely
 //             </span>
@@ -89,12 +89,12 @@
 //             >
 //               {/* Background Glow Effect */}
 //               <div className="absolute inset-0 bg-gradient-to-br from-blue-900/0 to-blue-900/0 rounded-2xl group-hover:from-blue-900/20 group-hover:to-cyan-900/20 transition-all duration-500" />
-              
+
 //               {/* Number Indicator */}
 //               <div className="absolute -top-3 -left-3 w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-sm font-bold">
 //                 {index + 1}
 //               </div>
-              
+
 //               <div className="relative">
 //                 {/* Icon and Title Row */}
 //                 <div className="flex items-center space-x-4 mb-4">
@@ -105,7 +105,7 @@
 //                     {point.title}
 //                   </h3>
 //                 </div>
-                
+
 //                 {/* Description */}
 //                 <p className="text-gray-300 leading-relaxed">
 //                   {point.description}
@@ -140,7 +140,6 @@
 // };
 
 // export default EnterprisePainPointsSection;
-
 
 import React, { FC } from "react";
 
@@ -214,8 +213,7 @@ const EnterprisePainPointsSection: FC = () => {
     },
     {
       title: "Scarce Expertise",
-      description:
-        "AI and blockchain skills are hard and expensive to hire",
+      description: "AI and blockchain skills are hard and expensive to hire",
       icon: (
         <svg
           className="w-6 h-6"
@@ -254,8 +252,7 @@ const EnterprisePainPointsSection: FC = () => {
     },
     {
       title: "Building the Wrong Thing",
-      description:
-        "Features nobody asked for, before the idea is even proven",
+      description: "Features nobody asked for, before the idea is even proven",
       icon: (
         <svg
           className="w-6 h-6"
@@ -279,14 +276,14 @@ const EnterprisePainPointsSection: FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Title and Introduction */}
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 block">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3">
             Built for Founders Who Need to Move Faster -
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
               Safely
             </span>
           </h2>
 
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-[12px] md:text-[16px] text-gray-300 max-w-3xl mx-auto">
             Common challenges founders face when turning an idea into a product
           </p>
         </div>
@@ -314,7 +311,7 @@ const EnterprisePainPointsSection: FC = () => {
                 </div>
 
                 {/* Description */}
-                <p className="text-gray-300 leading-relaxed text-sm md:text-base">
+                <p className="text-gray-300 leading-relaxed text-[14px] md:text-[16px]">
                   {point.description}
                 </p>
               </div>
