@@ -3089,24 +3089,24 @@ const Navbar: FC<NavbarProps> = () => {
           >
             Case Studies
           </Link> */}
-          {/* <Link
+          <Link
             href="/portfolio"
             className={linkClass}
           >
             Portfolio
-          </Link> */}
+          </Link>
           <Link
             href="/about-us"
             className={linkClass}
           >
             About
           </Link>
-{/* <Link
+<Link
   href="/blogs"
   className={linkClass}
 >
   Blog
-</Link> */}
+</Link>
 {/* 
           <Link
             href="/careers"
