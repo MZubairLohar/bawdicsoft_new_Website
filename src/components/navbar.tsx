@@ -2283,9 +2283,9 @@ const Navbar: FC<NavbarProps> = () => {
 
         {/* CENTER: Links */}
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
-          {/* <Link href="/" className={linkClass}>
+          <Link href="/" className={linkClass}>
             Home
-          </Link> */}
+          </Link>
           <div className="flex">
           <Link
             href="/services"
