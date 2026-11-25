@@ -2131,6 +2131,36 @@ const blockChaninList: BlockChaninList[] = [
   { name: "Token Development", href: "/token-development", icon: PhoneIcon },
 ];
 
+const serviceDropdownGroups = [
+  {
+    name: "AI",
+    items: [
+      ["Custom AI Solutions", "AI features and products built around your idea.", "/services/ai/custom"],
+      ["AI Agents and Automation", "Agents that handle sales, support and daily workflows.", "/services/ai/agents"],
+      ["Chatbots and Voice Agents", "Text and real-time voice assistants for your users.", "/services/ai/chat"],
+      ["Machine Learning and NLP", "Models for search, analysis and recommendations.", "/services/ai/ml-nlp"],
+    ],
+  },
+  {
+    name: "Blockchain",
+    items: [
+      ["Token and DAO Development", "Launch a token and the governance around it.", "/services/blockchain/token"],
+      ["DeFi and Staking Platforms", "Staking, yield and swap products.", "/services/blockchain/defi"],
+      ["Wallets and Payments", "Custody, transfers and settlement flows.", "/services/blockchain/wallet"],
+      ["Smart Contracts", "Written, tested and ready to deploy.", "/services/blockchain/contracts"],
+    ],
+  },
+  {
+    name: "SaaS and Mobile",
+    items: [
+      ["SaaS MVP Development", "The smallest product that proves your idea.", "/services/saas/mvp"],
+      ["Custom Web Apps", "Full-stack apps built to scale.", "/services/saas/web"],
+      ["Mobile Apps (iOS and Android)", "One build for both stores.", "/services/saas/mobile"],
+      ["Dashboards and Admin Panels", "Data and control for your team.", "/services/saas/dashboard"],
+    ],
+  },
+];
+
 interface NavbarProps {}
 
 function classNames(
@@ -2300,7 +2330,7 @@ const Navbar: FC<NavbarProps> = () => {
               <div className="absolute h-4 w-4 bg-white border-t border-l  border-gray-200 transform rotate-45 top-0 left-1/2 -mt-2  xl:ml-28"></div>
 
               {/* Blockchain Section */}
-              <div className="pt-4 pl-4  text-gray-900 md:pb-4 ">
+              <div className="hidden">
                 <div
                   className="space-y-4"
                   aria-labelledby="mega-menu-dropdown-button"
@@ -2456,11 +2486,11 @@ const Navbar: FC<NavbarProps> = () => {
                           </svg>
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/defi"
+                              href="/services/blockchain/defi"
                               className="leading-4 font-semibold text-sky-700  hover:text-black flex items-center"
                               onClick={servicesHandler}
                             >
-                              <h3>DeFI</h3>
+                              <h3>DeFi and Staking Platforms</h3>
                             </Link>
                           </div>
                         </div>
@@ -2499,11 +2529,11 @@ const Navbar: FC<NavbarProps> = () => {
                           </svg>
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/cryptocurrency-exchange"
+                              href="/services/blockchain/wallet"
                               className="leading-4  font-semibold text-sky-700 hover:text-black gap-2 flex "
                               onClick={servicesHandler}
                             >
-                              <h3>Crypto Exchange</h3>
+                              <h3>Wallets and Payments</h3>
                             </Link>
                           </div>
                         </div>
@@ -2529,11 +2559,11 @@ const Navbar: FC<NavbarProps> = () => {
                           </svg>
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/token-development"
+                              href="/services/blockchain/token"
                               className="leading-4  font-semibold text-sky-700 hover:text-black "
                               onClick={servicesHandler}
                             >
-                              <h3>Token Development</h3>
+                              <h3>Token and DAO Development</h3>
                             </Link>
                           </div>
                         </div>
@@ -2546,7 +2576,7 @@ const Navbar: FC<NavbarProps> = () => {
               </div>
 
               {/* Web App Section */}
-              <div className="pt-4 pl-4 text-gray-900 md:pb-4 ">
+              <div className="hidden">
                 <div
                   className="space-y-4"
                   aria-labelledby="mega-menu-dropdown-button"
@@ -2613,11 +2643,11 @@ const Navbar: FC<NavbarProps> = () => {
                           </svg>
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/web-app/web-design"
+                              href="/services/saas/mvp"
                               className="leading-4  font-semibold text-sky-700 hover:text-black"
                               onClick={servicesHandler}
                             >
-                              <h3>Web Design</h3>
+                              <h3>SaaS MVP Development</h3>
                             </Link>
                           </div>
                         </div>
@@ -2714,11 +2744,11 @@ const Navbar: FC<NavbarProps> = () => {
                           </svg>
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/web-app/custom-web-app"
+                              href="/services/saas/web"
                               className="leading-4  font-semibold text-sky-700 hover:text-black gap-2 flex "
                               onClick={servicesHandler}
                             >
-                              <h3>Custom Web App</h3>
+                              <h3>Custom Web Apps</h3>
                             </Link>
                           </div>
                         </div>
@@ -2802,11 +2832,11 @@ const Navbar: FC<NavbarProps> = () => {
                           </svg>
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/web-app/responsive-web-app"
+                              href="/services/saas/mobile"
                               className="leading-4 font-semibold text-sky-700  hover:text-black flex items-center"
                               onClick={servicesHandler}
                             >
-                              <h3>Responsive Web App</h3>
+                              <h3>Mobile Apps (iOS and Android)</h3>
                             </Link>
                           </div>
                         </div>
@@ -2867,15 +2897,14 @@ const Navbar: FC<NavbarProps> = () => {
                           </svg>
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/web-app/full-stack-development"
+                              href="/services/saas/dashboard"
                               className="leading-4  font-semibold text-sky-700 hover:text-black gap-2 flex "
                               onClick={servicesHandler}
                             >
-                              <h3>Fullstack development</h3>
+                              <h3>Dashboards and Admin Panels</h3>
                             </Link>
                           </div>
                         </div>
-                        <div className="absolute right-0 top-0 hidden lg:left-48 xl:left-56 h-[200px]  min-h-[1em] w-px self-stretch border-t-0 bg-gradient-to-tr from-transparent via-neutral-800 to-transparent  opacity-40  lg:block"></div>
                       </div>
                     </div>
                   </div>
@@ -2883,7 +2912,7 @@ const Navbar: FC<NavbarProps> = () => {
               </div>
 
               {/* AI Section */}
-              <div className="pt-4 pl-4 text-gray-900 md:pb-4 ">
+              <div className="hidden">
                 <div
                   className="space-y-4"
                   aria-labelledby="mega-menu-dropdown-button"
@@ -2912,11 +2941,11 @@ const Navbar: FC<NavbarProps> = () => {
                           </svg>
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/ai/custom-ai-solution"
+                              href="/services/ai/custom"
                               className="leading-4 font-semibold text-sky-700  hover:text-black "
                               onClick={servicesHandler}
                             >
-                              <h3>Custom AI Solution</h3>
+                              <h3>Custom AI Solutions</h3>
                             </Link>
                           </div>
                         </div>
@@ -2953,11 +2982,11 @@ const Navbar: FC<NavbarProps> = () => {
                           </svg>
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/ai/machine-learning"
+                              href="/services/ai/agents"
                               className="leading-4 font-semibold text-sky-700  hover:text-black "
                               onClick={servicesHandler}
                             >
-                              <h3>Machine Learning</h3>
+                              <h3>AI Agents and Automation</h3>
                             </Link>
                           </div>
                         </div>
@@ -2999,11 +3028,11 @@ const Navbar: FC<NavbarProps> = () => {
 
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/ai/natural-language-processing"
+                              href="/services/ai/ml-nlp"
                               className="leading-4  font-semibold text-sky-700 hover:text-black  "
                               onClick={servicesHandler}
                             >
-                              <h3>Natural Language Processing</h3>
+                              <h3>Machine Learning and NLP</h3>
                             </Link>
                           </div>
                         </div>
@@ -3067,11 +3096,11 @@ const Navbar: FC<NavbarProps> = () => {
                           </svg>
                           <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                             <Link
-                              href="/ai/computer-vision-services"
+                              href="/services/ai/chat"
                               className="leading-4  font-semibold text-sky-700 hover:text-black "
                               onClick={servicesHandler}
                             >
-                              <h3>Computer Vision Services</h3>
+                              <h3>Chatbots and Voice Agents</h3>
                             </Link>
                           </div>
                         </div>
@@ -3080,6 +3109,37 @@ const Navbar: FC<NavbarProps> = () => {
                   </div>
                 </div>
               </div>
+              {serviceDropdownGroups.map((group, groupIndex) => (
+                <div
+                  key={group.name}
+                  className={`px-6 py-5 ${
+                    groupIndex < serviceDropdownGroups.length - 1
+                      ? "lg:border-r lg:border-slate-200"
+                      : ""
+                  }`}
+                >
+                  <h3 className="mb-5 text-xs font-bold uppercase tracking-wider text-blue-600">
+                    {group.name}
+                  </h3>
+                  <div className="space-y-4">
+                    {group.items.map(([title, description, href]) => (
+                      <Link
+                        key={title}
+                        href={href}
+                        onClick={servicesHandler}
+                        className="group block"
+                      >
+                        <span className="block font-semibold text-slate-800 group-hover:text-blue-600">
+                          {title}
+                        </span>
+                        <span className="mt-1 block text-xs leading-5 text-slate-500">
+                          {description}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
           </div>
@@ -3114,12 +3174,12 @@ const Navbar: FC<NavbarProps> = () => {
           >
             Careers
           </Link> */}
-          <Link
+          {/* <Link
             href="/contact-us"
             className={linkClass}
           >
             Contact Us
-          </Link>
+          </Link> */}
         </Popover.Group>
 
         {/* RIGHT: CTA button (desktop) */}
@@ -3192,10 +3252,37 @@ const Navbar: FC<NavbarProps> = () => {
                   <div
                     ref={dropdownRef}
                     id="mega-menu-dropdown"
-                    className=" grid    grid-cols-1 text-sm bg-white   rounded-lg     mt-5 md:mt-10 pb-4  "
+                    className="mt-5 grid max-h-[calc(100vh-12rem)] grid-cols-1 overflow-y-auto rounded-lg bg-white pb-4 text-sm md:mt-10"
                   >
+                    {serviceDropdownGroups.map((group) => (
+                      <div key={group.name} className="border-b border-slate-100 px-4 py-4 last:border-b-0">
+                        <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-blue-600">
+                          {group.name}
+                        </h3>
+                        <div className="space-y-4">
+                          {group.items.map(([title, description, href]) => (
+                            <Link
+                              key={title}
+                              href={href}
+                              onClick={() => {
+                                setMobileMenuOpen(false);
+                                setCheckClick(false);
+                              }}
+                              className="group block"
+                            >
+                              <span className="block font-semibold text-slate-800 group-hover:text-blue-600">
+                                {title}
+                              </span>
+                              <span className="mt-1 block text-xs leading-5 text-slate-500">
+                                {description}
+                              </span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                     {/* Blockchain Section */}
-                    <div className="   text-gray-900 md:pb-4 ">
+                    <div className="hidden">
                       <div
                         className="space-y-4"
                         aria-labelledby="mega-menu-dropdown-button"
@@ -3361,11 +3448,11 @@ const Navbar: FC<NavbarProps> = () => {
                                 </svg>
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/defi"
+                                    href="/services/blockchain/defi"
                                     className="leading-4 font-semibold text-sky-700  hover:text-black flex items-center"
                                     onClick={() => setMobileMenuOpen(false)}
                                   >
-                                    <h3>DeFI</h3>
+                                    <h3>DeFi and Staking Platforms</h3>
                                   </Link>
                                 </div>
                               </div>
@@ -3409,11 +3496,11 @@ const Navbar: FC<NavbarProps> = () => {
                                 </svg>
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/cryptocurrency-exchange"
+                                    href="/services/blockchain/wallet"
                                     className="leading-4  font-semibold text-sky-700 hover:text-black gap-2 flex "
                                     onClick={() => setMobileMenuOpen(false)}
                                   >
-                                    <h3>Crypto Exchange</h3>
+                                    <h3>Wallets and Payments</h3>
                                   </Link>
                                 </div>
                               </div>
@@ -3439,11 +3526,11 @@ const Navbar: FC<NavbarProps> = () => {
                                 </svg>
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/token-development"
+                                    href="/services/blockchain/token"
                                     className="leading-4  font-semibold text-sky-700 hover:text-black "
                                     onClick={() => setMobileMenuOpen(false)}
                                   >
-                                    <h3>Token Development</h3>
+                                    <h3>Token and DAO Development</h3>
                                   </Link>
                                 </div>
                               </div>
@@ -3455,7 +3542,7 @@ const Navbar: FC<NavbarProps> = () => {
                     </div>
 
                     {/* Web App Section */}
-                    <div className="  text-gray-900 md:pb-4 ">
+                    <div className="hidden">
                       <div
                         className="space-y-4"
                         aria-labelledby="mega-menu-dropdown-button"
@@ -3522,11 +3609,11 @@ const Navbar: FC<NavbarProps> = () => {
                                 </svg>
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/web-app/web-design"
+                                    href="/services/saas/mvp"
                                     className="leading-4  font-semibold text-sky-700 hover:text-black"
                                     onClick={servicesHandler}
                                   >
-                                    <h3>Web Design</h3>
+                                    <h3>SaaS MVP Development</h3>
                                   </Link>
                                 </div>
                               </div>
@@ -3623,11 +3710,11 @@ const Navbar: FC<NavbarProps> = () => {
                                 </svg>
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/web-app/custom-web-app"
+                                    href="/services/saas/web"
                                     className="leading-4  font-semibold text-sky-700 hover:text-black gap-2 flex "
                                     onClick={() => setMobileMenuOpen(false)}
                                   >
-                                    <h3>Custom Web App</h3>
+                                    <h3>Custom Web Apps</h3>
                                   </Link>
                                 </div>
                               </div>
@@ -3711,11 +3798,11 @@ const Navbar: FC<NavbarProps> = () => {
                                 </svg>
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/web-app/responsive-web-app"
+                                    href="/services/saas/mobile"
                                     className="leading-4 font-semibold text-sky-700  hover:text-black flex items-center"
                                     onClick={servicesHandler}
                                   >
-                                    <h3>Responsive Web App</h3>
+                                    <h3>Mobile Apps (iOS and Android)</h3>
                                   </Link>
                                 </div>
                               </div>
@@ -3776,11 +3863,11 @@ const Navbar: FC<NavbarProps> = () => {
                                 </svg>
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/web-app/full-stack-development"
+                                    href="/services/saas/dashboard"
                                     className="leading-4  font-semibold text-sky-700 hover:text-black gap-2 flex "
                                     onClick={servicesHandler}
                                   >
-                                    <h3>Fullstack development</h3>
+                                    <h3>Dashboards and Admin Panels</h3>
                                   </Link>
                                 </div>
                               </div>
@@ -3792,7 +3879,7 @@ const Navbar: FC<NavbarProps> = () => {
                     </div>
 
                     {/* AI Section */}
-                    <div className="  text-gray-900 md:pb-4 ">
+                    <div className="hidden">
                       <div
                         className="space-y-4"
                         aria-labelledby="mega-menu-dropdown-button"
@@ -3821,11 +3908,11 @@ const Navbar: FC<NavbarProps> = () => {
                                 </svg>
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/ai/custom-ai-solution"
+                                    href="/services/ai/custom"
                                     className="leading-4 font-semibold text-sky-700  hover:text-black "
                                     onClick={() => setMobileMenuOpen(false)}
                                   >
-                                    <h3>Custom AI Solution</h3>
+                                    <h3>Custom AI Solutions</h3>
                                   </Link>
                                 </div>
                               </div>
@@ -3862,11 +3949,11 @@ const Navbar: FC<NavbarProps> = () => {
                                 </svg>
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/ai/machine-learning"
+                                    href="/services/ai/agents"
                                     className="leading-4 font-semibold text-sky-700  hover:text-black "
                                     onClick={servicesHandler}
                                   >
-                                    <h3>Machine Learning</h3>
+                                    <h3>AI Agents and Automation</h3>
                                   </Link>
                                 </div>
                               </div>
@@ -3908,11 +3995,11 @@ const Navbar: FC<NavbarProps> = () => {
 
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/ai/natural-language-processing"
+                                    href="/services/ai/ml-nlp"
                                     className="leading-4  font-semibold text-sky-700 hover:text-black  "
                                     onClick={servicesHandler}
                                   >
-                                    <h3>Natural Language Processing</h3>
+                                    <h3>Machine Learning and NLP</h3>
                                   </Link>
                                 </div>
                               </div>
@@ -3981,11 +4068,11 @@ const Navbar: FC<NavbarProps> = () => {
                                 </svg>
                                 <div className="ml-1 flex flex-wrap xl:flex-nowrap flex-col">
                                   <Link
-                                    href="/ai/computer-vision-services"
+                                    href="/services/ai/chat"
                                     className="leading-4  font-semibold text-sky-700 hover:text-black "
                                     onClick={servicesHandler}
                                   >
-                                    <h3>Computer Vision Services</h3>
+                                    <h3>Chatbots and Voice Agents</h3>
                                   </Link>
                                 </div>
                               </div>

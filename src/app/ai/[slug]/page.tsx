@@ -14,9 +14,26 @@ import GenerationAISectionNaturalLanguage from "@/components/services/artificial
 import HeroSectionNaturalLanguage from "@/components/services/artificialIntiligiance/naturalLanguageProcessing/heroSectionNaturalLanguage";
 import LanguageModelSectionNaturalLanguage from "@/components/services/artificialIntiligiance/naturalLanguageProcessing/languageModelNaturalLanguage";
 import MasterMachineSectionNaturalLanguage from "@/components/services/artificialIntiligiance/naturalLanguageProcessing/msMachineNaturalLanguage";
+import { notFound } from "next/navigation";
 
-export default function AI({ params }: { params: { slug: string } }) {
-  const param = params.slug;
+const aiServiceSlugs = [
+  "custom-ai-solution",
+  "machine-learning",
+  "natural-language-processing",
+  "computer-vision-services",
+];
+
+export default async function AI({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug: param } = await params;
+
+  if (!aiServiceSlugs.includes(param)) {
+    notFound();
+  }
+
   return (
     <div>
       {/* web Design */}
@@ -44,6 +61,7 @@ export default function AI({ params }: { params: { slug: string } }) {
           <MasterMachineSectionNaturalLanguage />
           <LanguageModelSectionNaturalLanguage />
           <GenerationAISectionNaturalLanguage />
+       
         </div>
       )}
       {/* full-stack-development */}

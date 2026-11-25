@@ -1,160 +1,155 @@
-import { FC } from "react";
-interface servicesOfferProps { }
-const SevicesOffer: FC<servicesOfferProps> = () => {
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import ContactModal from "./ContactModal";
+
+const serviceGroups = [
+  {
+    name: "AI",
+    items: [
+      ["Custom AI Solutions", "AI features and products built around your idea.", "/services/ai/custom"],
+      ["AI Agents and Automation", "Agents that handle sales, support and daily workflows.", "/services/ai/agents"],
+      ["Chatbots and Voice Agents", "Text and real-time voice assistants for your users.", "/services/ai/chat"],
+      ["Machine Learning and NLP", "Models for search, analysis and recommendations.", "/services/ai/ml-nlp"],
+    ],
+  },
+  {
+    name: "Blockchain",
+    items: [
+      ["Token and DAO Development", "Launch a token and the governance around it.", "/services/blockchain/token"],
+      ["DeFi and Staking Platforms", "Staking, yield and swap products.", "/services/blockchain/defi"],
+      ["Wallets and Payments", "Custody, transfers and settlement flows.", "/services/blockchain/wallet"],
+      ["Smart Contracts", "Written, tested and ready to deploy.", "/services/blockchain/contracts"],
+    ],
+  },
+  {
+    name: "SaaS and Mobile",
+    items: [
+      ["SaaS MVP Development", "The smallest product that proves your idea.", "/services/saas/mvp"],
+      ["Custom Web Apps", "Full-stack apps built to scale.", "/services/saas/web"],
+      ["Mobile Apps (iOS and Android)", "One build for both stores.", "/services/saas/mobile"],
+      ["Dashboards and Admin Panels", "Data and control for your team.", "/services/saas/dashboard"],
+    ],
+  },
+];
+
+const steps = [
+  ["Free call", "Tell us the idea. 30 minutes."],
+  ["Scope and quote", "Fixed scope, clear timeline."],
+  ["Build", "Weekly demos you can click."],
+  ["Launch", "Live, with support after."],
+];
+
+const SevicesOffer = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handlePrimaryCTA = () => {
+    setIsModalOpen(true);
+  };
+
   return (
-    <div>
-      <div className="flex justify-center">
-        <div className="bg-white grid grid-cols-1 max-w-7xl md:grid-cols-2 gap-8 px-8 md:gap-16  pb-10   md:px:12 lg:px-12 pt-20 ">
-          <p className="text-lg md:text-3xl font-bold">
-            WHAT WE OFFER QUALITY AS A SERVICE, INNOVATION AS OUR CORE
+    <main className="bg-white text-slate-900">
+      <section className="relative isolate overflow-hidden bg-slate-900 px-6 py-20 text-center md:py-24">
+        <Image
+          src="/assets/services-background.png"
+          alt=""
+          fill
+          sizes="100vw"
+          fetchPriority="high"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-slate-950/65" />
+        <div className="relative z-10">
+          <p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
+            Services
           </p>
-          <div className="flex flex-col flex-wrap gap-5 md:gap-8">
-            <p className="text-md leading-7 font-semibold text-gray-600">
-              Whatever your business is, we will bring value to it by
-              incorporating our expertise and years of experience in
-              transforming businesses using emerging tech.
-            </p>
-            <p className=" text-md leading-7 font-semibold text-gray-600">
-              {" "}
-              Being a lean startup, we believe in optimization and automation of
-              platforms. Our development process has a different approach to
-              verify user satisfaction while developing web application and
-              blockchain application for you.
-            </p>
+          <h1 className="mx-auto max-w-4xl text-4xl font-bold leading-tight text-white md:text-6xl">
+            What we build for <span className="text-blue-400">founders.</span>
+          </h1>
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-300 md:text-lg">
+            AI products, blockchain platforms and SaaS and mobile MVPs. Pick an area to see what we deliver.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 px-4 sm:flex-row md:gap-6 md:px-0">
+            <button
+              onClick={handlePrimaryCTA}
+              className="w-full rounded-lg bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/50 sm:w-auto"
+            >
+              Book a Free Call
+            </button>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Cards */}
-      <div className="bg-white pb-10 mt-12">
-        <div className="flex justify-center">
-          <div className="grid grid-cols-1 max-w-7xl md:grid-cols-3 px-5 md:px-10 gap-10">
-            <div className=" relative p-6 bg-gray-200 rounded-lg shadow">
-              <span className="absolute rounded-full -top-1 left-1/2 transform -translate-x-1/2 -translate-y-1/2  w-14 h-14 text-white bg-sky-900  flex justify-center items-center  text-[30px]">
-                1
-              </span>
-
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-center pt-5">
-                Strategy & Research
-              </h5>
-
-              <p className="mb-3 font-normal text-gray-700 text-center">
-                We collect information about your requirements early on while
-                developing business applications or blockchain projects. We add
-                value to the data collected, present facts and figures to you
-                and keey you posted with the whole development process.
-              </p>
-            </div>
-            <div className=" relative  p-6  bg-gray-200 rounded-lg shadow">
-              <span className="absolute rounded-full -top-1 left-1/2 transform -translate-x-1/2 -translate-y-1/2  w-14 h-14 text-white bg-sky-900  flex justify-center items-center  text-[30px]">
-                2
-              </span>
-
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-center pt-5">
-                Design
-              </h5>
-
-              <p className="mb-3 font-normal text-gray-700  text-center">
-                Once project logic is finalized we jump right on to designing
-                your front-end and dashboard. We share our inventory of
-                pre-designed templates for your to choose from or start
-                designing custom UI and UX as per your convenience.
-              </p>
-            </div>
-            <div className=" relative p-6 bg-gray-200 rounded-lg shadow">
-              <span className="absolute rounded-full -top-1 left-1/2 transform -translate-x-1/2 -translate-y-1/2  w-14 h-14 text-white bg-sky-900  flex justify-center items-center  text-[30px]">
-                3
-              </span>
-
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 text-center pt-5">
-                Development
-              </h5>
-
-              <p className="mb-3 font-normal text-center">
-                When the design is agreed upon, we build your website to the
-                highest standards and the programming language is selected
-                according to your platform requirement with your complete
-                knowledge. We create responsive and agile web applications for
-                you.
-              </p>
-            </div>
-            <div className=" relative p-6 bg-gray-200 rounded-lg shadow">
-              <span className="absolute rounded-full -top-1 left-1/2 transform -translate-x-1/2 -translate-y-1/2  w-14 h-14 text-white bg-sky-900  flex justify-center items-center  text-[30px]">
-                4
-              </span>
-
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900  text-center pt-5">
-                Revision
-              </h5>
-
-              <p className="mb-3 font-normal text-gray-700  text-center">
-                After completion of the development process, we take you on a
-                tour of your website or blockchain application and apply changes
-                if required until the functions are upto your entire
-                satisfaction.
-              </p>
-            </div>
-            <div className=" relative  p-6  bg-gray-200  rounded-lg shadow  ">
-              <span className="absolute rounded-full -top-1 left-1/2 transform -translate-x-1/2 -translate-y-1/2  w-14 h-14 text-white bg-sky-900  flex justify-center items-center  text-[30px]">
-                5
-              </span>
-
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900   text-center pt-5">
-                QA / Testing
-              </h5>
-
-              <p className="mb-3 font-normal text-gray-700  text-center">
-                We make sure that the website is responsive and works up to
-                international standards. We optimize speed and incorporate
-                technical and on-page SEO in compliance with your requirement.
-                We simulate and test on-page optimization while confirming SEO
-                conformance at this stage.
-              </p>
-            </div>
-            <div className=" relative  p-6 bg-gray-200   rounded-lg shadow  ">
-              <span className="absolute rounded-full -top-1 left-1/2 transform -translate-x-1/2 -translate-y-1/2  w-14 h-14 text-white bg-sky-900  flex justify-center items-center  text-[30px]">
-                6
-              </span>
-
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900   text-center pt-5">
-                Launch
-              </h5>
-
-              <p className="mb-3 font-normal    text-center">
-                Now that we have done everything possible to make sure that your
-                website or application looks amazing, is functional, and most
-                importantly meets our strict sustainability criteria, your
-                website is attached to the host and domain to go live.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-center">
-          <div className="flex max-w-7xl justify-center items-center">
-            <div className="grid grid-col-1 mt-16  md:px-10 ">
-              <div className="relative px-5 ">
-                <span className="absolute rounded-full -top-1 left-1/2 transform -translate-x-1/2 -translate-y-1/2  w-14 h-14 text-white bg-sky-900  flex justify-center items-center  text-[30px]">
-                  7
-                </span>
-
-                <div className="block   md:h-60 text-center  p-6 bg-gray-200   rounded-lg  ">
-                  <h5 className=" text-2xl font-bold tracking-tight text-gray-900  pt-5">
-                    Iteration
-                  </h5>
-                  <p className="font-normal text-gray-700  ">
-                    After the launch we monitor user behaviour and performance
-                    of your website/ application in the real world. Making
-                    iterative corrections ensures that the product is up to the
-                    mark and user-friendly. We ensure continuous improvements
-                    and data collection from the user experience. .
+      {serviceGroups.map((group, groupIndex) => (
+        <section
+          key={group.name}
+          className={groupIndex % 2 === 1 ? "bg-slate-50 py-16" : "py-16"}
+        >
+          <div className="mx-auto max-w-7xl px-5 md:px-10">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">{group.name}</h2>
+            <div className="mt-7 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+              {group.items.map(([title, description, href]) => (
+                <Link
+                  key={title}
+                  href={href}
+                  className="group relative flex min-h-[210px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_20px_50px_-20px_rgba(37,99,235,0.25)]"
+                >
+                  <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-blue-600 to-cyan-500 transition-transform duration-300 group-hover:scale-x-100" />
+                  <h3 className="pr-6 text-xl font-bold leading-snug text-slate-900 transition-colors group-hover:text-blue-700">
+                    {title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-500">
+                    {description}
                   </p>
-                </div>
-              </div>
+                  <span className="mt-auto inline-flex items-center pt-6 text-sm font-semibold text-blue-600">
+                    Learn more
+                    <span
+                      aria-hidden="true"
+                      className="ml-2 flex h-7 w-7 items-center justify-center rounded-full border border-blue-200 text-base leading-none transition-all group-hover:translate-x-1 group-hover:border-blue-600 group-hover:bg-blue-600 group-hover:text-white"
+                    >
+                      →
+                    </span>
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
+        </section>
+      ))}
+
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-5 md:px-10">
+          <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">How it works</h2>
+          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {steps.map(([title, description], index) => (
+              <div key={title}>
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
+                  {index + 1}
+                </div>
+                <h3 className="font-bold text-slate-900">{title}</h3>
+                <p className="mt-1 text-sm leading-6 text-slate-500">{description}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* <section className="bg-blue-600 px-6 py-16 text-center text-white">
+        <h2 className="text-3xl font-bold md:text-4xl">Not sure where to start? Book a free call.</h2>
+        <Link
+          href="/contact-us"
+          className="mt-7 inline-flex rounded-lg bg-white px-6 py-3 font-semibold text-blue-600 transition hover:bg-slate-100"
+        >
+          Book a free call
+        </Link>
+      </section> */}
+      <ContactModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </main>
   );
 };
 

@@ -6,7 +6,37 @@ interface ContactModalProps {
   onClose: () => void;
 }
 
+const buildCalcomEmbedUrl = (configuredUrl?: string) => {
+  if (!configuredUrl?.trim()) return "";
+
+  try {
+    let normalizedUrl = configuredUrl.trim();
+    if (!/^https?:\/\//i.test(normalizedUrl)) {
+      normalizedUrl = normalizedUrl.replace(/^\/+/, "");
+      const firstSegment = normalizedUrl.split("/")[0];
+      if (!firstSegment.includes(".")) {
+        normalizedUrl = `cal.com/${normalizedUrl}`;
+      }
+      normalizedUrl = `https://${normalizedUrl}`;
+    }
+
+    const url = new URL(normalizedUrl);
+    if (url.protocol !== "https:") {
+      throw new Error("Cal.com booking URL must use HTTPS.");
+    }
+
+    url.searchParams.set("embed", "true");
+    url.searchParams.set("layout", "month_view");
+    url.searchParams.set("theme", "light");
+    return url.toString();
+  } catch (error) {
+    console.error("Invalid Cal.com booking URL:", error);
+    return "";
+  }
+};
+
 const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
+  const [step, setStep] = useState<"details" | "booking">("details");
   const [form, setForm] = useState({
     email: "",
     company: "",
@@ -14,6 +44,16 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     industry: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [calcomUrl, setCalcomUrl] = useState(() =>
+    buildCalcomEmbedUrl(process.env.NEXT_PUBLIC_CALCOM_URL)
+  );
+
+  const handleClose = () => {
+    setStep("details");
+    setSubmitError("");
+    onClose();
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -23,6 +63,40 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError("");
+
+    const configuredCalcomUrl = process.env.NEXT_PUBLIC_CALCOM_URL?.trim();
+    if (!configuredCalcomUrl) {
+      setSubmitError("Booking is not configured yet. Please try again later.");
+      return;
+    }
+
+    let bookingUrl: URL;
+    try {
+      let normalizedCalcomUrl = configuredCalcomUrl;
+      if (!/^https?:\/\//i.test(normalizedCalcomUrl)) {
+        normalizedCalcomUrl = normalizedCalcomUrl.replace(/^\/+/, "");
+        const firstSegment = normalizedCalcomUrl.split("/")[0];
+        if (!firstSegment.includes(".")) {
+          normalizedCalcomUrl = `cal.com/${normalizedCalcomUrl}`;
+        }
+        normalizedCalcomUrl = `https://${normalizedCalcomUrl}`;
+      }
+
+      bookingUrl = new URL(normalizedCalcomUrl);
+      if (bookingUrl.protocol !== "https:") {
+        throw new Error("Cal.com booking URL must use HTTPS.");
+      }
+      bookingUrl.searchParams.set("embed", "true");
+      bookingUrl.searchParams.set("layout", "month_view");
+      bookingUrl.searchParams.set("theme", "light");
+      bookingUrl.searchParams.set("email", form.email);
+    } catch (error) {
+      console.error("Invalid Cal.com booking URL:", error);
+      setSubmitError("Booking is not configured correctly. Please try again later.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -41,14 +115,14 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
       });
 
       if (response.ok) {
-        console.log("Lead submitted successfully");
-        onClose();
+        setCalcomUrl(bookingUrl.toString());
+        setStep("booking");
       } else {
-        alert("Failed to submit your information. Please try again.");
+        setSubmitError("Failed to submit your information. Please try again.");
       }
     } catch (error) {
       console.error("Error submitting lead:", error);
-      alert("An error occurred. Please try again.");
+      setSubmitError("An error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -58,13 +132,15 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
-      <div className="relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
+      <div
+        className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]"
+      >
         {/* Gradient Top Bar */}
         <div className="h-1.5 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
 
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           disabled={isSubmitting}
           aria-label="Close"
           className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50"
@@ -72,18 +148,48 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
           ✕
         </button>
 
-        <div className="px-6 pt-6 pb-7">
+        <div className={step === "booking" ? "px-6 pt-6 pb-6" : "px-6 pt-6 pb-7"}>
           {/* Header */}
           <div className="mb-5 text-center">
             <h2 className="text-xl font-bold tracking-tight text-gray-900">
-              Let's Understand Your Needs
+              {step === "booking"
+                ? "Choose Your Call, Date & Time"
+                : "Let's Understand Your Needs"}
             </h2>
             <p className="mt-1 text-xs text-gray-500">
-             Book now — 15 min strategy call, zero pitch, just clarity.
+              {step === "booking"
+                ? "Choose a call type, then select an available date and time."
+                : "Book now — 15 min strategy call, zero pitch, just clarity."}
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-3.5">
+          {step === "booking" ? (
+            <>
+              <iframe
+                title="Choose a date and time for your strategy call"
+                src={calcomUrl}
+                className="w-full rounded-xl border border-gray-200"
+                style={{ height: "min(70vh, 680px)" }}
+                loading="lazy"
+              />
+              <p className="mt-3 text-center text-xs text-gray-500">
+                Calendar not loading?{" "}
+                <a
+                  href={calcomUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-blue-600 underline"
+                >
+                  Open booking page
+                </a>
+              </p>
+            </>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="grid gap-6 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]"
+            >
+              <div className="space-y-3.5">
             {/* Work Email */}
             <div>
               <label className="mb-1.5 block text-xs font-medium text-gray-600">
@@ -217,10 +323,49 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
               {isSubmitting ? "Submitting..." : "Book My Strategy Call"}
             </button>
 
+            {submitError && (
+              <p role="alert" className="text-center text-xs text-red-600">
+                {submitError}
+              </p>
+            )}
+
             <p className="pt-1 text-center text-[11px] text-gray-400">
-              We respect  your privacy. No spam, ever.
+              We respect your privacy. No spam, ever.
             </p>
-          </form>
+              </div>
+
+              <section className="space-y-2">
+                <h3 className="text-sm font-medium text-gray-700">
+                  Choose your date and time
+                </h3>
+                {calcomUrl ? (
+                  <iframe
+                    title="Choose a date and time for your strategy call"
+                    src={calcomUrl}
+                    className="w-full rounded-xl border border-gray-200"
+                    style={{ height: "min(55vh, 520px)" }}
+                  />
+                ) : (
+                  <p role="alert" className="text-sm text-red-600">
+                    Calendar is unavailable. Please try again later.
+                  </p>
+                )}
+                {calcomUrl && (
+                  <p className="text-center text-xs text-gray-500">
+                    Calendar not loading?{" "}
+                    <a
+                      href={calcomUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-blue-600 underline"
+                    >
+                      Open booking page
+                    </a>
+                  </p>
+                )}
+              </section>
+            </form>
+          )}
         </div>
       </div>
     </div>
