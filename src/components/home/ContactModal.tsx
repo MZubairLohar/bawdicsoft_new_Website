@@ -46,7 +46,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [calcomUrl, setCalcomUrl] = useState(() =>
-    buildCalcomEmbedUrl(process.env.NEXT_PUBLIC_CALCOM_URL)
+    // buildCalcomEmbedUrl(process.env.NEXT_PUBLIC_CALCOM_URL)
+      buildCalcomEmbedUrl('https://cal.com/bilal-hashmi-hs94hb/30min')
+
   );
 
   const handleClose = () => {
@@ -65,7 +67,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     e.preventDefault();
     setSubmitError("");
 
-    const configuredCalcomUrl = process.env.NEXT_PUBLIC_CALCOM_URL?.trim();
+    // const configuredCalcomUrl = process.env.NEXT_PUBLIC_CALCOM_URL?.trim();
+    const configuredCalcomUrl = 'https://cal.com/bilal-hashmi-hs94hb/30min';
+
     if (!configuredCalcomUrl) {
       setSubmitError("Booking is not configured yet. Please try again later.");
       return;
