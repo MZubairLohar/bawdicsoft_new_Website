@@ -17,6 +17,25 @@ import { INTENT_THRESHOLD_FIRE, isMaxIntent } from '@/lib/tracking/intentEngine'
 
 const AUTO_OPEN_DELAY_MS = 1500;
 const CARD_SHOW_DELAY_MS = 4000;
+// Chatbot backend conversation id, kept per browser tab so history survives page navigation.
+const SESSION_KEY = 'bawdic_chat_session_id';
+
+function loadSessionId(): string | null {
+  try {
+    return sessionStorage.getItem(SESSION_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function saveSessionId(id: string | null) {
+  try {
+    if (id) sessionStorage.setItem(SESSION_KEY, id);
+    else sessionStorage.removeItem(SESSION_KEY);
+  } catch {
+    /* storage blocked */
+  }
+}
 
 function makeId() {
   return `m_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
@@ -37,6 +56,8 @@ export default function ChatWidget() {
   const [agent, setAgent] = useState<Agent | null>(null);
   const agentRef = useRef<Agent | null>(null);
   const chatRequestIdRef = useRef(0);
+  // Backend session id: the chatbot keeps the conversation history under it.
+  const sessionIdRef = useRef<string | null>(null);
 
   const autoOpenFiredRef = useRef(false);
   const cardShownRef = useRef(false);
@@ -47,6 +68,7 @@ export default function ChatWidget() {
     const a = getOrAssignAgent();
     agentRef.current = a;
     setAgent(a);
+    sessionIdRef.current = loadSessionId();
   }, []);
 
   // Detect mobile
@@ -184,6 +206,7 @@ export default function ChatWidget() {
         body: JSON.stringify({
           messages: payload,
           visitorId,
+          sessionId: sessionIdRef.current,
           intentScore: intent.score,
           page: pathname,
           agent: agent ? { id: agent.id, name: agent.name } : undefined,
@@ -197,6 +220,10 @@ export default function ChatWidget() {
       }
 
       if (requestId === chatRequestIdRef.current) {
+        if (data.sessionId) {
+          sessionIdRef.current = data.sessionId;
+          saveSessionId(data.sessionId);
+        }
         setMessages((prev) => [
           ...prev,
           {
@@ -234,6 +261,9 @@ export default function ChatWidget() {
 
   const handleClear = () => {
     chatRequestIdRef.current += 1;
+    // Start a fresh conversation on the backend too.
+    sessionIdRef.current = null;
+    saveSessionId(null);
     setMessages([]);
     setIsTyping(false);
   };
