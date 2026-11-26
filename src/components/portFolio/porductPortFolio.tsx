@@ -31,24 +31,24 @@ const services: ServiceItem[] = [
 
 const ProductServices: FC = () => {
   return (
-    <section className="bg-gray-950 py-24 px-4 md:px-12 border-t border-gray-900">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-4">
+    <section className="border-t border-gray-900 bg-gray-950 px-4 py-14 sm:px-6 sm:py-20 md:px-12 md:py-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-10 text-center sm:mb-16">
+          <h2 className="mb-3 text-3xl font-extrabold text-white sm:mb-4 sm:text-4xl md:text-5xl">
             Our Expertise
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="mx-auto max-w-2xl text-base leading-7 text-gray-400 sm:text-lg">
             Enterprise-grade solutions built with security, scalability, and innovation at the core.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6">
           {services.map((service, idx) => (
             <div
               key={idx}
-              className="group p-6 bg-gray-900 border border-gray-800 rounded-2xl hover:border-sky-500/50 hover:bg-gray-800/50 transition-all duration-300 hover:-translate-y-1"
+              className="group min-w-0 rounded-2xl border border-gray-800 bg-gray-900 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-sky-500/50 hover:bg-gray-800/50 sm:p-6"
             >
-              <div className="w-16 h-16 mb-6 relative">
+              <div className="relative mb-4 h-14 w-14 sm:mb-6 sm:h-16 sm:w-16">
                 <Image
                   src={service.icon}
                   alt={service.title}
@@ -57,7 +57,7 @@ const ProductServices: FC = () => {
                   className="object-contain filter brightness-0 invert opacity-70 group-hover:opacity-100 group-hover:brightness-100 transition-all duration-300"
                 />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2 group-hover:text-sky-400 transition-colors">
+              <h3 className="mb-2 break-words text-lg font-bold text-white transition-colors group-hover:text-sky-400 sm:text-xl">
                 {service.title}
               </h3>
               <p className="text-gray-400 text-sm leading-relaxed">

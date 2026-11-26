@@ -398,34 +398,46 @@ const TrustSignalsSection: FC = () => {
         </div>
 
         {/* Stats Section */}
-        {/* <div className="mt-16 md:mt-20 pt-12 border-t border-gray-200 bg-gradient-to-r from-sky-950 via-sky-700 to-sky-600 text-white rounded-xl p-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="mt-16 rounded-xl border-t border-gray-200 bg-gradient-to-r from-sky-950 via-sky-700 to-sky-600 p-5 pt-8 text-white sm:p-8 sm:pt-10 md:mt-20">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-8 text-center sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-6">
             <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-white">
+              <div className="whitespace-nowrap text-2xl font-bold text-white sm:text-3xl">
                 100+
               </div>
-              <div className="text-blue-100">Clients Served</div>
+              <div className="text-sm text-blue-100 sm:text-base">Clients Served</div>
             </div>
             <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-white">
+              <div className="whitespace-nowrap text-2xl font-bold text-white sm:text-3xl">
                 15+
               </div>
-              <div className="text-blue-100">Countries Served</div>
+              <div className="text-sm text-blue-100 sm:text-base">Countries Served</div>
             </div>
             <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-white">
+              <div className="whitespace-nowrap text-2xl font-bold text-white sm:text-3xl">
+                2018
+              </div>
+              <div className="text-sm text-blue-100 sm:text-base">Since</div>
+            </div>
+            <div className="space-y-2">
+              <div className="whitespace-nowrap text-2xl font-bold text-white sm:text-3xl">
+                22+
+              </div>
+              <div className="text-sm text-blue-100 sm:text-base">Engineers</div>
+            </div>
+            <div className="space-y-2">
+              <div className="whitespace-nowrap text-xl font-bold text-white sm:text-2xl lg:text-xl xl:text-2xl">
                 ISO 27001
               </div>
-              <div className="text-blue-100">Certified</div>
+              <div className="text-sm text-blue-100 sm:text-base">Certified</div>
             </div>
             <div className="space-y-2">
-              <div className="text-3xl md:text-4xl font-bold text-white">
+              <div className="whitespace-nowrap text-2xl font-bold text-white sm:text-3xl">
                 85%
               </div>
-              <div className="text-blue-100">Client Satisfaction</div>
+              <div className="text-sm text-blue-100 sm:text-base">Client Satisfaction</div>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </section>
   );

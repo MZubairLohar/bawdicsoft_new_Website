@@ -341,11 +341,11 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bawdicsoft.com"),
-  title: "BawdicSoft",
-  description: "BawdicSoft — Software Development Solutions",
+  title: "BawdicSoft | AI Automation, Blockchain & SaaS MVP Development",
+  description: "BawdicSoft builds AI products, blockchain platforms and SaaS and mobile MVPs for founders",
   openGraph: {
-    title: "BawdicSoft",
-    description: "BawdicSoft — Software Development Solutions",
+    title: "BawdicSoft | AI Automation, Blockchain & SaaS MVP Development",
+    description: "BawdicSoft builds AI products, blockchain platforms and SaaS and mobile MVPs for founders",
     url: "https://bawdicsoft.com",
     siteName: "BawdicSoft",
     images: [
@@ -361,8 +361,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "BawdicSoft",
-    description: "BawdicSoft — Software Development Solutions",
+    title: "BawdicSoft | AI Automation, Blockchain & SaaS MVP Development",
+    description: "BawdicSoft builds AI products, blockchain platforms and SaaS and mobile MVPs for founders",
     images: ["/images/logo.png"],
   },
 

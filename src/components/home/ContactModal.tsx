@@ -163,7 +163,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             <p className="mt-1 text-xs text-gray-500">
               {step === "booking"
                 ? "Choose a call type, then select an available date and time."
-                : "Book now — 15 min strategy call, zero pitch, just clarity."}
+                : "Book now — 30 min strategy call, zero pitch, just clarity."}
             </p>
           </div>
 
@@ -191,7 +191,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="grid gap-6 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]"
+              className="mx-auto w-full max-w-md"
             >
               <div className="space-y-3.5">
             {/* Work Email */}
@@ -213,7 +213,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 
             <div className="grid grid-cols-2 gap-3">
               {/* Company Name */}
-              <div>
+              {/* <div>
                 <label className="mb-1.5 block text-xs font-medium text-gray-600">
                   Company
                 </label>
@@ -227,15 +227,15 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                   disabled={isSubmitting}
                   className="w-full rounded-xl border border-gray-200 bg-gray-50/60 px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 disabled:opacity-50"
                 />
-              </div>
+              </div> */}
 
               {/* Company Size */}
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-gray-600">
+              {/* <div> */}
+                {/* <label className="mb-1.5 block text-xs font-medium text-gray-600">
                   Team Size
-                </label>
-                <div className="relative">
-                  <select
+                </label> */}
+                {/* <div className="relative"> */}
+                  {/* <select
                     name="companySize"
                     required
                     value={form.companySize}
@@ -249,9 +249,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                     <option value="51-200">51–200</option>
                     <option value="201-500">201–500</option>
                     <option value="500+">500+</option>
-                  </select>
+                  </select> */}
                   {/* Custom Arrow */}
-                  <svg
+                  {/* <svg
                     className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
@@ -262,9 +262,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                       d="M5.23 7.21a.75.75 0 011.06.02L10 11.06l3.71-3.83a.75.75 0 111.08 1.04l-4.25 4.39a.75.75 0 01-1.08 0L5.21 8.27a.75.75 0 01.02-1.06z"
                       clipRule="evenodd"
                     />
-                  </svg>
-                </div>
-              </div>
+                  </svg> */}
+                {/* </div> */}
+              {/* </div> */}
             </div>
 
             {/* Industry */}
@@ -337,37 +337,6 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
               We respect your privacy. No spam, ever.
             </p>
               </div>
-
-              <section className="space-y-2">
-                <h3 className="text-sm font-medium text-gray-700">
-                  Choose your date and time
-                </h3>
-                {calcomUrl ? (
-                  <iframe
-                    title="Choose a date and time for your strategy call"
-                    src={calcomUrl}
-                    className="w-full rounded-xl border border-gray-200"
-                    style={{ height: "min(55vh, 520px)" }}
-                  />
-                ) : (
-                  <p role="alert" className="text-sm text-red-600">
-                    Calendar is unavailable. Please try again later.
-                  </p>
-                )}
-                {calcomUrl && (
-                  <p className="text-center text-xs text-gray-500">
-                    Calendar not loading?{" "}
-                    <a
-                      href={calcomUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-medium text-blue-600 underline"
-                    >
-                      Open booking page
-                    </a>
-                  </p>
-                )}
-              </section>
             </form>
           )}
         </div>

@@ -42,7 +42,6 @@ export default function PortfolioPage() {
     <>
       <HeroSection />
       <AgencyPortfolio />
-      {/* Optional: Keep ProductServices if you want to show it below the portfolio list */}
       <ProductServices />
     </>
   );

@@ -2243,25 +2243,22 @@ const Navbar: FC<NavbarProps> = () => {
         aria-label="Global"
       >
         {/* LEFT: Logo */}
-        <div className="flex lg:flex-1 gap-3 items-center ">
-          <div className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Services</span>
-            <Image
-              className=" w-auto hidden md:block"
-              src={logo}
-              alt=""
-              width={40}
-              height={40}
-            />
-          </div>
+        <div className="flex min-w-0 items-center lg:flex-1">
           <Link
             href="/"
-            className={`text-[23px] -ml-2 md:m-0 md:text-[30px] font-semibold md:font-bold transition-all duration-300 ${
+            className={`inline-flex min-w-0 items-center gap-2 whitespace-nowrap text-[20px] font-semibold transition-all duration-300 sm:text-[23px] md:text-[30px] md:font-bold ${
               scrolled
                 ? "bg-[linear-gradient(135deg,#0c1f33_0%,#0f3b5c_60%,#0e5580_100%)] bg-clip-text text-transparent"
                 : "text-white"
             }`}
           >
+            <Image
+              className={`h-8 w-8 shrink-0 md:h-10 md:w-10 ${scrolled ? "" : "brightness-0 invert"}`}
+              src={logo}
+              alt=""
+              width={40}
+              height={40}
+            />
             BawdicSoft
           </Link>
         </div>
