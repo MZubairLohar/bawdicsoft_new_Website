@@ -53,16 +53,17 @@ const HeroSection = () => {
         >
           <a
             href="#portfolio-grid"
-            className="w-full max-w-xs rounded-lg bg-white px-6 py-3 text-sm font-bold text-sky-800 shadow-lg transition hover:-translate-y-0.5 sm:w-auto"
+            className="w-full max-w-xs rounded-lg bg-[#2563EB] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-950/30 ring-1 ring-white/20 transition hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 sm:w-auto"
           >
             Explore our work ↗
           </a>
           <a
             href="#case-studies"
-            className="w-full max-w-xs rounded-lg border border-white/50 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/20 sm:w-auto"
+            className="w-full max-w-xs rounded-lg bg-[#2563EB] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-950/30 ring-1 ring-white/20 transition hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300 sm:w-auto"
           >
             Explore case studies
           </a>
+          
         </motion.div>
       </div>
     </section>
